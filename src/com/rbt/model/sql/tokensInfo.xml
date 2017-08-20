@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tokensInfo">
+
+	<typeAlias alias="tokensInfo" type="com.rbt.model.TokensInfo" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="tokensInfo">
+		<![CDATA[ 
+    SELECT tok_id,token_name,in_date,token_type FROM tokensInfo WHERE tok_id=$tok_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="tokensInfo">
+		UPDATE tokensInfo SET tok_id=#tok_id#,token_name=#token_name#,in_date=#in_date#,token_type=#token_type# WHERE tok_id=$tok_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE tokensInfo SET 
+    	 <isNotNull  property="tok_id"> 
+		   tok_id=$tok_id$
+		 </isNotNull>
+    	 WHERE tok_id=$tok_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="tokensInfo">
+		UPDATE tokensInfo SET tok_id=$tok_id$ WHERE tok_id=$tok_id$
+	</update>
+
+	<insert id="insert" parameterClass="tokensInfo">
+		INSERT INTO tokensInfo (tok_id,token_name,in_date,token_type) VALUES (#tok_id#,#token_name#,now(),#token_type#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM tokensInfo WHERE tok_id in ($tok_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM tokensInfo 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="tok_id">
+				tok_id=#tok_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT tok_id,token_name,in_date,token_type
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY tok_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

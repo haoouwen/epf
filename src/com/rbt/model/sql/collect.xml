@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="collect">
+
+	<typeAlias alias="collect" type="com.rbt.model.Collect" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="collect">
+		<![CDATA[ 
+    SELECT coll_id,cust_id,goods_id,title,link_url,remark,in_date,coll_type,brand_id FROM collect WHERE coll_id=$coll_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="collect">
+		UPDATE collect SET coll_id=#coll_id#,cust_id=#cust_id#,goods_id=#goods_id#,title=#title#,link_url=#link_url#,remark=#remark#,in_date=now(),coll_type=#coll_type#,brand_id=#brand_id# WHERE coll_id=$coll_id$
+	</update>
+
+	<insert id="insert" parameterClass="collect">
+		INSERT INTO collect (coll_id,cust_id,goods_id,title,link_url,remark,in_date,coll_type,brand_id) VALUES (#coll_id#,#cust_id#,#goods_id#,#title#,#link_url#,#remark#,now(),#coll_type#,#brand_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM collect WHERE coll_id in ($coll_id$)
+	</delete>
+	
+	<delete id="deletebygoodsid" parameterClass="java.lang.String">
+		DELETE FROM collect WHERE goods_id in ($goods_id$)
+	</delete>
+	
+
+	<sql id="getCommon">
+		FROM collect c
+		left join member m on c.cust_id = m.cust_id
+		left join goods g on c.goods_id = g.goods_id
+		left join goodsbrand br on c.brand_id = br.brand_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_id"> 
+			     c.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="link_url"> 
+			     c.link_url=#link_url#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="title"> 
+     		    INSTR(c.title,#title#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_name"> 
+     		    INSTR(m.cust_name,#cust_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="coll_type"> 
+     		  	c.coll_type=#coll_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="goods_id"> 
+     		  	c.goods_id in (#goods_id#)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="brand_id">
+			    c.brand_id in (#brand_id#)
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT c.coll_id,c.cust_id,c.goods_id,c.title,c.link_url,c.remark,c.in_date,c.coll_type,m.cust_name,g.goods_name,g.list_img,c.brand_id,br.brand_name,br.logo,
+		(SELECT market_price FROM goodsattr ga WHERE ga.goods_id=c.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS market_price,
+	    (SELECT sale_price FROM goodsattr ga WHERE ga.goods_id=c.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS sale_price,
+	    (SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=c.goods_id)  AS total_stock,
+	    (SELECT count(goodseval.goods_id) from goodseval where goodseval.goods_id=c.goods_id) as evalcount
+	
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY c.coll_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM collect c LEFT JOIN member m ON c.cust_id=m.cust_id 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_name">
+				INSTR(m.cust_name,#cust_name#)>0 
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+			SELECT m.cust_name,COUNT(*) AS info_num,m.cust_id  
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+			GROUP BY c.cust_id ORDER BY c.coll_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+ 
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT m.cust_name,COUNT(*) AS info_name,m.cust_id  
+			FROM collect c LEFT JOIN member m ON c.cust_id=m.cust_id 
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="cust_name">
+					INSTR(m.cust_name,#cust_name#)>0 
+				</isNotNull>
+				<isNotNull prepend="and" property="coll_type"> 
+	     		  	c.coll_type=#coll_type#
+				</isNotNull>
+			</dynamic>
+		 GROUP BY c.cust_id ORDER BY coll_id DESC ) a
+	</select>
+	<!-- 分组查询 结束 -->
+	
+</sqlMap>
+

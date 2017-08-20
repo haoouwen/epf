@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memprotect">
+
+	<typeAlias alias="memprotect" type="com.rbt.model.Memprotect" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memprotect">
+		<![CDATA[ 
+    SELECT id,cust_id,question,answer FROM memprotect WHERE id=$id$
+    ]]>
+	</select>
+	
+	<select id="getByCustId" parameterClass="java.lang.String"
+		resultClass="memprotect">
+		<![CDATA[ 
+    SELECT id,cust_id,question,answer FROM memprotect WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memprotect">
+		UPDATE memprotect SET id=#id#,cust_id=#cust_id#,question=#question#,answer=#answer# WHERE id=$id$
+	</update>
+
+	<insert id="insert" parameterClass="memprotect">
+		INSERT INTO memprotect (id,cust_id,question,answer) VALUES (#id#,#cust_id#,#question#,#answer#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memprotect WHERE id in ($id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memprotect 
+		<dynamic prepend="WHERE">
+		 <isNotNull prepend="and" property="cust_id"> 
+			    cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="answer"> 
+			    answer=#answer#
+			 </isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT id,cust_id,question,answer
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

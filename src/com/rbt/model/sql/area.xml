@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="area">
+	<typeAlias alias="area" type="com.rbt.model.Area" />
+	
+	<cacheModel id="area-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="area.update" />
+		<flushOnExecute statement="area.insert" />
+		<flushOnExecute statement="area.delete" />
+		<flushOnExecute statement="area.updateSort" />
+		<property value="500" name="size" />
+	</cacheModel>
+	
+	<select id="getAll" resultClass="java.util.HashMap" cacheModel="area.area-cache">
+		SELECT 	area_id, area_name FROM area
+	</select>
+	
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="area">
+		<![CDATA[ 
+			SELECT 	area_id, area_name, en_name, up_area_id, area_level, sort_no,area_have,area_number,kjtareaid FROM area WHERE area_id=#value#
+	    ]]>
+	</select>
+	
+	<update id="update" parameterClass="area">
+		UPDATE area SET
+		area_name=#area_name#,en_name=#en_name#,area_have=#area_have#,up_area_id=#up_area_id#,area_level=#area_level#,sort_no=$sort_no$,area_number=#area_number#,kjtareaid=#kjtareaid#
+		WHERE area_id=#area_id#
+	</update>
+	
+	<update id="updateSort" parameterClass="java.util.HashMap">
+		UPDATE area SET sort_no=$sort_no$ WHERE area_id=#area_id#
+	</update>
+	
+	<insert id="insert" parameterClass="area">
+		INSERT INTO area (area_id, area_name, en_name, up_area_id,
+		area_level, sort_no,area_have,area_number,kjtareaid) VALUES
+		(#area_id#,#area_name#,#en_name#,#up_area_id#,#area_level#,$sort_no$,#area_have#,#area_number#,#kjtareaid#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from area where area_id in (#value#)
+	</delete>
+	
+	<sql id="getCommon">
+		from area
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="area_name">
+				area_name=#area_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="address">
+				INSTR(#address#,area_name) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="up_id_str">
+				INSTR(#up_id_str#,up_area_id) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="en_name">
+				en_name=#en_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_area_id">
+				up_area_id=#up_area_id# 
+			</isNotNull>
+			<isNotNull prepend="and" property="no_area_level">
+				 area_level not in(#no_area_level#)
+			</isNotNull>
+			<isNotNull prepend="and" property="area_number">
+				 INSTR(#area_number#,area_number) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="area_level">
+				 area_level = #area_level#
+			</isNotNull>
+			<isNotNull prepend="and" property="area_id">
+				 INSTR(area_id,#area_id#)
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="area.area-cache">
+		select area_id, area_name, en_name, up_area_id, area_level,	sort_no,area_have,area_number,kjtareaid
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull prepend="" property="address">
+		order by area_level DESC
+		</isNotNull>
+		<isNull prepend="" property="address">
+		order by sort_no asc,en_name asc
+		</isNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(area_id) as area_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="area.area-cache">
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getWebAreaIndexList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="area.area-cache">
+		SELECT area_id,area_name,area_level FROM area WHERE area_id=(SELECT up_area_id FROM area 
+	        <dynamic prepend="WHERE">	
+				<isNotNull prepend="and" property="area_id">
+					area_id=#area_id#
+				</isNotNull>
+		    </dynamic>	
+		)
+	</select>
+	
+	<select id="getAreaCityList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="area.area-cache">
+                    SELECT area_id,area_name,en_name,area_level,area_number FROM area  
+	    <dynamic prepend="WHERE">	
+				<isNotNull prepend="and" property="up_area_id">
+				up_area_id IN(SELECT area_id  FROM area where up_area_id=$up_area_id$) and is_city='1' order by en_name 
+				</isNotNull>
+		</dynamic>	  
+	</select>
+	
+	<select id="getCharacterList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="area.area-cache">
+                    SELECT DISTINCT SUBSTRING(en_name,1,1) as en_name FROM area 
+	    <dynamic prepend="WHERE">	
+	            <isNotNull prepend="and" property="up_area_id">
+					up_area_id IN(SELECT area_id  FROM area where up_area_id=#up_area_id#)
+				</isNotNull>
+				<isNotNull prepend="and" property="is_city">
+					is_city=#is_city#
+				</isNotNull>
+		</dynamic>	 
+		GROUP BY en_name ORDER BY en_name  
+	</select>
+	
+	<select id="getCountryList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="area.area-cache">
+                    SELECT DISTINCT SUBSTRING(en_name,1,1) as en_name FROM area 
+	    <dynamic prepend="WHERE">	
+				<isNotNull prepend="and" property="up_area_id">
+					up_area_id=#up_area_id#
+				</isNotNull>
+		</dynamic>	 
+		GROUP BY en_name ORDER BY en_name  
+	</select>
+</sqlMap>

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.1.dtd">
+<urlrewrite>	
+   
+    <!-- /////////////////////////////以下为触屏版URL重写，开发阶段放在最上面（方便），上线前移到最后面///////////////////////////// -->
+    
+     <!-- WebAPP会员登陆页面 -->
+    <rule>
+        <from>/webapplogin.html</from>
+        <to type="forward">/webapp/memberuser!webappLogin.action</to>
+    </rule>
+    <!-- WebApp会员注册 -->
+	<rule>
+        <from>/webappregister.html</from>
+        <to type="forward">/webapp/memberuser!webappRegister.action</to>
+    </rule>
+    <!-- WebApp会员退出 -->
+    <rule>
+       <from>/webappexit.html</from>
+       <to>/webapp/memberuser!webappExit.action</to>
+    </rule>
+     <!-- WebApp会员中心首页 -->
+    <rule>
+       <from>/webappmembercenter.html</from>
+       <to>/webapp/memberuser!webappMemberCenter.action</to>
+    </rule>
+    
+    <!-- WebApp商品列表页 -->
+    <rule>
+        <from>/webapp/goodslist/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!list.action?catEn_name=$1</to>
+    </rule>
+    
+    <!-- WebApp商品详细页 -->
+    <rule>
+        <from>/webapp/goodsdetail/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!detail.action?gid=$1</to>
+    </rule>
+    
+     <!-- 文章详细页 -->
+     <rule>
+        <from>/webapp/messagedel/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/message!messageDel.action?mid=$1</to>
+    </rule>  
+    
+     <!-- 文章详细页 -->
+     <rule>
+        <from>/webapp/messagedetail/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/message!detail.action?mid=$1</to>
+    </rule>  
+    
+    <!-- WebApp提交订单页 -->
+    <rule>
+        <from>/webapp/submitorder.html</from>
+        <to type="forward">/webapp/order!goOrder.action</to>
+    </rule>
+    
+    <!-- WebApp会员中心订单详情页 -->
+    <rule>
+        <from>/webapp/orderDetail/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goodsorder!webappOrderDetail.action?goodsorder.order_id=$1</to>
+    </rule>
+    
+      <!-- WebApp商城标签列表页 -->
+    <rule>
+        <from>/webapp/marksgoodslist/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!toMallmarksIndex.action?tab_number=$1</to>
+    </rule>
+    
+     <!-- 触屏版门店搜索 -->
+    <rule>
+        <from>/webapp/findShopList.html</from>
+        <to type="forward">/webapp/asysuser!findShopList.action</to>
+    </rule>
+    
+    <!--触屏版门店搜索-->
+    <rule>
+        <from>/webapp/findShopDetail_([0-9]+).html</from>
+        <to type="forward">/webapp/asysuser!findShopDetail.action?store_id=$1</to>
+    </rule> 
+      <!-- WebApp品牌列表页 -->
+    <rule>
+        <from>/webapp/brandslist/([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/brand!list.action?en_index=$1</to>
+    </rule>
+     
+    <!-- WebApp商品列表页 -->
+    <rule>
+        <from>/webapp/brandslist/detail_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!list.action?brand_id_s=$1</to>
+    </rule>
+    <!--会员充值-->
+    <rule>
+        <from>/webapp/memberRecharge.html</from>
+        <to type="forward">/webapp/memberuser!memberRecharge.action</to>
+    </rule> 
+    
+    <rule>
+        <from>/webapp/membercardRecharge.html</from>
+        <to type="forward">/webapp/memberuser!membercardRecharge.action</to>
+    </rule>
+    
+    <!-- 优惠券 -->
+    <rule>
+        <from>/webapp/coupon.html</from>
+        <to type="forward">/webapp/goods!couponList.action</to>
+    </rule>
+       <!-- 红包 -->
+     <rule>
+        <from>/webapp/redpacket.html</from>
+        <to type="forward">/webapp/goods!redpacketList.action</to>
+    </rule>
+    
+    <rule>
+        <from>/webapp/coupon_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!getCouponPage.action?coupon_id=$1</to>
+    </rule>
+       <!-- 红包 -->
+     <rule>
+        <from>/webapp/redpacket_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/goods!getRedpacketPage.action?redpacket_id=$1</to>
+    </rule>
+    
+     <rule>
+        <from>/webapp/merchant.html</from>
+        <to type="forward">/webapp/goodsorder!backWaitPay.action</to>
+    </rule>
+     <!-- 联系我们 -->
+     <rule>
+       <from>/webcontactus.html</from>
+       <to>/webapp/bmall!appcontactusview.action</to>
+    </rule>
+     <!-- 提供app首页数据 -->
+     <rule>
+       <from>/indexJsonData</from>
+       <to>/webapp/apidata!indexJson.action</to>
+    </rule>
+      <!-- 提供app首页搜索页面 -->
+     <rule>
+       <from>/webapp/appSearch.html</from>
+       <to>/webapp/apidata!searchlList.action</to>
+    </rule>
+     <!-- 微信支付app发送页面 -->
+     <rule>
+        <from>/webapp/wxpaySend.html</from>
+        <to>/webapp/apidata!weixinPay.action</to>
+    </rule>
+     <!-- 微信支付请求app发送页面 -->
+     <rule>
+        <from>/webapp/wxpaySendReq.html</from>
+        <to>/webapp/apidata!weixinPayRespone.action</to>
+    </rule>
+    <rule>
+        <from>/webapp/paySend.html</from>
+        <to>/webapp/order!goPay.action</to>
+    </rule>
+    <rule>
+        <from>/webapp/appdown.html</from>
+        <to>/webapp/apidata!appdownPage.action</to>
+    </rule>
+    <!-- 微信支付请求app发送页面 -->
+     <rule>
+        <from>/webapp/alipaymobileSendReq.html</from>
+        <to>/webapp/apidata!alipayRespone.action</to>
+    </rule>
+     <!-- 优惠券调用本地APP分享功能 -->
+    <rule>
+        <from>/webapp/shareCoupon_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appShareCouponPage.action?coupon_id=$1</to>
+    </rule>
+       <!-- 红包调用本地APP分享功能 -->
+     <rule>
+        <from>/webapp/shareRedpacket_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appShareRedpacketPage.action?redpacket_id=$1</to>
+    </rule>
+     <!-- H5发送请求给app调用上传图片控件 -->
+     <rule>
+        <from>/webapp/modifyMemberIco_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/memberuser!updateMemberIcon.action?user_id=$1</to>
+    </rule>
+    <!-- APP请求当前用户的头像地址 -->
+     <rule>
+        <from>/webapp/reqMemberIco_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appMemberIco.action?user_id=$1</to>
+    </rule>
+    <!-- APP发送新上传的会员头像地址给H5 -->
+     <rule>
+        <from>/webapp/updateMemberIco_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appUpdateMemberIco.action?user_id=$1</to>
+    </rule>
+     <!-- APP发送TOken值到服务器 -->
+     <rule>
+        <from>/webapp/sendTokenValue_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appGetTokenInfo.action?type=$1</to>
+    </rule>
+      <!-- APP推送消息详细页 -->
+     <rule>
+        <from>/webapp/MessagePushDetail_([a-zA-Z0-9]+).html</from>
+        <to type="forward">/webapp/apidata!appMessagePushPage.action?mid=$1</to>
+    </rule>
+     <rule>
+        <from>/webapp/MessagePushList</from>
+        <to type="forward">/webapp/apidata!appMessagePushList.action</to>
+    </rule>
+    <!-- /////////////////////////////以上为触屏版URL重写，开发阶段放在最上面（方便），上线前移到最后面///////////////////////////// -->
+
+
+
+    <!-- /////////////////////////////商城前台页面Url重写开始///////////////////////////// -->
+    
+    <!-- 会员登陆页面 -->
+    <rule>
+        <from>/login.html</from>
+        <to type="forward">/mall/memberuser!login.action</to>
+    </rule>
+    
+    <!-- 会员注册 -->
+	<rule>
+        <from>/joinus.html</from>
+        <to type="forward">/mall/member!malljoinus.action</to>
+    </rule>
+    
+    <!-- 服务条款 -->
+	<rule>
+        <from>/service.html</from>
+        <to type="forward">/mall/member!service.action</to>
+    </rule>
+    
+    <!-- 商品详细页 -->
+    <rule>
+        <from>/mall-goodsdetail-([0-9]+).html</from>
+        <to type="forward">/mall/goods!detail.action?gid=$1</to>
+    </rule>
+    
+    <!-- 列表页 -->
+    <rule>
+        <from>/mall-goodslist-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goods!list.action?catEn_name=$1</to>
+    </rule>
+    <rule>
+        <from>/mall-goodsListNav-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goods!list.action?catID=$1</to>
+    </rule>
+    <rule>
+        <from>/mall-goodsbrandlist-([0-9]+).html</from>
+        <to type="forward">/mall/goods!list.action?brand_id_s=$1</to>
+    </rule>
+    <!-- 品牌列表页 -->
+    <rule>
+        <from>/mall-brandlist-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goodsbrand!list.action?en_index=$1</to>
+    </rule>
+    
+    <!-- 品牌列表页 -->
+    <rule>
+        <from>/mall-searchbrand-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goods!list.action?brand_id_s=$1</to>
+    </rule>    
+    
+    <!-- 品牌详细页 -->
+    <rule>
+        <from>/mall-branddetail-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goodsbrand!detail.action?brand_id=$1</to>
+    </rule>
+    
+    <!-- 文章列表页-->
+     <rule>
+        <from>/mallarticle.html</from>
+        <to type="forward">/mall/goods!articleList.action</to>
+    </rule>
+    
+     <!-- 文章详细页 -->
+     <rule>
+        <from>/mallarticle-([a-zA-Z0-9]+)-([0-9]+).html</from>
+        <to type="forward">/mall/goods!articleDetail.action?nid=$1&amp;num=$2</to>
+    </rule>  
+    
+    <!-- 帮助中心 -->
+     <rule>
+        <from>/mallhelp.html</from>
+        <to type="forward">/mall/goods!helplistIndex.action</to>
+    </rule>
+    
+    <!-- 帮助中心详细页 -->
+     <rule>
+        <from>/mallhelp-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/mall/goods!helplistIndex.action?aboutus_id=$1</to>
+    </rule>  
+    
+    <!-- 支付页面跳转 -->
+     <rule>
+        <from>/mallpay-([a-zA-Z0-9]+).html</from>
+        <to type="forward">/include/components/payment/mallpay/index.jsp?order_id=$1</to>
+    </rule>  
+    
+    <!-- 更多品牌页面跳转 -->
+    <rule>
+        <from>/mallbrand.html</from>
+        <to type="forward">/mall/goods!brandInfo.action</to>
+    </rule>  
+    
+    <!-- 商品所有分类页 -->
+    <rule>
+    <from>/mallcate.html</from>
+        <to type="forward">/mall/goods!allCate.action</to>
+    </rule>  
+
+      <!--商城地区选择URL重写规则 -->
+    <rule>
+     <from>/mallindex-([a-zA-Z0-9]+).html</from>
+     <to type="forward">/mall/goods!indexlist.action?en_name=$1</to>
+    </rule> 
+    
+    <!-- 商品评价URL重写 -->
+    <rule>
+        <from>/mall-goodsevaluate-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderEvaluateView.action?order_id=$1</to>
+    </rule>
+     <!-- 商品确认收货URL重写 -->
+    <rule>
+        <from>/mall-orderconfirmreceipt-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderConfirmReceiptView.action?order_id=$1</to>
+    </rule>
+     <!-- 卖家退款申请URL重写 -->
+    <rule>
+        <from>/mall-orderseller-refund-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderSellerRefundmentView.action?order_id=$1</to>
+    </rule>
+     <!-- 买家退款申请URL重写 -->
+    <rule>
+        <from>/mall-orderbuy-refund-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderBuyRefundmentView.action?order_id=$1</to>
+    </rule>
+     <!-- 买家积分退款申请URL重写 -->
+    <rule>
+        <from>/mall-pointsorder-refund-([0-9]+).html</from>
+        <to type="forward">/mall/pointsgoodsOrder!pointsorderRefundmentView.action?order_id=$1</to>
+    </rule>
+     <!-- 买家积分退款申请URL重写 -->
+    <rule>
+        <from>/mall-pointsorder-lab-([0-9]+).html</from>
+        <to type="forward">/mall/pointsgoodsOrder!integralList.action?lab=$1</to>
+    </rule>
+      <!-- 退款处理结果URL重写 -->
+    <rule>
+        <from>/mall-order-refund-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderRefundmentView.action?order_id=$1</to>
+    </rule>
+       <!-- 退款取消URL重写 -->
+    <rule>
+        <from>/mall-order-cancelRefund-([0-9]+).html</from>
+        <to type="forward">/mall/order!cancelRefund.action?order_id=$1</to>
+    </rule>
+    
+       <!-- 退款处理结果URL重写 -->
+    <rule>
+        <from>/mall-order-success-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderSuccessView.action?order_id=$1</to>
+    </rule>
+      <!-- 退款处理结果URL重写 -->
+    <rule>
+        <from>/mall-order-close-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderCloseView.action?order_id=$1</to>
+    </rule>
+    
+    <!-- 退款处理结果URL重写 -->
+    <rule>
+        <from>/mall-order-success-([0-9]+).html</from>
+        <to type="forward">/mall/order!orderSuccessView.action?order_id=$1</to>
+    </rule>
+    <!-- /////////////////////////////商城前台页面Url重写结束///////////////////////////// -->
+    
+    <!-- /////////////////////////////商城店铺Url重写开始///////////////////////////// -->
+
+    <!-- 列表页 -->
+    <rule>
+        <from>/shop/([a-zA-Z0-9]+)/([a-zA-Z]+).html</from>
+        <to type="forward">$2.action?user_name=$1</to>
+    </rule>           
+    <!-- 首页 -->
+    <rule>
+        <from>/shop/([a-zA-Z0-9]+).html</from>
+        <to type="forward">shopindex.action?user_name=$1</to>
+    </rule>
+     <!-- 分类列表页 -->
+    <rule>
+        <from>/shop/([a-zA-Z0-9]+)/([a-zA-Z]+)/cat_([0-9]+).html</from>
+        <to type="forward">$2.action?user_name=$1&amp;cat_id=$3</to>
+    </rule>     
+     <!-- 商城网银支付发送页面 -->
+     <rule>
+        <from>/mall-pay-sendIndex.html</from>
+        <to type="forward">/include/components/payment/wanyinpay/chinabank/Send.jsp</to>
+    </rule>
+    <!-- 商城网银支付接受回传信息页面 -->
+     <rule>
+        <from>/mall-pay-receiveIndex.html</from>
+        <to type="forward">/include/components/payment/wanyinpay/chinabank/Receive.jsp</to>
+    </rule>
+    <!-- 商城网银支付自动接受回传信息页面 -->
+     <rule>
+        <from>/mall-pay-autoReceiveIndex.html</from>
+        <to type="forward">/include/components/payment/wanyinpay/chinabank/AutoReceive.jsp</to>
+    </rule>
+    
+    <!-- 商城易宝支付发送页面 -->
+     <rule>
+        <from>/mall-yeepay-send.html</from>
+        <to type="forward">/include/components/payment/yeepay/Send.jsp</to>
+    </rule>
+    <!-- 商城易宝支付接受回传信息页面 -->
+     <rule>
+        <from>/mall-yeepay-receive.html</from>
+        <to type="forward">/include/components/payment/yeepay/Receive.jsp</to>
+    </rule>
+    
+    <!-- 商城支付宝支付发送页面 -->
+     <rule>
+        <from>/mall-alipay-send.html</from>
+        <to type="forward">/include/components/payment/alipay/send.jsp</to>
+    </rule>
+    <!-- 商城支付宝支付同步通知页面 -->
+     <rule>
+        <from>/mall-alipay-return_url.html</from>
+        <to type="forward">/include/components/payment/alipay/return_url.jsp</to>
+    </rule>
+   
+    <!-- 商城支付宝退款异步通知页面 -->
+     <rule>
+        <from>/mall-alipay-refund.html</from>
+        <to type="forward">/include/components/payment/alipay/refund.jsp</to>
+    </rule>
+    
+    <!-- 触屏版商城支付宝支付发送页面 -->
+     <rule>
+        <from>/mall-alipaywap-send.html</from>
+        <to type="forward">/include/components/payment/alipaywap/send.jsp</to>
+    </rule>
+    
+    
+     <!-- 商城银行直连支付发送页面 -->
+     <rule>
+        <from>/mall-bank-send.html</from>
+        <to type="forward">/include/components/payment/alipaybank/send.jsp</to>
+    </rule>
+    <!-- 商城银行直连支付同步通知页面 -->
+     <rule>
+        <from>/mall-bank-return_url.html</from>
+        <to type="forward">/include/components/payment/alipaybank/return_url.jsp</to>
+    </rule>
+   
+    <!-- 商城银行直连退款异步通知页面 -->
+     <rule>
+        <from>/mall-bank-refund.html</from>
+        <to type="forward">/include/components/payment/alipaybank/refund.jsp</to>
+    </rule>
+    
+   <!-- 微信支付发送页面 -->
+     <rule>
+        <from>/mall-wxpay-send.html</from>
+        <to type="forward">/include/components/payment/weixinpay/send.jsp</to>
+    </rule>
+    
+    
+    <!-- 银联在线支付发送页面 -->
+     <rule>
+        <from>/mall-unionpay-send.html</from>
+        <to type="forward">/include/components/payment/unionpay/send.jsp</to>
+    </rule>
+    
+     <!-- 银联在线WAP网页支付发送页面 -->
+     <rule>
+        <from>/mall-unionpaywap-send.html</from>
+        <to type="forward">/include/components/payment/unionpay/wap_send.jsp</to>
+    </rule>
+    <!-- /////////////////////////////商城店铺Url重写结束///////////////////////////// -->
+    
+    <!-- //////////////////////////////////////////////////////////以上为核心版Url重写规则////////////////////////////////////////////////////////// -->
+     <!-- 商品详细页 -->
+    <rule>
+        <from>/mall-goodsdetail-([0-9]+)-activeid-([0-9]+)-activestate-([0-1]).html</from>
+        <to type="forward">/mall/goods!detail.action?gid=$1&amp;activeId=$2&amp;flag_active_state=$3</to>
+    </rule>
+     <!--帮助中心导航-->
+    <rule>
+        <from>/mall-sitenotice-([0-9]+).html</from>
+        <to type="forward">/mall/article!sitenotice.action?article.cat_attr=$1</to>
+    </rule>
+     <!--帮助中心详细页-->
+    <rule>
+        <from>/mall-articledetail-([0-9]+).html</from>
+        <to type="forward"> /mall/article!detail.action?article.article_id=$1</to>
+    </rule>
+    
+    <rule>
+        <from>/mall-noticedetail-([0-9]+).html</from>
+        <to type="forward"> /mall/article!noticeDetail.action?article.article_id=$1</to>
+    </rule>    
+      <!--帮助中心 分类-->
+    <rule>
+        <from>/mall-articleattrdetail-([0-9]+).html</from>
+        <to type="forward"> /mall/article!attrdetail.action?article.cat_attr=$1</to>
+    </rule>
+     <!--搜索-->
+    <rule>
+        <from>/Search.html</from>
+        <to type="forward">/mall/goods!list.action</to>
+    </rule>
+     <!--购物车-->
+    <rule>
+        <from>/cart.html</from>
+        <to type="forward">/mall/goods!mallcart.action</to>
+    </rule>
+     <!--购物车-->
+    <rule>
+        <from>/salegoods.html</from>
+        <to type="forward">/mall/goods!salegoods.action</to>
+    </rule>
+      <!--前台门店搜索-->
+    <rule>
+        <from>/findShopIndex.html</from>
+        <to type="forward">/mall/asysuser!findShopIndex.action</to>
+    </rule>
+     <!--前台门店搜索-->
+    <rule>
+        <from>/findShopList.html</from>
+        <to type="forward">/mall/asysuser!findShopList.action</to>
+    </rule>
+    
+    <!--前台门店搜索-->
+    <rule>
+        <from>/findShopDetails_([0-9]+).html</from>
+        <to type="forward">/mall/asysuser!findShopDetails.action?store_id=$1</to>
+    </rule>  
+    
+    <!-- 商品标签列表 -->
+     <rule>
+        <from>/mallmarkslist_([0-9]+).html</from>
+        <to type="forward">/mall/goods!toMallmarksIndex.action?tab_number=$1</to>
+    </rule>
+    
+    <!-- 优惠券 -->
+    <rule>
+        <from>/mall-coupon.html</from>
+        <to type="forward">/mall/goods!getcoupon.action</to>
+    </rule>
+     <!-- 优惠券 -->
+    <rule>
+        <from>/mall-coupon_([0-9]+).html</from>
+        <to type="forward">/mall/goods!getcoupon.action?g_coupon_id=$1</to>
+    </rule>
+       <!-- 红包 -->
+     <rule>
+        <from>/mall-redpacket.html</from>
+        <to type="forward">/mall/goods!getredpacket.action</to>
+    </rule>
+    <!-- 活动页 -->
+	<rule>
+		<from>/mallactivity_([a-zA-Z0-9]+).html</from>	
+		<to type="forward">/mall/goods!activity_snap.action?tab_number=$1</to>
+	</rule>
+	<!-- 活动页通用 -->
+	<rule>
+		<from>/mallact_([a-zA-Z0-9]+).html</from>	
+		<to type="forward">/act/activity!activity_snap.action?tab_number=$1</to>
+	</rule>
+</urlrewrite>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberuser">
+
+	<typeAlias alias="memberuser" type="com.rbt.model.Memberuser" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberuser">
+		<![CDATA[ 
+    SELECT user_id,cust_id,user_type,user_name,passwd,birthday,role_code,email,real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,is_check_mobile,is_check_email FROM memberuser WHERE user_id=$user_id$
+    ]]>
+	</select>
+	
+	<select id="getByName" parameterClass="java.lang.String"
+		resultClass="memberuser">
+		<![CDATA[ 
+    SELECT user_id,cust_id,user_type,user_name,passwd,role_code,email,real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,birthday FROM memberuser WHERE user_name=#username#
+    ]]>
+	</select>
+	
+	
+	<select id="getPkByCustId" parameterClass="java.lang.String"
+		resultClass="memberuser">
+		
+    SELECT user_id,cust_id,user_type,user_name,passwd,role_code,email,real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,is_check_mobile,is_check_email,birthday FROM memberuser WHERE cust_id=$cust_id$ and user_type='1'
+
+	</select>
+	<update id="update" parameterClass="memberuser">
+		UPDATE memberuser SET user_id=#user_id#,cust_id=#cust_id#,user_type=#user_type#,user_name=#user_name#,passwd=#passwd#,role_code=#role_code#,email=#email#,real_name=#real_name#,sex=#sex#,cellphone=#cellphone#,phone=#phone#,qq=#qq#,msn=#msn#,skype=#skype#,pass_strength=#pass_strength#,login_time=now(),is_check_mobile=#is_check_mobile#,is_check_email=#is_check_email#,birthday=#birthday# WHERE user_id=$user_id$
+	</update>
+	<update id="updatepassword" parameterClass="memberuser">
+		UPDATE memberuser SET passwd=#passwd# WHERE user_id=$user_id$
+	</update>
+
+	<insert id="insert" parameterClass="memberuser">
+		INSERT INTO memberuser (cust_id,user_type,user_name,passwd,role_code,email,real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,is_check_mobile,is_check_email,loginapiid,birthday,open_id,membernum) VALUES (#cust_id#,#user_type#,#user_name#,#passwd#,#role_code#,#email#,#real_name#,#sex#,#cellphone#,#phone#,#qq#,#msn#,#skype#,#pass_strength#,now(),#is_check_mobile#,#is_check_email#,#loginapiid#,#birthday#,#open_id#,#membernum#)
+	</insert>
+
+	<insert id="insertGetPk" parameterClass="memberuser">
+		INSERT INTO memberuser (cust_id,user_type,user_name,passwd,role_code,email,real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,is_check_mobile,is_check_email,loginapiid,birthday,open_id,membernum) VALUES (#cust_id#,#user_type#,#user_name#,#passwd#,#role_code#,#email#,#real_name#,#sex#,#cellphone#,#phone#,#qq#,#msn#,#skype#,#pass_strength#,now(),#is_check_mobile#,#is_check_email#,#loginapiid#,#birthday#,#open_id#,#membernum#)
+		 <selectKey resultClass="java.lang.String" keyProperty="user_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+    <insert id="insertCustIdUserName" parameterClass="memberuser">
+		INSERT INTO memberuser (cust_id,user_name,user_type) VALUES (#cust_id#,#user_name#,#user_type#)
+	</insert>
+	<insert id="insertSysUser" parameterClass="memberuser">
+		INSERT INTO memberuser (cust_id,user_name,passwd) VALUES (#cust_id#,#user_name#,#passwd#)
+		<selectKey resultClass="java.lang.String" keyProperty="user_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberuser WHERE user_id in ($user_id$) 
+	</delete>
+	
+	<delete id="deleteMembuser" parameterClass="java.lang.String">
+		DELETE FROM memberuser WHERE user_name=#user_name# and cust_id='0'
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberuser  m1
+			left join member m2 on m1.cust_id = m2.cust_id
+			left join memrole m3 on m1.role_code=m3.memrole_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="user_name"> 
+     		    user_name=#user_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="u-email"> 
+     		    email=#u-email#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="u-cellphone"> 
+     		    cellphone=#u-cellphone#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="passwd"> 
+     		    passwd=#passwd#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id">
+				m1.cust_id=#cust_id#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="sys_cust_id">
+				u.cust_id !=#sys_cust_id#
+			</isNotNull>
+	         <isNotNull prepend="and" property="user_id">
+				user_id=#user_id#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="role_code">
+				m1.role_code=#role_code#
+	         </isNotNull>	
+	         <isNotNull prepend="and" property="user_type">
+				m1.user_type=#user_type#
+	         </isNotNull>	
+	          <isNotNull prepend="and" property="login_cust_id">
+				m1.cust_id!=#login_cust_id#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="sendbirthday">
+				TO_DAYS(NOW())=TO_DAYS(m1.birthday)
+	         </isNotNull>
+	          <isNotNull prepend="and" property="is_check_email">
+				is_check_email=#is_check_email#
+	         </isNotNull>
+	          <isNotNull prepend="and" property="is_check_mobile">
+				is_check_mobile=#is_check_mobile#
+	         </isNotNull>
+	          <isNotNull prepend="and" property="open_id">
+				m1.open_id=#open_id#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="citystorenum">
+				left(m1.membernum,6)=#citystorenum#
+	         </isNotNull>         
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT user_id,m2.cust_id,user_type,user_name,passwd,role_code,email,m2.info_state,m1.birthday,
+			real_name,sex,cellphone,phone,qq,msn,skype,pass_strength,login_time,is_check_mobile,is_check_email,m2.mem_type,m3.memrole_name,loginapiid,m1.open_id,m1.membernum
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY user_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

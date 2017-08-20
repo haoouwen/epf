@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="smodetemplete">
+
+	<typeAlias alias="smodetemplete" type="com.rbt.model.Smodetemplete" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="smodetemplete">
+		<![CDATA[ 
+    SELECT trade_id,smode_id,smode_templete,tag,user_id,in_date FROM smodetemplete WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<select id="getPkBySmodeId" parameterClass="java.lang.String"
+		resultClass="smodetemplete">
+		<![CDATA[ 
+    SELECT trade_id,smode_id,smode_templete,tag,user_id,in_date FROM smodetemplete WHERE smode_id=#smode_id#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="smodetemplete">
+		UPDATE smodetemplete SET trade_id=#trade_id#,smode_id=#smode_id#,smode_templete=#smode_templete#,tag=#tag#,user_id=#user_id#,in_date=now() WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="smodetemplete">
+		INSERT INTO smodetemplete (trade_id,smode_id,smode_templete,tag,user_id,in_date) VALUES (#trade_id#,#smode_id#,#smode_templete#,#tag#,#user_id#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM smodetemplete WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM smodetemplete s
+		left join memberuser u on s.user_id = u.user_id
+		left join sendmode sm on s.smode_id = sm.smode_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="smode_templete"> 
+     		    INSTR(s.smode_templete,#smode_templete#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="smode_id"> 
+     		    s.smode_id=#smode_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="smode_name"> 
+     		    INSTR(sm.smode_name,#smode_name#) > 0
+			 </isNotNull>
+			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.trade_id,s.smode_id,s.smode_templete,s.tag,s.user_id,s.in_date,u.user_name,sm.smode_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY s.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

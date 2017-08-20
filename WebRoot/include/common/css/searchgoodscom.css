@@ -1,0 +1,52 @@
+.sg_contain_up{
+	width:749px;
+	height:479px;
+	border:1px solid #cecece;
+	background:#FFFFFF;
+	padding:5px;
+	padding-top:8px;
+}
+
+.searchtitle{
+	padding:2px 0px 6px 2px;
+}
+
+.txt_goods_name{
+	width:250px;
+}
+
+.updownoper{
+	text-align:center;
+}
+.updown_mana{
+	height:20px;
+}
+
+.selralategoods{
+	border:1px solid #e1e2e3;
+	margin-top:5px;
+	margin-bottom:6px;
+}
+
+#selralategoods .rg_title{
+	background:url('/include/common/images/table_title_bg.gif');
+}
+
+.selulrg tr{
+	padding-top:5px;
+	background:#F1F5FA;
+	border:1px solid #DDDDDD;
+	margin-top:1px;
+}
+
+.span_td1{
+	width:60px;
+	height:22px;
+	text-align:center;
+}
+
+.span_td2{
+	padding-left:8px;
+}
+
+

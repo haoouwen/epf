@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="areaset">
+
+	<typeAlias alias="areaset" type="com.rbt.model.Areaset" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="areaset">
+		<![CDATA[ 
+    SELECT areaset_id,end_area,first_price,cont_weight,cont_price,first_weight,smode_id,default_ship,ship_id FROM areaset WHERE areaset_id=$areaset_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="areaset">
+		UPDATE areaset SET areaset_id=#areaset_id#,end_area=#end_area#,first_price=#first_price#,cont_weight=#cont_weight#,cont_price=#cont_price#,first_weight=#first_weight#,smode_id=#smode_id#,ship_id=#ship_id# WHERE areaset_id=$areaset_id$
+	</update>
+
+	<insert id="insert" parameterClass="areaset">
+		INSERT INTO areaset (areaset_id,end_area,first_price,cont_weight,cont_price,first_weight,smode_id,default_ship,ship_id) VALUES
+		 (#areaset_id#,#end_area#,#first_price#,#cont_weight#,#cont_price#,#first_weight#,#smode_id#,#default_ship#,#ship_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM areaset WHERE areaset_id in ($areaset_id$)
+	</delete>
+	
+	<delete id="deleteByShopid" parameterClass="java.lang.String">
+		DELETE FROM areaset WHERE ship_id in ($ship_id$)
+	</delete>
+
+	<sql id="getCommon">
+	    FROM areaset AS t1 LEFT JOIN sendmode AS t2 ON t1.smode_id=t2.smode_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="smode_id">
+				t1.smode_id=#smode_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="areaset_name">
+				INSTR(areaset_name,#areaset_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="start_area">
+				INSTR(start_area,#start_area#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="end_area">
+				INSTR(end_area,#end_area#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="first_price">
+				INSTR(first_price,#first_price#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="cont_weight">
+				INSTR(cont_weight,#cont_weight#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="cont_price">
+				INSTR(cont_price,#cont_price#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="areaset_id">
+				areaset_id=#areaset_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ship_id">
+				ship_id=#ship_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT t2.smode_name, areaset_id,end_area,first_price,cont_weight,cont_price,first_weight,default_ship,t1.smode_id,t1.ship_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY areaset_id ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

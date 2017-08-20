@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysmodule">
+
+	<typeAlias alias="sysmodule" type="com.rbt.model.Sysmodule" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sysmodule">
+		<![CDATA[ 
+    SELECT module_type,module_name,table_name,mod_type,state_code,is_catattr,install_dir,link_menu,link_table,link_file,sort_no,is_mem,moudleinfo_url FROM sysmodule WHERE module_type=#module_type#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sysmodule">
+		UPDATE sysmodule SET  is_mem=#is_mem#,sort_no=#sort_no#,module_type=#module_type#,module_name=#module_name#,table_name=#table_name#,mod_type=#mod_type#,state_code=#state_code#,is_catattr=#is_catattr#,install_dir=#install_dir#,link_menu=#link_menu#,link_table=#link_table#,link_file=#link_file# WHERE module_type=#module_type#
+	</update>
+
+	<update id="updateSort" parameterClass="java.util.HashMap">
+		 UPDATE sysmodule SET sort_no=#sort_no# WHERE module_type=#module_type#
+	</update>
+	
+	<update id="updateState" parameterClass="java.util.HashMap">
+		 UPDATE sysmodule SET state_code=#state_code# WHERE module_type=#module_type#
+	</update>
+	
+
+	<insert id="insert" parameterClass="sysmodule">
+		INSERT INTO sysmodule (module_type,module_name,table_name,mod_type,state_code,is_catattr,install_dir,link_menu,link_table,link_file,sort_no,is_mem) VALUES (#module_type#,#module_name#,#table_name#,#mod_type#,#state_code#,#is_catattr#,#install_dir#,#link_menu#,#link_table#,#link_file#,#sort_no#,#is_mem#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM sysmodule WHERE module_type in (#module_type#)
+	</delete>
+
+	<sql id="getCommon">
+		FROM sysmodule t1
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="module_type">
+				t1.module_type=#module_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="state_code">
+				t1.state_code=#state_code#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_mem">
+				t1.is_mem=#is_mem#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT module_type,module_name,table_name,mod_type,state_code,is_catattr,install_dir,link_menu,link_table,link_file,sort_no,is_mem,moudleinfo_url
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

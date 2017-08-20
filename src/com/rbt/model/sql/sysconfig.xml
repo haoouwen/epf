@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysconfig">
+
+	<typeAlias alias="sysconfig" type="com.rbt.model.Sysconfig" />
+
+
+	<select id="getAll" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+    	select var_name,var_value from sysconfig
+	</select>
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="sysconfig">
+		<![CDATA[ 
+    select var_id,var_name,var_value,var_desc,var_group,var_type,val_sys from sysconfig where var_id=$var_id$
+    ]]>
+	</select>
+	
+	<select id="getwebname" parameterClass="java.lang.String"
+		resultClass="sysconfig">
+		<![CDATA[ 
+    select var_value from sysconfig where var_name=#var_name#
+    ]]>
+	</select>
+
+	<update id="updateParma" parameterClass="sysconfig">
+		UPDATE sysconfig SET var_value=#var_value#,var_type=#var_type#,var_desc=#var_desc#,module_type=#module_type#
+		 ,var_group=#var_group#WHERE var_id=$var_id$
+	</update>
+	<update id="update" parameterClass="sysconfig">
+		UPDATE sysconfig SET var_name=#var_name#,
+		var_value=#var_value#,var_desc=#var_desc#,var_group=#var_group#,
+		var_type=#var_type#,val_sys=#val_sys#,module_type=#module_type#,sort_no=$sort_no$ WHERE var_id=$var_id$
+	</update>
+   <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE sysconfig SET sort_no=#sort_no# WHERE var_id=$var_id$
+	</update>
+	<update id="updateSysconfigBatch"
+		parameterClass="java.util.HashMap">
+		UPDATE sysconfig SET var_value=#var_value#,sort_no=#sort_no# WHERE var_id=$var_id$
+	</update>
+	
+   <update id="updatevarname"
+		parameterClass="java.util.HashMap">
+		UPDATE sysconfig SET var_value=#var_value# WHERE var_name=#var_name#
+	</update>
+	
+	<update id="updateSys" parameterClass="sysconfig">
+		UPDATE sysconfig SET var_value=#var_value# where var_id=$var_id$
+	</update>
+	<insert id="insert" parameterClass="sysconfig">
+		INSERT INTO sysconfig
+		(var_name,var_value,var_desc,var_group,var_type,val_sys,module_type,sort_no) VALUES
+		(#var_name#,#var_value#,#var_desc#,#var_group#,#var_type#,#val_sys#,#module_type#,$sort_no$)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from sysconfig where var_id in ($var_id$)
+	</delete>
+	
+	<sql id="getCommon">
+		from sysconfig as t1 left JOIN commpara as t2 ON t1.var_group=t2.para_value AND t2.para_code='var_group'
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="para_key">
+				t1.var_group=#para_key#
+			</isNotNull>
+			<isNotNull prepend="and" property="var_name">
+				t1.var_name=#var_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="module_type">
+				t1.module_type=#module_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="var_id">
+				t1.var_id=#var_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select
+		t1.var_id,t1.var_name,t1.var_value,t1.var_desc,t1.sort_no,t1.module_type,t1.var_type,t1.val_sys,(select para_key from commpara where para_code='var_group' and para_value=t1.var_group) as var_group
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		order by sort_no asc,var_id desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent> 
+	</select>
+
+</sqlMap>

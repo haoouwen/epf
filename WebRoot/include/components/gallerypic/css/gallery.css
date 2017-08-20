@@ -1,0 +1,21 @@
+
+
+  #agallery {
+    padding: 32px;
+    background: #e1eef5;
+  }
+  #adescriptions {
+    position: relative;
+    height: 50px;
+    background: #EEE;
+    margin-top: 10px;
+    width: 640px;
+    padding: 10px;
+    overflow: hidden;
+  }
+    #adescriptions .ad-image-description {
+      position: absolute;
+    }
+      #adescriptions .ad-image-description .ad-description-title {
+        display: block;
+      }

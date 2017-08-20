@@ -1,0 +1,26 @@
+<!--搜索-->
+<div class="searPage">
+
+  <div class="top">
+    <span class="topClose"><img src="/malltemplate/jiutong/images/topClose.png"></span>
+    <div class="searDiv">
+      <div class="sptcDiv">
+       <input type="text" class="searText" id="keyword" onfocus="searchstart();" onblur="searchend();"/>
+      </div>
+    </div>
+     <input type="button" class="topPageSear" onclick="searchgoods();"/>
+     <input type="hidden" id="en_word" />
+     <input type="hidden" id="default_search" value="" />
+  </div>
+  <!--热门搜索-->
+  <div class="hotSear">
+     <p class="hoth2">热门搜索</p>
+     <p>
+      <a href="###" onclick="hotsearchgoods('爱他美','[field:en_name/]');" >爱他美</a><a href="###" onclick="hotsearchgoods('碧然德','[field:en_name/]');" >碧然德</a><a href="###" onclick="hotsearchgoods('femibion','[field:en_name/]');" >femibion</a><a href="###" onclick="hotsearchgoods('蜂蜜','[field:en_name/]');" >蜂蜜</a><a href="###" onclick="hotsearchgoods('减肥','[field:en_name/]');" >减肥</a>
+      </p>
+  </div>
+</div>
+<!--返回顶部-->
+<div class="returnTop">
+</div>
+

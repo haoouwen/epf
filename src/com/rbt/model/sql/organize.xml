@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="organize">
+
+	<typeAlias alias="organize" type="com.rbt.model.Organize" />
+	<cacheModel id="organize-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="organize.update" />
+		<flushOnExecute statement="organize.insert" />
+		<flushOnExecute statement="organize.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+	
+	<!-- 查找出所属部门的ID和名称 -->
+   <select id="getAll" resultClass="java.util.HashMap" cacheModel="organize.organize-cache">
+		SELECT 	org_id, org_name FROM organize
+	</select>
+	
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="organize">
+		<![CDATA[ 
+    SELECT org_id,org_name,up_org_id,org_level,sys_org,area_attr,contact,phone,cellphone,skype,qq,msn,email,fax,address FROM organize WHERE org_id=$org_id$
+    ]]>
+	</select>
+	
+	<update id="update" parameterClass="organize">
+		UPDATE organize SET org_id=#org_id#,org_name=#org_name#,up_org_id=#up_org_id#,org_level=#org_level#,sys_org=#sys_org#,area_attr=#area_attr#,contact=#contact#,phone=#phone#,cellphone=#cellphone#,skype=#skype#,qq=#qq#,msn=#msn#,email=#email#,fax=#fax#,address=#address# WHERE org_id=$org_id$
+	</update>
+
+	<insert id="insert" parameterClass="organize">
+		INSERT INTO organize (org_id,org_name,up_org_id,org_level,sys_org,area_attr,contact,phone,cellphone,skype,qq,msn,email,fax,address) VALUES (#org_id#,#org_name#,#up_org_id#,#org_level#,#sys_org#,#area_attr#,#contact#,#phone#,#cellphone#,#skype#,#qq#,#msn#,#email#,#fax#,#address#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM organize WHERE org_id in ($org_id$)
+	</delete>
+
+
+
+	<sql id="getAreaProxyCommon">
+		FROM organize org   INNER JOIN sysuser sy ON sy.org_id=org.org_id
+								LEFT JOIN member m ON m.sysuser_id=sy.user_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="up_org_id">
+				org.up_org_id=#up_org_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr">
+				instr(org.area_attr,#area_attr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="org_level">
+				org.org_level=#org_level#
+			</isNotNull>
+			<isNotNull prepend="and" property="user_name">
+				INSTR(sy.user_name,#user_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="org_name">
+				INSTR(org.org_name,#org_name#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getAreaProxyList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT org.org_id,org.org_name,org.up_org_id,org.org_level,org.sys_org,org.area_attr,org.contact,org.phone,
+		org.cellphone,org.skype,org.qq,org.msn,org.email,org.fax,org.address,sy.user_name,sy.user_id,IF(COUNT(m.sysuser_id) IS NULL,0,COUNT(m.sysuser_id)) user_count
+		
+		<isParameterPresent>
+			<include refid="getAreaProxyCommon" />
+		</isParameterPresent>
+		GROUP BY sy.user_name 
+		ORDER BY org.org_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	<select id="getCounts" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			FROM sysuser sy  LEFT JOIN organize org ON sy.org_id=org.org_id WHERE org.org_level=1
+		</isParameterPresent>
+	</select>
+	
+	
+	
+	
+	
+	<sql id="getCommon">
+		FROM organize 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="up_org_id">
+				up_org_id=#up_org_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr">
+				instr(area_attr,#area_attr#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT org_id,org_name,up_org_id,org_level,sys_org,area_attr,contact,phone,cellphone,skype,qq,msn,email,fax,address
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY org_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	<select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(org_id) as org_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

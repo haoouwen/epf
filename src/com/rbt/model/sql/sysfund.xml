@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysfund">
+
+	<typeAlias alias="sysfund" type="com.rbt.model.Sysfund" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sysfund">
+		<![CDATA[ 
+    SELECT sysfund_id,fund_num,use_num,freeze_num FROM sysfund WHERE sysfund_id=$sysfund_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sysfund">
+		UPDATE sysfund SET fund_num=#fund_num#,use_num=#use_num#,freeze_num=#freeze_num# WHERE sysfund_id=$sysfund_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE sysfund SET 
+    	 <isNotNull  property="sysfund_id"> 
+		   sysfund_id=$sysfund_id$
+		 </isNotNull>
+    	 WHERE sysfund_id=$sysfund_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="sysfund">
+		UPDATE sysfund SET sysfund_id=$sysfund_id$ WHERE sysfund_id=$sysfund_id$
+	</update>
+
+	<insert id="insert" parameterClass="sysfund">
+		INSERT INTO sysfund (fund_num,use_num,freeze_num) VALUES (#fund_num#,#use_num#,#freeze_num#)
+	</insert>
+
+	<sql id="getCommon">
+		FROM sysfund 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sysfund_id">
+				sysfund_id=#sysfund_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sysfund_id,fund_num,use_num,freeze_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sysfund_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,20 @@
+/*
+ * Package:com.rbt.servie
+ * FileName: I{CLASSNAME}Service.java 
+ */
+package com.rbt.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.rbt.model.{CLASSNAME};
+
+/**
+ * @function 功能 {FUNNAME}Service层业务接口实现类
+ * @author  创建人 {AUTHOR}
+ * @date  创建日期 {DATE}
+ */
+
+public interface I{CLASSNAME}Service extends IGenericService<{CLASSNAME},String>{
+	
+}

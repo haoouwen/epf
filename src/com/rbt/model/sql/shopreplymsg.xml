@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="shopreplymsg">
+
+	<typeAlias alias="shopreplymsg" type="com.rbt.model.Shopreplymsg" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="shopreplymsg">
+		<![CDATA[ 
+    SELECT trade_id,shopmsg_id,reply_in_date,reply_content,is_enbale,user_id,cust_id FROM shopreplymsg WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	<select id="getByMsgId" parameterClass="java.lang.String"
+		resultClass="shopreplymsg">
+		<![CDATA[ 
+    SELECT trade_id,shopmsg_id,reply_in_date,reply_content,is_enbale,user_id,cust_id FROM shopreplymsg WHERE shopmsg_id=$shopmsg_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="shopreplymsg">
+		UPDATE shopreplymsg SET trade_id=#trade_id#,shopmsg_id=#shopmsg_id#,reply_in_date=now(),reply_content=#reply_content#,is_enbale=#is_enbale#,user_id=#user_id#,cust_id=#cust_id# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="shopreplymsg">
+		INSERT INTO shopreplymsg (shopmsg_id,reply_in_date,reply_content,is_enbale,user_id,cust_id) VALUES (#shopmsg_id#,now(),#reply_content#,#is_enbale#,#user_id#,#cust_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM shopreplymsg WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM shopreplymsg sr
+			left join member m on m.cust_id=sr.cust_id
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,shopmsg_id,reply_in_date,reply_content,is_enbale,user_id,sr.cust_id,m.cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="trygoods">
+
+	<typeAlias alias="trygoods" type="com.rbt.model.Trygoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="trygoods">
+		<![CDATA[ 
+    SELECT try_id,goods_id,weibo_id,trynum,starttime,endtime,wbcontent,in_date,info_state,
+    click_num,sort_no,try_type,cat_attr,cust_id,postage,surplus,try_title FROM trygoods WHERE try_id=$try_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="trygoods">
+		UPDATE trygoods SET try_id=#try_id#,goods_id=#goods_id#,weibo_id=#weibo_id#,
+		trynum=#trynum#,starttime=#starttime#,endtime=#endtime#,wbcontent=#wbcontent#,
+		in_date=#in_date#,info_state=#info_state#,click_num=#click_num#,sort_no=#sort_no#,
+		try_type=#try_type#,cat_attr=#cat_attr#,cust_id=#cust_id#,postage=#postage#,surplus=#surplus#
+		,try_title=#try_title#
+		WHERE try_id=$try_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE trygoods SET 
+    	 <isNotNull  property="try_id"> 
+		   try_id=$try_id$
+		 </isNotNull>
+    	 WHERE try_id=$try_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="trygoods">
+		UPDATE trygoods SET try_id=$try_id$ WHERE try_id=$try_id$
+	</update>
+
+	<insert id="insert" parameterClass="trygoods">
+		INSERT INTO trygoods (try_id,goods_id,weibo_id,trynum,starttime,endtime,wbcontent,
+		in_date,info_state,click_num,sort_no,try_type,cat_attr,cust_id,postage,surplus,try_title) VALUES (#try_id#,#goods_id#,#weibo_id#,
+		#trynum#,#starttime#,#endtime#,#wbcontent#,now(),#info_state#,#click_num#,#sort_no#,#try_type#,#cat_attr#,#cust_id#,#postage#,#surplus#,#try_title#)
+	</insert>
+	
+	 <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE trygoods SET sort_no=#sort_no# WHERE try_id=$try_id$
+	</update>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM trygoods WHERE try_id in ($try_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM trygoods tg left join goods g on tg.goods_id = g.goods_id
+		left join goodsattr ga on tg.goods_id = ga.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="try_id">
+				try_id=#try_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+				tg.goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="title">
+				INSTR(g.goods_name,#title#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="type">
+				try_type=#type#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				tg.info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr">
+				INSTR(tg.cat_attr,#cat_attr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				tg.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="viewtime">
+			NOW() > starttime AND  endtime > NOW()
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT distinct(try_id),tg.goods_id,weibo_id,trynum,starttime,endtime,
+		wbcontent,tg.in_date,tg.info_state,tg.click_num,tg.sort_no,try_type,tg.cat_attr,tg.cust_id,
+		ga.sale_price,g.img_path,g.list_img,(select count(*) from tryapply where try_id = tg.try_id) as applycount,postage,surplus
+		,try_title,try_title as goods_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		GROUP BY try_id ORDER BY try_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(distinct(try_id)) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

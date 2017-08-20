@@ -1,0 +1,37 @@
+/*取消订单*/
+.popupDiv{
+	display:none;
+}
+.popOrderDiv{
+	width:460px;
+	padding:0 5px;
+}
+.popOrderDiv th{
+	height:30px;
+	line-height:30px;
+	text-align:left;
+	border-bottom:#f4f4f4 solid 1px;
+}
+.popOrderDiv th span{
+	padding-left:5px;
+	font-weight:400;
+	color:#a8a8a8;
+}
+.popOrderDiv td{
+	padding:6px 0;
+}
+.popOrderDiv .potd{
+	text-align:right;
+}
+.popOrderDiv td span{
+	padding-right:5px;
+	color:#d81d20;
+	
+}
+.popOrderDiv td img{
+	width:50px;
+	height:50px;
+	border:#f3f3f3 solid 1px;
+	padding:2px;
+	margin-right:8px;
+}

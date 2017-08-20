@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="receipt">
+
+	<typeAlias alias="receipt" type="com.rbt.model.Receipt" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="receipt">
+		<![CDATA[ 
+    SELECT receipt_code,receipt_name,receipt_enable FROM receipt WHERE receipt_code=$receipt_code$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="receipt">
+		UPDATE receipt SET receipt_code=#receipt_code#,receipt_name=#receipt_name#,receipt_enable=#receipt_enable# WHERE receipt_code=$receipt_code$
+	</update>
+
+	<insert id="insert" parameterClass="receipt">
+		INSERT INTO receipt (receipt_code,receipt_name,receipt_enable) VALUES (#receipt_code#,#receipt_name#,#receipt_enable#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM receipt WHERE receipt_code in ($receipt_code$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM receipt 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT receipt_code,receipt_name,receipt_enable
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="banip">
+
+	<cacheModel id="banip-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="banip.update" />
+		<flushOnExecute statement="banip.insert" />
+		<flushOnExecute statement="banip.delete" />
+		<flushOnExecute statement="banip.updateIp" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<typeAlias alias="banip" type="com.rbt.model.Banip" />
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="banip">
+		<![CDATA[ 
+	SELECT 	ip_id, ip, user_id, in_date FROM banip  WHERE ip_id=#value#
+    ]]>
+	</select>
+	<update id="update" parameterClass="banip">
+		UPDATE banip SET ip=#ip#,user_id=#user_id#,in_date=now() WHERE
+		ip_id=#ip_id#
+	</update>
+	<update id="updateIp" parameterClass="java.util.HashMap">
+		UPDATE banip SET ip=#ip#,user_id=#user_id#,in_date=now() WHERE
+		ip_id=#ip_id#
+	</update>
+	<insert id="insert" parameterClass="banip">
+		INSERT INTO banip (ip_id, ip, user_id, in_date) VALUES
+		(#ip_id#,#ip#,#user_id#,now())
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from banip where ip_id in ($value$)
+	</delete>
+	<sql id="getCommon">
+		from banip left join sysuser on banip.user_id=sysuser.user_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ip">
+			instr(ip,#ip#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="banip.banip-cache">
+		select ip_id, ip, in_date,sysuser.user_name as user_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		order by in_date desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="banip.banip-cache">
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

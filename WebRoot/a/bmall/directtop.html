@@ -1,0 +1,53 @@
+<!--头部-->
+
+<div class="twTopBack">
+            <div class="twTop">
+                <div class="twlTop" onclick="addFavorite();">
+                    收藏久通商城
+                </div>
+                <div class="twrTop">
+                    您好，欢迎来到久通商城
+                    <script src="/include/ismalllogin.jsp">
+                    </script>
+                    <span>
+                        <a href="/cart.html">
+                            购物车
+                            <b>
+                                <script src="/include/carcount.jsp">
+                                </script>
+                            </b>
+                            件
+                        </a>
+                        <a href="/bmall_Goodsorder_buyorderlist.action?order_state_s=0">
+                            我的订单
+                        </a>
+                        <a href="/mall/article!attrdetail.action?article.cat_attr=8547217448">
+                            帮助中心
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+<!--logo-->
+
+<div class="twLogoArea">
+   <!--logo-->
+   <div class="logo"><a href="/"><img src=/malltemplate/bmall/images/logotm.jpg width="230px" height="90px"></a></div>
+   <!--搜索-->
+   <div class="search">
+     <div class="seacont"><input type="text" class="seatext" id="keyword" onfocus="searchstart();" onkeyup="checkLength(this,50);" maxlength="50" onblur="searchend();"><input type="button" class="seabut" onclick="searchdirectgoods();"/></div>
+     <input type="hidden" id="en_word" />
+      <input type="hidden" id="default_search" value="台湾高山乌龙茶" />
+     <div class="hotsea">
+     热门搜索：
+	     <span>
+	   <a style="cursor:pointer;" onclick="hot_search('goods','蜜兰诺松塔');">蜜兰诺松塔</a><a style="cursor:pointer;" onclick="hot_search('goods','高山乌龙茶');">高山乌龙茶</a><a style="cursor:pointer;" onclick="hot_search('goods','高粱酒');">高粱酒</a><a style="cursor:pointer;" onclick="hot_search('goods','面膜');">面膜</a><a style="cursor:pointer;" onclick="hot_search('goods','台湾酵素');">台湾酵素</a>
+	     </span>
+     </div>
+   </div>
+   <!--正品保障-->
+   <div class="zpbz"><img src="/malltemplate/bmall/images/zpbz_03.jpg"></div>
+</div>
+<script src="/include/bmall/js/phoneApp.js" type="text/javascript"></script>
+

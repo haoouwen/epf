@@ -1,0 +1,3 @@
+function searchShopList(){
+   $("#searchShop").submit();
+}

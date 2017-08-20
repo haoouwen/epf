@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="emailtemplate">
+
+	<typeAlias alias="emailtemplate" type="com.rbt.model.Emailtemplate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="emailtemplate">
+		<![CDATA[ 
+    SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp FROM emailtemplate WHERE temp_id=$temp_id$
+    ]]>
+	</select>
+	
+    <select id="getByTempcode" parameterClass="java.lang.String" resultClass="emailtemplate">
+		<![CDATA[ 
+    SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp FROM emailtemplate WHERE temp_code=#temp_code#
+    ]]>
+	</select>
+	
+	<update id="update" parameterClass="emailtemplate">
+		UPDATE emailtemplate SET temp_id=#temp_id#,temp_name=#temp_name#,temp_con=#temp_con#,tag_desc=#tag_desc# WHERE temp_id=$temp_id$
+	</update>
+
+	<insert id="insert" parameterClass="emailtemplate">
+		INSERT INTO emailtemplate (temp_id,temp_name,temp_con,tag_desc) VALUES (#temp_id#,#temp_name#,#temp_con#,#tag_desc#)
+	</insert>
+
+	<!-- 非系统模板可删除 -->
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM emailtemplate WHERE temp_id in ($temp_id$) and sys_temp='0'
+	</delete>
+
+	<sql id="getCommon">
+		FROM emailtemplate 
+		<dynamic prepend="WHERE">
+			  <isNotNull prepend="and" property="temp_name"> 
+			     INSTR(temp_name,#temp_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="temp_code"> 
+			     temp_code=#temp_code#
+			 </isNotNull>
+			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY temp_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

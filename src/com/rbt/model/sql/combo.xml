@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="combo">
+
+	<typeAlias alias="combo" type="com.rbt.model.Combo" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="combo">
+		<![CDATA[ 
+    SELECT trade_id,combo_name,goods_str,combo_price,combo_center,combo_img,info_state,cust_id,in_date,stock,cat_attr,sort_no,list_img FROM combo WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="combo">
+		UPDATE combo SET combo_name=#combo_name#,goods_str=#goods_str#,combo_price=#combo_price#,combo_center=#combo_center#,combo_img=#combo_img#,info_state=#info_state#,cust_id=#cust_id#,in_date=#in_date#,stock=#stock#,cat_attr=#cat_attr#,sort_no=#sort_no#,list_img=#list_img# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="combo">
+		INSERT INTO combo (combo_name,goods_str,combo_price,combo_center,combo_img,info_state,cust_id,in_date,stock,cat_attr,sort_no,list_img) VALUES (#combo_name#,#goods_str#,#combo_price#,#combo_center#,#combo_img#,#info_state#,#cust_id#,now(),#stock#,#cat_attr#,#sort_no#,#list_img#)
+	</insert>
+    
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE combo SET sort_no=#sort_no# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insertGetPk" parameterClass="combo">
+		INSERT INTO combo (combo_name,goods_str,combo_price,combo_center,combo_img,info_state,cust_id,in_date,stock,cat_attr,sort_no,list_img) VALUES (#combo_name#,#goods_str#,#combo_price#,#combo_center#,#combo_img#,#info_state#,#cust_id#,now(),#stock#,#cat_attr#,#sort_no#,#list_img#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM combo WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM combo 
+			left join member on combo.cust_id=member.cust_id
+		<dynamic prepend="WHERE">
+	        <isNotNull prepend="and" property="info_state_s"> 
+     		     combo.info_state in ($info_state_s$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="cust_name"> 
+			     instr(member.cust_name,#cust_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     instr(combo.cat_attr,#cat_attr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				combo.info_state in($info_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="sgis">
+				combo.goods_str in($sgis$)
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_str">
+				INSTR(combo.goods_str,#goods_str#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="regoods_str">
+				combo.goods_str=#regoods_str#
+			</isNotNull>
+			<isNotNull prepend="and" property="combo_name">
+				INSTR(combo.combo_name,#combo_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				combo.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			    INSTR(combo.cat_attr,#cat_attr#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,combo_name,goods_str,combo_price,combo_center,combo_img,combo.info_state,combo.cust_id,
+		combo.in_date,stock,member.cust_name,cat_attr,sort_no,list_img
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC ,combo.in_date desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getComboGoodsid" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT GROUP_CONCAT(goods_str) AS goods_id_str  FROM combo WHERE combo.goods_str IN($goods_id$);
+	</select>
+	
+
+</sqlMap>
+

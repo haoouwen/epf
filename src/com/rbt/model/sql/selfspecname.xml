@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="selfspecname">
+
+	<typeAlias alias="selfspecname" type="com.rbt.model.Selfspecname" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="selfspecname">
+		<![CDATA[ 
+    SELECT spec_serial_id,spec_code,sort_no,goods_id FROM selfspecname WHERE spec_serial_id=$spec_serial_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="selfspecname">
+		UPDATE selfspecname SET spec_serial_id=#spec_serial_id#,spec_code=#spec_code#,sort_no=#sort_no#,goods_id=#goods_id# WHERE spec_serial_id=$spec_serial_id$
+	</update>
+
+	<insert id="insert" parameterClass="selfspecname">
+		INSERT INTO selfspecname (spec_serial_id,spec_code,sort_no,goods_id) VALUES (#spec_serial_id#,#spec_code#,#sort_no#,#goods_id#)
+	</insert>
+
+
+    <insert id="insertGetPk" parameterClass="selfspecname">
+		INSERT INTO selfspecname (spec_serial_id,spec_code,sort_no,goods_id) VALUES (#spec_serial_id#,#spec_code#,#sort_no#,#goods_id#)
+		 <selectKey resultClass="java.lang.String" keyProperty="spec_serial_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM selfspecname WHERE spec_serial_id in ($spec_serial_id$)
+	</delete>
+	
+	<delete id="deleteByGoodsid" parameterClass="java.lang.String">
+		DELETE FROM selfspecname WHERE goods_id=#goods_id#
+	</delete>
+
+	<sql id="getCommon">
+		FROM selfspecname ss
+			left join specname sn on ss.spec_code = sn.spec_code
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id">
+				goods_id=#goods_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ss.spec_serial_id,ss.spec_code,ss.sort_no,ss.goods_id,sn.sname,sn.show_type
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull property="id_desc">
+			ORDER BY ss.spec_serial_id DESC
+		</isNotNull>
+		<isNotNull property="id_asc">
+			ORDER BY ss.spec_serial_id ASC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

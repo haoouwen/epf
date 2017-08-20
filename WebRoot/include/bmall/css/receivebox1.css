@@ -1,0 +1,99 @@
+.receivebg {
+	margin-top: 2px;
+	border-bottom: solid #AAC1DE 1px;
+	height: 110px;
+	width: 808px;
+	background-color: #EFF5FB;
+	padding-left: 30px;
+	padding-top: 5px;
+	margin-left: 0px;
+	padding-left: 10px;
+}
+
+.response {
+	height: 30px;
+	margin: 10px 0px 0px 0px;
+	padding-top: 2px;
+	background-color: #C1D9F3;
+	border: solid #AFBFD6 1px;
+	background-color: #C1D9F3;
+	padding-left: 250px;
+}
+
+.receivebg table {
+	margin-top: 30px;
+}
+
+.receivebg td {
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+.memlogo{
+	height:80px;
+	width: 80px;
+	float: right;
+	border:1px solid red;
+	margin-top: 0px;
+	margin-bottom: 300px;
+	margin-right: 20px;
+}
+
+.sendtable {
+	margin-top: 10px;
+}
+
+.content {
+	width: auto;
+	background-color: #FFF;
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 80px;
+}
+
+.sendth {
+	padding: 5px 0px 5px 7px;
+	color: #798699;
+	align: left;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.sendvalue {
+	color: #5FA207;
+	font-weight: bolder;
+	padding-left: 5px;
+	padding-bottom: 120px;
+}
+
+.title {
+	font-size: 19px;
+}
+
+.receive {
+	color: #000000;
+}
+
+hr {
+	background-color: #BE0000;
+}
+
+.replycontent {
+	width: 800px;
+	height: 90px;
+	background-color: #EFEFEF;
+}
+
+body p {
+	margin-bottom: 10px;
+	text-align: left;
+}
+
+.replycontent th{
+	float:left;
+	font-size:14px;
+	border:#F00 solid 1px;
+}
+.replycontent td{
+	padding-left:10px;
+	background-color:#000000;
+}

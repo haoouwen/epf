@@ -1,0 +1,107 @@
+/*右侧*/
+.frightside{
+	width:800px;
+	float:right;
+}
+.deliveryStep{
+}
+.deliveryStep h2{
+	height:20px;
+	font-size:12px;
+	line-height:30px;
+}
+.deliveryStep h2 span{
+	color:#cc0000;
+	padding-right:10px;
+}
+.deStepcont{
+	background:#f7f7f7;
+	padding:15px 20px;
+}
+.deStepcont .orderweight{
+    color:red;
+    font-weight:bold;
+   
+}
+.deStepcont select{
+	width:180px;
+	height:22px;
+}
+.deStepcont a{
+	color:#2652a5;
+	margin-left:10px;
+}
+.deStepcont .steptext{
+	width:180px;
+	height:20px;
+	border:#c9c8c8 solid 1px;
+}
+.deStepcont .dep{
+	padding-top:15px;
+}
+.deStepcont .expressclass{
+	background:url(../images/fhbut_03.gif) no-repeat left center;
+	cursor:pointer;
+	padding-left:15px;
+}
+.dstable{
+	display:none;
+}
+.dstable th{
+	height:30px;
+	line-height:30px;
+	border-top:#c9c8c8 solid 1px;
+	background:#f0f6fe;
+	font-weight:100;
+	text-align:left;
+}
+.dstable th span{
+	padding-left:20px;
+}
+.dstable th a{
+	padding-left:10px;
+}
+.dstable td{
+	padding:15px 0;
+	border-bottom:#c9c8c8 solid 1px;
+}
+.dstable td a{
+	color:#2652a5;
+}
+.dstable td a:hover{
+	color:#cc0000;
+}
+.dstable td img{
+	width:50px;
+	height:50px;
+	padding-left:20px;
+	padding-right:15px;
+}
+.dstablecont{
+	border:#c9c8c8 solid 1px;
+	border-top:none;
+	padding:10px 20px;
+}
+.ldstablecont{
+	float:left;
+}
+.ldstablecont p{
+	padding:5px 0px;
+}
+.rdstablecont{
+	float:right;
+}
+.rdstablecont textarea{
+	width:280px;
+	height:50px;
+}
+.batch{
+	border:#c9c8c8 solid 1px;
+	margin-top:20px;
+	background:#f7f7f7;
+	padding-bottom:20px;
+}
+.batch p{
+	text-align:center;
+	padding-top:15px;
+}

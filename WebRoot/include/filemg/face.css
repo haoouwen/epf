@@ -1,0 +1,26 @@
+<!--
+body{margin:6px;font-size:8pt;font-family:"Verdana","Arial","Helvetica","sans-serif";letter-spacing:1px}
+td{font-size:8pt;font-family:"Verdana","Arial","Helvetica","sans-serif";letter-spacing:1px;padding-left:2px;}
+#title{margin-bottom:0px;font-size:10pt;font-family:Verdana;font-weight:bold;color:#666666}
+hr{border-top:1px solid #aaaaaa;border-bottom:0px solid #aaaaaa;height: 0px;}
+form{margin:0px;display: inline;}
+.button2{font-size:8pt;font-family:"Verdana";border:1px solid gray;}
+.text{font-family: "Verdana"; font-size:8pt;border:1px solid #999999;}
+a:link{text-decoration:none;color: #0033FF;}
+a:visited{text-decoration:none;color: #0033FF;}
+a:hover{text-decoration:underline;color: #800000;}
+a:active{text-decoration:none;}
+.checkbox{font-size:8pt;font-family: "Verdana";width:12px;height:12px;}
+#login{float:right;margin-right:50px;top:6px;}
+#loginsuccess{background-color:#999999;color:#ffffff}
+#about{position:absolute;right:10px;top:6px;}
+.choosed{background-color: #0066CC;}
+.choosed a:link{text-decoration:none;color: #FFFFFF;}
+.choosed a:visited{text-decoration:none;color: #FFFFFF;}
+.unchoosed{background-color:#ffffff;}
+select{font-size:8pt;font-family: "Verdana"; width:118px;}
+textarea{font-size:10pt;font-family:"Verdana";border:1px solid #999999;}
+.error{background-color:#FFA2A2;}
+.success{background-color:#CFEAB7;padding-bottom: 10px;}
+
+-->

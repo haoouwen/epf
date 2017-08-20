@@ -1,0 +1,102 @@
+/*订单信息*/
+.confirmStep{
+	width:1180px;
+	height:34px;
+	background:url(../images/buyStep.gif) no-repeat;
+	background-position:0 -120px;
+}
+.dConfirmStep{
+	width:1180px;
+	height:34px;
+	background:url(../images/buyStep.gif) no-repeat;
+	background-position:0 -195px;
+}
+.order{
+	width:1158px;
+	margin-top:10px;
+	line-height:24px;
+}
+.order h2{
+	width:1148px;
+	height:34px;
+	line-height:34px;
+	font-size:14px;
+	padding-left:5px;
+}
+.order th{
+	height:32px;
+	background:#f0f6fe;
+	border-top:#dcdcdc solid 1px;
+	font-weight:100;
+}
+.order td{
+	padding:15px 0;
+	text-align:center;
+	border-bottom:#e5e5e5 solid 1px;
+	border-left:#e5e5e5 solid 1px;
+}
+.order td img{
+	width:50px;
+	height:50px;
+	float:left;
+	margin-right:10px;
+}
+.order .imgtd{
+	text-align:left;
+	padding-left:15px;
+	border-left:none;
+}
+.order td a{
+	color:#005aa0;
+}
+.order .pricetd{
+	font-size:18px;
+	font-weight:bold;
+}
+.order td a:hover{
+	color:#c80002;
+	text-decoration:none;
+}
+.pay{
+	float:right;
+	height:40px;
+	line-height:40px;
+	
+}
+.pay b{
+	font-size:22px;
+	padding:0 5px;
+	color:#b20000;
+}
+.confadd{
+	width:1160px;
+	border-top:#dcdcdc solid 1px;
+	background:#f9f9f9;
+	margin-top:5px;
+	padding:10px 0;
+}
+.confadd td{
+	padding:8px 0;
+}
+.confadd th{
+	font-weight:100;
+	text-align:right;
+}
+.confadd p{
+	padding-left:80px;
+	padding:10px 80px;
+}
+/*确定支付*/
+.paypaw{
+	width:1118px;
+	padding:10px 20px;
+	border:#d1e3fc solid 1px;
+	background:#f0f6fe;
+	margin-top:10px;
+}
+.paypaw p{
+	padding:7px 0;
+}
+.paypaw .paypawp{
+	padding-left:60px;
+}

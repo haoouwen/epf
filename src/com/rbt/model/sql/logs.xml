@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="logs">
+	<typeAlias alias="logs" type="com.rbt.model.Logs" />	
+	<sql id="getCommon">
+	   from logs
+     	<dynamic prepend="WHERE">
+     		<isNotNull prepend="and" property="cust_id"> 
+			    logs.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_id"> 
+			    logs.user_id=#user_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_name"> 
+			    INSTR(user_name,#user_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ip"> 
+			    ip=#ip#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="content"> 
+			    INSTR(content,#content#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="starttime"> 
+			    TO_DAYS(in_date) >= TO_DAYS(#starttime#)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="endtime"> 
+			    TO_DAYS(#endtime#) >= TO_DAYS(in_date)
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+ 	
+ 	<select id="getByPk" parameterClass="java.lang.String" resultClass="logs">
+	<![CDATA[ 
+     select log_id,cust_id,content,ip,in_date,user_name,user_id FROM logs WHERE log_id=$VALUE$
+    ]]>
+	</select>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+        select log_id,cust_id,content,ip,in_date,user_name,user_id
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by log_id DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull> 
+	</select>	
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  	
+	
+	<delete id="delete" parameterClass="java.lang.String">
+	    delete from logs where log_id in ($value$)
+	</delete>
+	
+	<delete id="deleteAll" parameterClass="java.lang.String">
+	    delete from logs 
+	</delete>	
+	
+	<insert id="insert" parameterClass="logs">
+		INSERT INTO logs (cust_id,content,ip,in_date,user_name,user_id) 
+		VALUES (#cust_id#,#content#,#ip#,now(),#user_name#,#user_id#)
+	</insert>
+</sqlMap>

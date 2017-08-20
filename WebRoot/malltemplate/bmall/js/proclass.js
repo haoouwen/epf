@@ -1,0 +1,37 @@
+$(document).ready(function(){
+	/*全部商品分类*/
+	$('.classcont').mousemove(function(){
+		$(this).find('#classlistId').show();
+		$(this).find('h3,p').addClass('lclaconthover');
+	});
+	$('.classcont').mouseleave(function(){
+		$(this).find('#classlistId').hide();
+		$(this).find('h3,p').removeClass('lclaconthover');
+	});
+	$(".lclacont:odd").addClass("addclabg");
+	$("#classMainId").hide();
+	$("#h2calId").hover(
+		function(){
+			$("#classMainId").show();
+			$(this).removeClass("claup");
+			$(this).addClass("cladown");
+			$("#classMainId").hover(
+			  function(){
+				  $("#classMainId").show();
+				  $("#h2calId").removeClass("claup");
+				  $("#h2calId").addClass("cladown");
+			  },
+			  function(){
+				  $("#classMainId").hide();
+				  $("#h2calId").removeClass("cladown");
+				  $("#h2calId").addClass("claup");
+			  }
+			);
+		},
+		function(){
+			$("#classMainId").hide();
+			$(this).removeClass("cladown");
+			$(this).addClass("claup");
+		}
+	);
+});

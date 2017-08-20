@@ -1,0 +1,83 @@
+/*右侧*/
+.frightside{
+	width:800px;
+	float:right;
+}
+/*订单*/
+.orderNum{
+	width:800px;
+	height:42px;
+	line-height:42px;
+	background:#f7f7f7;
+	border-top:#c9c8c8 solid 1px;
+}
+.orderNum span{
+	padding:0 15px;
+}
+/*物流动态*/
+
+.logDynamic{
+	width:800px;
+	margin-top:10px;
+}
+.logDynamic h2{
+	width:800px;
+	height:28px;
+	background:url(../images/logDytitle_03.gif) repeat-x;
+}
+.logDynamic h2 span{
+	width:83px;
+	height:28px;
+	line-height:28px;
+	background:url(../images/logDyh2_03.gif) no-repeat;
+	display:inline-block;
+	font-size:12px;
+	font-weight:100;
+	text-align:center;
+}
+/*订单信息*/
+.logDynamic td{
+	padding:15px 0;
+	border-bottom:#c9c8c8 solid 1px;
+}
+.logDynamic td a{
+	color:#2652a5;
+}
+.logDynamic td a:hover{
+	color:#cc0000;
+}
+.logDynamic td img{
+	width:50px;
+	height:50px;
+	padding-left:20px;
+	padding-right:15px;
+}
+.batch{
+	width:798px;
+	border:#cce2fe solid 1px;
+	margin-top:20px;
+	background:#f0f6fe;
+	line-height:28px;
+	padding:5px 0;
+}
+.batch p{
+	padding-left:15px;
+}
+
+.orderimgp{
+	margin:0px 0 0px 300px;
+}
+.orderimgp a{
+	margin:15px 8px;
+}
+.order_img_2{
+	background:url("/include/bmall/images/order_img_2.gif") ;
+	height:21px;
+	width:64px;
+	display:block;
+	color: #fff;
+	line-height: 21px;
+	text-align: center;
+	float: left;
+}
+

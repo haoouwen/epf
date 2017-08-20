@@ -1,0 +1,113 @@
+/*
+ *2015-1-8 by burinHu
+*/
+/*退款流程*/
+.tkStep{
+	width:780px;
+	height:58px;
+	padding:10px 0;
+}
+.tkStep span{
+	width:780px;
+	height:58px;
+	background:url(../images/tkStep.gif) no-repeat;
+	display:inline-block;
+}
+.tkStep .wait{background-position:0 0;}
+.tkStep .refund{background-position:0 -64px;}
+.tkStep .success{background-position:0 -126px;}
+.tkStep .fail{background-position:0 -190px;}
+
+/*退货*/
+.thStep{
+	width:780px;
+	height:58px;
+	padding:10px 0;
+}
+.thStep span{
+	width:780px;
+	height:58px;
+	background:url(../images/thStep.gif) no-repeat;
+	display:inline-block;
+}
+.thStep .wait{background-position:0 0;}
+.thStep .agree{background-position:0 -64px;}
+.thStep .waitMj{background-position:0 -126px;}
+.thStep .agreeMj{background-position:0 -190px;}
+.thStep .success{background-position:0 -255px;}
+.thStep .fail{background-position:0 -320px;}
+
+/*换货*/
+.hhStep{
+	width:780px;
+	height:58px;
+	padding:10px 0;
+}
+.hhStep span{
+	width:780px;
+	height:58px;
+	background:url(../images/hhStep.gif) no-repeat;
+	display:inline-block;
+}
+.hhStep .wait{background-position:0 0;}
+.hhStep .success{background-position:0 -378px;}
+.hhStep .nsuccess{background-position:0 -576px;}
+.hhStep .fail{background-position:0 -640px;}
+.hhStep .nfail{background-position:0 -704px;}
+.hhStep .bfail{background-position:0 -512px;}
+.hhStep .mf{background-position:0 -128px;}
+.hhStep .sf{background-position:0 -192px;}
+.hhStep .dsf{background-position:0 -256px;}
+.hhStep .mg{background-position:0 -320px;}
+.hhStep .mng{background-position:0 -448px;}
+
+.stateDiv{
+	width:748px;
+	background:#fff;
+	border:#f1f1f1 solid 1px;
+	padding:14px;
+}
+.stateDiv .stateCont{
+	width:400px;
+	margin:0 auto;
+}
+.stateDiv .stateCont p{
+	line-height:22px;
+	background:url(../images/dot.gif) no-repeat left 10px;
+	padding-left:10px;
+	margin-left:15px;
+}
+.stateDiv .stateCont p b{
+	color:#e1292d;
+	padding:0 5px;
+}
+.stateDiv .stateCont .wp{
+	padding:10px 0;
+	background:none;
+	margin:0px;
+}
+.stateDiv .stateCont .wp b{
+	font-size:14px;
+	color:#333;
+	padding-left:10px;
+}
+
+.stateDiv .lineDiv{
+	border-top:#ccc dotted 1px;
+	margin-top:15px;
+	padding:20px 150px 10px;
+}
+.stateDiv .lineDiv a{
+	color:#2262b0;
+	margin-right:20px;
+}
+.stateDiv .lineDiv a:hover{
+	color:#2262b0;
+	text-decoration:underline;
+}
+
+.stateDiv .linesDiv{
+	border-top:#ccc dotted 1px;
+	margin-top:15px;
+	padding:20px 0px 10px;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="aftersales">
+
+	<typeAlias alias="aftersales" type="com.rbt.model.Aftersales" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="aftersales">
+		<![CDATA[ 
+    SELECT cust_id,content FROM aftersales WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="aftersales">
+		UPDATE aftersales SET cust_id=#cust_id#,content=#content# WHERE cust_id=$cust_id$
+	</update>
+
+	<insert id="insert" parameterClass="aftersales">
+		INSERT INTO aftersales (cust_id,content) VALUES (#cust_id#,#content#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM aftersales WHERE cust_id in ($cust_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM aftersales 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id">
+			 	cust_id=#cust_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cust_id,content
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY cust_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

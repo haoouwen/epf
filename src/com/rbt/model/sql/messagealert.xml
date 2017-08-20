@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="messagealert">
+
+	<typeAlias alias="messagealert" type="com.rbt.model.Messagealert" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="messagealert">
+		<![CDATA[ 
+    SELECT msg_code,msg_title,is_send_email,email_code,is_send_mobile,mobile_code,is_send_letter,letter_code,sort_no FROM messagealert WHERE msg_code=$msg_code$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="messagealert">
+		UPDATE messagealert SET msg_code=#msg_code#,msg_title=#msg_title#,is_send_email=#is_send_email#,email_code=#email_code#,is_send_mobile=#is_send_mobile#,mobile_code=#mobile_code#,is_send_letter=#is_send_letter#,letter_code=#letter_code#,sort_no=#sort_no#  WHERE msg_code=$msg_code$
+	</update>
+
+
+	<insert id="insert" parameterClass="messagealert">
+		INSERT INTO messagealert (msg_code,msg_title,is_send_email,email_code,is_send_mobile,mobile_code,is_send_letter,letter_code,sort_no) VALUES (#msg_code#,#msg_title#,#is_send_email#,#email_code#,#is_send_mobile#,#mobile_code#,#is_send_letter#,#letter_code#,#sort_no#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM messagealert WHERE msg_code in ($msg_code$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM messagealert 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT msg_code,msg_title,is_send_email,email_code,is_send_mobile,mobile_code,is_send_letter,letter_code,sort_no
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no asc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

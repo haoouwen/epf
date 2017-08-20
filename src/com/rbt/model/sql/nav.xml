@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="nav">
+
+
+	<cacheModel id="nav-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="nav.update" />
+		<flushOnExecute statement="nav.insert" />
+		<flushOnExecute statement="nav.delete" />
+		<flushOnExecute statement="nav.updateSort" />
+		<flushOnExecute statement="nav.updateState" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<typeAlias alias="nav" type="com.rbt.model.Nav" />
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="nav">
+	<![CDATA[ 
+        SELECT nav_id,nav_name,isshow,sort_no,isopen,link_url,nav_post,nav_code,nav_icon FROM nav WHERE nav_id=$VALUE$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="nav">
+    	UPDATE nav SET nav_name=#nav_name#,isshow=#isshow#,sort_no=#sort_no#,nav_code=#nav_code#,
+    	isopen=#isopen#,link_url=#link_url#,nav_post=#nav_post#,nav_icon=#nav_icon# WHERE nav_id=$nav_id$
+	</update>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE nav SET sort_no=#sort_no# WHERE nav_id=$nav_id$
+	</update>
+
+	<insert id="insert" parameterClass="nav">
+		INSERT INTO nav (nav_name,isshow,sort_no,isopen,link_url,nav_post,nav_code,nav_icon) 
+		VALUES (#nav_name#,#isshow#,$sort_no$,#isopen#,#link_url#,#nav_post#,#nav_code#,#nav_icon#)
+	</insert>
+	
+	<!-- 批量更新是否显示isshow -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE nav SET isshow=#isshow# WHERE nav_id=$nav_id$
+	</update>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from nav where nav_id in ($value$)
+	</delete>
+	
+	<sql id="getCommon">
+	   FROM nav 
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="nav_name"> 
+			     instr(nav_name,#nav_name#)>0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="isshow"> 
+			     isshow=#isshow#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="nav_post"> 
+			     nav_post=#nav_post#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="nav_code"> 
+			     nav_code=#nav_code#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="link_url"> 
+			      instr(link_url,#link_url#)>0
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="nav.nav-cache">
+        SELECT nav_id,nav_name,isshow,sort_no,isopen,link_url,nav_post,nav_code,nav_icon
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by nav_post ASC,sort_no ASC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="nav.nav-cache">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+ 	
+</sqlMap>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="cancleordertrans">
+
+	<typeAlias alias="cancleordertrans" type="com.rbt.model.Cancleordertrans" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="cancleordertrans">
+		<![CDATA[ 
+    SELECT trans_id,cust_id,order_id,user_id,trans_time,reason FROM cancleordertrans WHERE trans_id=$trans_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="cancleordertrans">
+		UPDATE cancleordertrans SET trans_id=#trans_id#,cust_id=#cust_id#,order_id=#order_id#,user_id=#user_id#,trans_time=#trans_time#,reason=#reason# WHERE trans_id=$trans_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE cancleordertrans SET 
+    	 <isNotNull  property="trans_id"> 
+		   trans_id=$trans_id$
+		 </isNotNull>
+    	 WHERE trans_id=$trans_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="cancleordertrans">
+		UPDATE cancleordertrans SET trans_id=$trans_id$ WHERE trans_id=$trans_id$
+	</update>
+
+	<insert id="insert" parameterClass="cancleordertrans">
+		INSERT INTO cancleordertrans (trans_id,cust_id,order_id,user_id,trans_time,reason) VALUES (#trans_id#,#cust_id#,#order_id#,#user_id#,now(),#reason#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM cancleordertrans WHERE trans_id in ($trans_id$)
+	</delete>
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM cancleordertrans WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM cancleordertrans c left join member m  on c.cust_id=m.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="trans_id">
+				trans_id=#trans_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id">
+				order_id=#order_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trans_id,c.cust_id,order_id,c.user_id,trans_time,reason,m.cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

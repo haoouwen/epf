@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="navtab">
+
+	<typeAlias alias="navtab" type="com.rbt.model.Navtab" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="navtab">
+		<![CDATA[ 
+    SELECT tab_id,tab_name,tab_remark,sort_no,tab_url,start,touch,tab_number FROM navtab WHERE tab_id=$tab_id$
+    ]]>
+	</select>
+    <select id="getByTabNumber" parameterClass="java.lang.String"
+		resultClass="navtab">
+		<![CDATA[ 
+	    SELECT tab_id,tab_name,tab_remark,sort_no,tab_url,start,touch,tab_number FROM navtab WHERE tab_number=$tab_number$
+	    ]]>
+	</select>
+	<update id="update" parameterClass="navtab">
+		UPDATE navtab SET tab_id=#tab_id#,tab_name=#tab_name#,tab_remark=#tab_remark#,
+		sort_no=#sort_no#,tab_url=#tab_url#,start=#start#,touch=#touch#,tab_number=#tab_number# WHERE tab_id=$tab_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE navtab SET 
+    	 <isNotNull  property="tab_id"> 
+		   tab_id=$tab_id$
+		 </isNotNull>
+    	 WHERE tab_id=$tab_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="navtab">
+		UPDATE navtab SET tab_id=$tab_id$ WHERE tab_id=$tab_id$
+	</update>
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE navtab SET sort_no=#sort_no# WHERE tab_id=$tab_id$
+	</update>
+	
+	 <!-- 批量更新是否启用start -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE navtab SET start=#start# WHERE tab_id=$tab_id$
+	</update>
+	<insert id="insert" parameterClass="navtab">
+		INSERT INTO navtab (tab_id,tab_name,tab_remark,sort_no,tab_url,start,touch,tab_number)
+		 VALUES (#tab_id#,#tab_name#,#tab_remark#,#sort_no#,#tab_url#,#start#,#touch#,#tab_number#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM navtab WHERE tab_id in ($tab_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM navtab 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="tab_id">
+				tab_id=#tab_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="tab_name">
+			    tab_name=#tab_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="touch">
+			    touch=#touch#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT tab_id,tab_name,tab_remark,sort_no,tab_url,start,touch,tab_number,
+		(SELECT COUNT(*) FROM navigation  WHERE navigation.tab_number=navtab.tab_number) AS gcount
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,tab_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

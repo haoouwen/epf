@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberfundrun">
+
+	<typeAlias alias="memberfundrun" type="com.rbt.model.Memberfundrun" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberfundrun">
+		<![CDATA[ 
+    SELECT fund_id,cust_id,fund_num,fund_type,info_state,reason,auditreason,audit_user_name,apply_user_name,apply_date,audit_date,
+    (select user_name from memberuser where cust_id=memberfundrun.cust_id and user_type="1") as user_name 
+    FROM memberfundrun WHERE fund_id=$fund_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberfundrun">
+		UPDATE memberfundrun SET fund_id=#fund_id#,cust_id=#cust_id#,fund_num=#fund_num#,
+		fund_type=#fund_type#,info_state=#info_state#,reason=#reason#,auditreason=#auditreason#,
+		audit_user_name=#audit_user_name#,apply_user_name=#apply_user_name#,audit_date=now()
+		 WHERE fund_id=$fund_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE memberfundrun SET 
+    	 <isNotNull  property="fund_id"> 
+		   fund_id=$fund_id$
+		 </isNotNull>
+    	 WHERE fund_id=$fund_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="memberfundrun">
+		UPDATE memberfundrun SET fund_id=$fund_id$ WHERE fund_id=$fund_id$
+	</update>
+
+	<insert id="insert" parameterClass="memberfundrun">
+		INSERT INTO memberfundrun (fund_id,cust_id,fund_num,fund_type,info_state,reason,auditreason,audit_user_name,apply_user_name,apply_date)
+		 VALUES (#fund_id#,#cust_id#,#fund_num#,#fund_type#,#info_state#,#reason#,#auditreason#,#audit_user_name#,#apply_user_name#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberfundrun WHERE fund_id in ($fund_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberfundrun 
+		   left join memberuser m on memberfundrun.cust_id=m.cust_id and m.user_type="1"
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="fund_id">
+				fund_id=#fund_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state in ($info_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="user_name">
+				INSTR(m.user_name,#user_name#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT fund_id,memberfundrun.cust_id,fund_num,fund_type,info_state,reason,auditreason,m.user_name,audit_user_name,apply_user_name,apply_date,audit_date
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY fund_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

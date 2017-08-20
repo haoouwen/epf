@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="msgcheck">
+
+	<typeAlias alias="msgcheck" type="com.rbt.model.Msgcheck" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="msgcheck">
+		<![CDATA[ 
+    SELECT id,cp_phone,cp_check,send_time,cp_use FROM msgcheck WHERE id=$id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="msgcheck">
+		UPDATE msgcheck SET id=#id#,cp_phone=#cp_phone#,cp_check=#cp_check#,send_time=#send_time#,cp_use=#cp_use# WHERE id=$id$
+	</update>
+
+	<insert id="insert" parameterClass="msgcheck">
+		INSERT INTO msgcheck (id,cp_phone,cp_check,cp_type,mark_id,send_time,cp_use) VALUES (#id#,#cp_phone#,#cp_check#,#cp_type#,#mark_id#,now(),0)
+	</insert>
+    
+	<update id="updateUse" parameterClass="java.util.HashMap">
+		UPDATE msgcheck SET cp_use=#cp_use# WHERE cp_check=#cp_check#
+	</update>
+	<delete id="delete" parameterClass="java.lang.String">
+		<![CDATA[  DELETE FROM msgcheck WHERE  send_time < NOW() ]]> 
+	</delete>
+	
+    <delete id="deleteMsgcheck" parameterClass="java.util.HashMap">
+		delete from msgcheck where cp_phone=#cp_phone# and cp_type=#cp_type#
+	</delete>
+	
+	<delete id="deleteById" parameterClass="java.lang.String">
+		delete from msgcheck where id=$id$
+	</delete>
+	
+	<sql id="getCommon">
+		FROM msgcheck 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cp_phone"> 
+			     cp_phone=#cp_phone#
+			</isNotNull>
+			<isNotNull prepend="and" property="cp_check"> 
+			     cp_check=#cp_check#
+			</isNotNull>
+			<isNotNull prepend="and" property="cp_type"> 
+			     cp_type in ($cp_type$)
+			</isNotNull>			
+			<isNotNull prepend="and" property="cp_mark_id"> 
+			     mark_id=#cp_mark_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="out_minute"> 
+			        (NOW() - INTERVAL 30 MINUTE) > send_time
+			</isNotNull>
+			<isNotNull prepend="and" property="minute"> 
+			      send_time > (NOW() - INTERVAL 30 MINUTE)
+			</isNotNull>
+			<isNotNull prepend="and" property="login_limittime"> 
+			      send_time > (NOW() - INTERVAL #login_limittime# MINUTE)
+			</isNotNull>
+			<isNotNull prepend="and" property="limit_time_msg"> 
+			      send_time > (NOW() - INTERVAL #limit_time_msg# SECOND)
+			</isNotNull>
+			<isNotNull prepend="and" property="delmark_id"> 
+			      mark_id is  null
+			</isNotNull>
+			<isNotNull prepend="and" property="delsend_time"> 
+			      TO_DAYS(NOW()) - TO_DAYS(send_time) = 1 
+			</isNotNull>
+			<isNotNull prepend="and" property="cp_use"> 
+			     cp_use=#cp_use#
+			</isNotNull>
+			
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT id,cp_phone,cp_check,send_time,cp_type,cp_use
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="buyeraddr">
+
+	<typeAlias alias="buyeraddr" type="com.rbt.model.Buyeraddr" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="buyeraddr">
+		<![CDATA[ 
+    SELECT addr_id,cust_id,consignee,area_attr,address,post_code,phone,cell_phone,user_id,in_date,sel_address,identitycard FROM buyeraddr WHERE addr_id=$addr_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="buyeraddr">
+		UPDATE buyeraddr SET addr_id=#addr_id#,cust_id=#cust_id#,consignee=#consignee#,area_attr=#area_attr#,address=#address#,post_code=#post_code#,
+		phone=#phone#,cell_phone=#cell_phone#,user_id=#user_id#,in_date=now(),sel_address=#sel_address#,identitycard=#identitycard# WHERE addr_id=$addr_id$
+	</update>
+
+	<insert id="insert" parameterClass="buyeraddr">
+		INSERT INTO buyeraddr (addr_id,cust_id,consignee,area_attr,address,post_code,phone,cell_phone,user_id,in_date,sel_address,identitycard) VALUES (#addr_id#,#cust_id#,#consignee#,#area_attr#,#address#,#post_code#,#phone#,#cell_phone#,#user_id#,now(),#sel_address#,#identitycard#)
+	</insert>
+    <insert id="insertGetPk" parameterClass="buyeraddr">
+		INSERT INTO buyeraddr (addr_id,cust_id,consignee,area_attr,address,post_code,phone,cell_phone,user_id,in_date,sel_address,identitycard) VALUES (#addr_id#,#cust_id#,#consignee#,#area_attr#,#address#,#post_code#,#phone#,#cell_phone#,#user_id#,now(),#sel_address#,#identitycard#)
+		 <selectKey resultClass="java.lang.String" keyProperty="addr_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM buyeraddr WHERE addr_id in ($addr_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM buyeraddr b 
+			left join member m on b.cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_name"> 
+     		    INSTR(m.cust_name,#cust_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="consignee">
+			 	INSTR(b.consignee,#consignee#)>0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cell_phone">
+			 	INSTR(b.cell_phone,#cell_phone#)>0
+			 </isNotNull>
+			   <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(b.area_attr,#area_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+			     b.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="sel_address"> 
+			     b.sel_address=#sel_address#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="addr_id"> 
+			     b.addr_id=#addr_id#
+			 </isNotNull>			 
+			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT b.addr_id,b.cust_id,b.consignee,b.area_attr,substring(b.area_attr,12,10) AS address_attr,b.address,b.post_code,b.phone,b.cell_phone,
+		b.user_id as user_name,b.in_date,m.cust_name,sel_address,identitycard
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY b.sel_address ASC,b.addr_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM buyeraddr b LEFT JOIN member m ON b.cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_name">
+				INSTR(m.cust_name,#cust_name#)>0 
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+			SELECT b.cust_id,m.cust_name,COUNT(*) AS info_num,b.consignee
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+			GROUP BY b.cust_id  ORDER BY addr_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+ 
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT b.cust_id,m.cust_name,COUNT(*),b.consignee
+			FROM buyeraddr b LEFT JOIN member m ON b.cust_id = m.cust_id 
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="cust_name">
+					INSTR(m.cust_name,#cust_name#)>0 
+				</isNotNull>
+			</dynamic>
+		GROUP BY b.cust_id  ORDER BY addr_id DESC ) a
+	</select>
+	<!-- 分组查询 结束 -->
+</sqlMap>
+

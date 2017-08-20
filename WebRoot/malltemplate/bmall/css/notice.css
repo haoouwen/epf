@@ -1,0 +1,68 @@
+.logoSearDiv{
+	width:990px;
+}
+.helpLogo{
+	width:99px;
+	height:27px;
+	background:url(../images/bTitle.gif) no-repeat;
+	background-position:0 -96px;
+	position:absolute;
+	left:315px;
+	top:38px;
+}
+.helpb{
+	width:100%;
+	background:#f6f6f6;
+	margin-top:10px;
+	padding-bottom:10px;
+}
+/*位置*/
+.postion{
+	width:1000px;
+	border-top:#dddddd solid 1px;
+}
+.notice{
+	width:940px;
+	margin:0 auto;
+	border:#dbdbdb solid 1px;
+	background:#fff;
+	padding:20px 30px;
+}
+.notice .nh2{
+	width:940px;
+	line-height:32px;
+	font-size:24px;
+	text-align:center;
+	color:#e4b632;
+	padding:5px 0;
+}
+/**/
+.nList{
+	width:900px;
+	margin:0 auto 15px;
+}
+.nList li{
+	height:48px;
+	border-bottom:#ccc dashed 1px;
+	line-height:48px;
+	background:url(../images/dot_03.gif) no-repeat 5px center;
+	padding:0px 10px 0 15px;
+}
+.nList li a{
+	float:left;
+}
+.nList li span{
+	float:right;
+	color:#cecece;
+}
+/**/
+.notCont{
+	width:900px;
+	margin:0 auto;
+	font-size:14px;
+	line-height:24px;
+}
+.notCont p{
+	text-indent:2em;
+	padding:15px 0 0;
+}

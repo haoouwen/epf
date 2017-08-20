@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsshare">
+
+	<typeAlias alias="goodsshare" type="com.rbt.model.Goodsshare" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodsshare">
+		<![CDATA[ 
+    SELECT trade_id,eval_id,goods_id,cust_id,user_id,title,share_content,share_pic,share_date,is_share FROM goodsshare WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodsshare">
+		UPDATE goodsshare SET trade_id=#trade_id#,eval_id=#eval_id#,goods_id=#goods_id#,cust_id=#cust_id#,user_id=#user_id#,title=#title#,share_content=#share_content#,share_pic=#share_pic#,share_date=now(),is_share=#is_share# WHERE trade_id=$trade_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE goodsshare SET 
+    	 <isNotNull  property="trade_id"> 
+		   trade_id=$trade_id$
+		 </isNotNull>
+    	 WHERE trade_id=$trade_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="goodsshare">
+		UPDATE goodsshare SET trade_id=$trade_id$ WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodsshare">
+		INSERT INTO goodsshare (trade_id,eval_id,goods_id,cust_id,user_id,title,share_content,share_pic,share_date,is_share) VALUES (#trade_id#,#eval_id#,#goods_id#,#cust_id#,#user_id#,#title#,#share_content#,#share_pic#,now(),#is_share#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsshare WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodsshare m1 left join orderdetail m2 on m1.goods_id = m2.goods_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="goods_id">
+		   	 	m1.goods_id=#goods_id#
+		    </isNotNull>
+			<isNotNull prepend="and" property="order_id">
+		   	 	m2.order_id=#order_id#
+		    </isNotNull>
+			<isNotNull prepend="and" property="eval_id">
+		   	 	m1.eval_id=#eval_id#
+		    </isNotNull>		    
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT m1.trade_id,eval_id,m1.goods_id,cust_id,user_id,title,share_content,share_pic,share_date,is_share
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM goodsshare m1
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="goods_id">
+		   	 	m1.goods_id=#goods_id#
+		    </isNotNull>
+		</dynamic>
+	</sql>
+	
+	
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT m1.trade_id,m1.eval_id,m1.goods_id,m1.cust_id,m1.user_id,m1.title,m1.share_content,m1.share_pic,m1.share_date,m1.is_share
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY m1.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+    
+    <select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+    
+    
+</sqlMap>
+

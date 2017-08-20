@@ -1,0 +1,20 @@
+.catList{
+	margin-top:3px;
+}
+.catList li{
+	width:230px;
+	padding:3px 0px 2px 5px;
+	border:1px dotted #e1e2e3;
+	line-height:20px;
+	float:left;
+}
+.catList li p{
+	float:left;
+}
+.catList li img{
+	margin-left:5px;
+	margin-top:0px;
+	vertical-align:middle;
+	cursor:pointer;
+	float:left;
+}

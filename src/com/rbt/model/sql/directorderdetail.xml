@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="directorderdetail">
+
+	<typeAlias alias="directorderdetail" type="com.rbt.model.Directorderdetail" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="directorderdetail">
+		<![CDATA[ 
+    SELECT trade_id,order_id,goods_id,goods_price,order_num,goods_attr,in_date,endpay_time,pay_state,earnest,direct_id,end_time,temporary_title,temporary_img FROM directorderdetail WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	<select id="getByOrderId" parameterClass="java.lang.String"
+		resultClass="directorderdetail">
+		<![CDATA[ 
+   SELECT trade_id,order_id,goods_id,goods_price,order_num,goods_attr,in_date,endpay_time,pay_state,earnest,direct_id,end_time,temporary_title,temporary_img FROM directorderdetail WHERE order_id=$order_id$
+    ]]>
+    </select>
+	<update id="update" parameterClass="directorderdetail">
+		UPDATE directorderdetail SET trade_id=#trade_id#,order_id=#order_id#,goods_id=#goods_id#,goods_price=#goods_price#,order_num=#order_num#,goods_attr=#goods_attr#,in_date=now(),endpay_time=#endpay_time#,pay_state=#pay_state#,earnest=#earnest#,direct_id=#direct_id#,end_time=#end_time#,temporary_title=#temporary_title#,temporary_img=#temporary_img# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="directorderdetail">
+		INSERT INTO directorderdetail (trade_id,order_id,goods_id,goods_price,order_num,goods_attr,in_date,endpay_time,pay_state,earnest,direct_id,end_time,temporary_title,temporary_img) VALUES (#trade_id#,#order_id#,#goods_id#,#goods_price#,#order_num#,#goods_attr#,now(),#endpay_time#,#pay_state#,#earnest#,#direct_id#,#end_time#,#temporary_title#,#temporary_img#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM directorderdetail WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM directorderdetail WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM directorderdetail  d
+		LEFT JOIN directsell ds ON ds.trade_id=d.direct_id
+		LEFT JOIN goods g on d.goods_id=g.goods_id  
+			LEFT JOIN goodsorder go ON go.order_id=d.order_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_id">
+			 d.order_id=#order_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id_str">
+			 d.order_id in ($order_id_str$)
+			</isNotNull>
+			<isNotNull prepend="and" property="direct_id">
+			 d.direct_id=#direct_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="pay_state">
+			 d.pay_state in ($pay_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="endpay_time">
+				<![CDATA[  TO_DAYS(NOW()) - TO_DAYS(d.endpay_time) >0 ]]> 
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time">
+				<![CDATA[  TO_DAYS(NOW()) - TO_DAYS(d.end_time) >0 ]]> 
+			</isNotNull>
+			<isNotNull prepend="and" property="sale_title">
+			    INSTR(ds.sale_title,#sale_title#)>0
+			</isNotNull>
+			<isNotNull  prepend="and"  property="cust_id">
+			go.buy_cust_id=#cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT d.trade_id,d.order_id,d.goods_id,d.goods_price,d.order_num,d.goods_attr,d.in_date,d.endpay_time,
+		d.pay_state,d.earnest,d.direct_id,d.temporary_title,d.temporary_title as goods_name,d.temporary_img,d.temporary_img as img_path,ds.sale_title,ds.list_img,d.end_time
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY d.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+
+</sqlMap>
+

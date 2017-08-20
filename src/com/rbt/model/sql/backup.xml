@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="backup">
+
+	<typeAlias alias="backup" type="com.rbt.model.Backup" />	
+	
+	<select id="gettableList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+     SHOW TABLES 
+	   <dynamic prepend="FROM">
+	       <isNotNull property="dbName">
+	       #dbName#
+	       </isNotNull>
+		</dynamic>
+	</select>	
+
+	<select id="gettableCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct from $tabName$
+	</select>  	
+	
+	<select id="gettablestructure" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	   SHOW CREATE TABLE $tabName$
+	</select>  	
+	
+	<select id="getdatabaseversion" resultClass="java.lang.String">
+	   SELECT VERSION() ver_name;
+	</select>
+	
+	<update id="updateClickNum" parameterClass="java.util.HashMap">
+		UPDATE $tableName$ SET clicknum=clicknum+1 WHERE $fieldName$=$fieldValue$;
+	</update>
+	
+	<select id="getClickNum" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT clicknum FROM $tableName$ WHERE $fieldName$=$fieldValue$;
+	</select>
+	
+</sqlMap>

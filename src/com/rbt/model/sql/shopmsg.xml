@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="shopmsg">
+
+	<typeAlias alias="shopmsg" type="com.rbt.model.Shopmsg" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="shopmsg">
+		<![CDATA[ 
+    SELECT trade_id,sell_cust_id,buy_cust_id,in_date,msg_IP,msg_title,msg_content,is_enbale FROM shopmsg WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="shopmsg">
+		UPDATE shopmsg SET trade_id=#trade_id#,sell_cust_id=#sell_cust_id#,buy_cust_id=#buy_cust_id#,in_date=#in_date#,msg_IP=#msg_IP#,msg_title=#msg_title#,msg_content=#msg_content#,is_enbale=#is_enbale# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="shopmsg">
+		INSERT INTO shopmsg (trade_id,sell_cust_id,buy_cust_id,in_date,msg_IP,msg_title,msg_content,is_enbale) VALUES (#trade_id#,#sell_cust_id#,#buy_cust_id#,now(),#msg_IP#,#msg_title#,#msg_content#,#is_enbale#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM shopmsg WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM shopmsg sm
+				left join member m on m.cust_id=sm.buy_cust_id
+					left join shopconfig s on s.cust_id=sm.sell_cust_id
+						left join shopreplymsg sr on sm.trade_id=sr.shopmsg_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id">
+				sm.sell_cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="shop_name">
+				INSTR(s.shop_name,#shop_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name">
+				INSTR(m.cust_name,#cust_name#)>0	
+			</isNotNull>
+			<isNotNull prepend="and" property="buy_cust_id">
+			sm.buy_cust_id=#buy_cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sm.trade_id,sm.sell_cust_id,sm.buy_cust_id,sm.in_date,sm.msg_IP,sm.msg_title,sm.msg_content,sm.is_enbale,m.cust_name,s.shop_name,sr.reply_content
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

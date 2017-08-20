@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="exchange">
+
+	<typeAlias alias="exchange" type="com.rbt.model.Exchange" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="exchange">
+		<![CDATA[ 
+    SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_reason,buy_date,seller_state,seller_date,seller_reason,img_path,info_date,consignee,mconsignee,area_attr,marea_attr,sell_address,buy_address,mobile,mmobile,send_mode,msend_mode,send_time,msend_time,sure_time,msure_time,sell_remark,buy_remark,send_num,msend_num,deny_num,return_no,detail_id_str,refund_state,refund_type,ex_goods_num FROM exchange WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="exchange">
+		UPDATE exchange SET trade_id=#trade_id#,buy_cust_id=#buy_cust_id#,buy_user_id=#buy_user_id#,order_id=#order_id#,buy_reason=#buy_reason#,buy_date=#buy_date#,seller_state=#seller_state#,seller_date=#seller_date#,seller_reason=#seller_reason#,img_path=#img_path#,info_date=#info_date#,consignee=#consignee#,mconsignee=#mconsignee#,area_attr=#area_attr#,marea_attr=#marea_attr#,sell_address=#sell_address#,buy_address=#buy_address#,mobile=#mobile#,mmobile=#mmobile#,send_mode=#send_mode#,msend_mode=#msend_mode#,send_time=#send_time#,msend_time=#msend_time#,sure_time=#sure_time#,msure_time=#msure_time#,sell_remark=#sell_remark#,buy_remark=#buy_remark#,send_num=#send_num#,msend_num=#msend_num#,deny_num=#deny_num#,return_no=#return_no#,detail_id_str=#detail_id_str#,refund_state=#refund_state#,refund_type=#refund_type#,ex_goods_num=#ex_goods_num# WHERE trade_id=$trade_id$
+	</update>
+
+	<select id="getByOrderId" parameterClass="java.lang.String"
+		resultClass="exchange">
+		<![CDATA[ 
+     SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_reason,buy_date,seller_state,seller_date,seller_reason,img_path,info_date,consignee,mconsignee,area_attr,marea_attr,sell_address,buy_address,mobile,mmobile,send_mode,msend_mode,send_time,msend_time,sure_time,msure_time,sell_remark,buy_remark,send_num,msend_num,deny_num,return_no,detail_id_str,refund_state,refund_type,ex_goods_num FROM exchange WHERE  order_id=$order_id$
+    ]]>
+	</select>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE exchange SET 
+    	 <isNotNull  property="trade_id"> 
+		   trade_id=$trade_id$
+		 </isNotNull>
+    	 WHERE trade_id=$trade_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="exchange">
+		UPDATE exchange SET trade_id=$trade_id$ WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="exchange">
+		INSERT INTO exchange (trade_id,buy_cust_id,buy_user_id,order_id,buy_reason,buy_date,seller_state,seller_date,seller_reason,img_path,info_date,consignee,mconsignee,area_attr,marea_attr,sell_address,buy_address,mobile,mmobile,send_mode,msend_mode,send_time,msend_time,sure_time,msure_time,sell_remark,buy_remark,send_num,msend_num,deny_num,return_no,detail_id_str,refund_state,refund_type,ex_goods_num) VALUES (#trade_id#,#buy_cust_id#,#buy_user_id#,#order_id#,#buy_reason#,#buy_date#,#seller_state#,#seller_date#,#seller_reason#,#img_path#,now(),#consignee#,#mconsignee#,#area_attr#,#marea_attr#,#sell_address#,#buy_address#,#mobile#,#mmobile#,#send_mode#,#msend_mode#,#send_time#,#msend_time#,#sure_time#,#msure_time#,#sell_remark#,#buy_remark#,#send_num#,#msend_num#,#deny_num#,#return_no#,#detail_id_str#,#refund_state#,#refund_type#,#ex_goods_num#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM exchange WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM exchange WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM exchange as r1 left join member as buser on r1.buy_cust_id=buser.cust_id
+		 left join commpara as com on r1.refund_type=com.para_value and com.para_code='buy_exchange'
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="trade_id">
+				trade_id=#trade_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id">
+			     order_id in ($order_id$)
+		    </isNotNull>
+			  <isNotNull prepend="and" property="refund_state">
+		    	refund_state=#refund_state#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="return_no">
+		    	r1.return_no=#return_no#
+		    </isNotNull>
+		      <isNotNull prepend="and" property="buy_cust_id">
+		    	r1.buy_cust_id=#buy_cust_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="starttime">
+			     TO_DAYS(r1.info_date)>=TO_DAYS(#starttime#)
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+		    	TO_DAYS(#endtime#)>=TO_DAYS(r1.info_date)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_reason,buy_date,seller_state,seller_date,seller_reason,
+		r1.img_path,info_date,consignee,mconsignee,r1.area_attr,marea_attr,sell_address,buy_address,mobile,mmobile,send_mode,
+		msend_mode,send_time,msend_time,sure_time,msure_time,sell_remark,buy_remark,send_num,msend_num,deny_num,
+		return_no,detail_id_str,refund_state,refund_type,buser.cust_name as buy_cust_name ,com.para_key,r1.ex_goods_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

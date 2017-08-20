@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="groupgoods">
+
+	<typeAlias alias="groupgoods" type="com.rbt.model.Groupgoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="groupgoods">
+		<![CDATA[ 
+    SELECT trade_id,goods_id,group_title,cat_attr,bond,group_type,cust_maxbuy,min_buy,max_buy,start_date,end_date,img_path,group_desc,sort_no,info_state,stock,in_date,user_id,cust_id,list_img,apply_time,apply_state,is_recom FROM groupgoods WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE groupgoods SET sort_no=#sort_no# WHERE trade_id=$trade_id$
+	</update>
+	<update id="update" parameterClass="groupgoods">
+		UPDATE groupgoods SET trade_id=#trade_id#,goods_id=#goods_id#,group_title=#group_title#,cat_attr=#cat_attr#,
+		bond=#bond#,group_type=#group_type#,cust_maxbuy=#cust_maxbuy#,min_buy=#min_buy#,max_buy=#max_buy#,
+		start_date=#start_date#,end_date=#end_date#,img_path=#img_path#,group_desc=#group_desc#,sort_no=#sort_no#,
+		info_state=#info_state#,stock=#stock#,user_id=#user_id#,cust_id=#cust_id#,list_img=#list_img#,apply_state=#apply_state# ,is_recom=#is_recom#
+		 WHERE trade_id=$trade_id$
+	</update>
+	<!-- 修改申请解冻资金 -->
+	<update id="updateApply" parameterClass="java.util.HashMap">
+		UPDATE groupgoods SET apply_state=#apply_state#  
+		<isNotNull prepend="," property="apply_time">
+		apply_time=NOW()
+		</isNotNull> 
+		WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="groupgoods">
+		INSERT INTO groupgoods (trade_id,goods_id,group_title,cat_attr,bond,group_type,cust_maxbuy,min_buy,max_buy,start_date,end_date,img_path,group_desc,sort_no,info_state,stock,in_date,user_id,cust_id,list_img,is_recom) VALUES (#trade_id#,#goods_id#,#group_title#,#cat_attr#,#bond#,#group_type#,#cust_maxbuy#,#min_buy#,#max_buy#,#start_date#,#end_date#,#img_path#,#group_desc#,#sort_no#,#info_state#,#stock#,now(),#user_id#,#cust_id#,#list_img#,#is_recom#)
+	</insert>
+	
+    <insert id="insertGetPk" parameterClass="groupgoods">
+		INSERT INTO groupgoods (trade_id,goods_id,group_title,cat_attr,bond,group_type,cust_maxbuy,min_buy,max_buy,start_date,end_date,img_path,group_desc,sort_no,info_state,stock,in_date,user_id,cust_id,list_img,is_recom) VALUES (#trade_id#,#goods_id#,#group_title#,#cat_attr#,#bond#,#group_type#,#cust_maxbuy#,#min_buy#,#max_buy#,#start_date#,#end_date#,#img_path#,#group_desc#,#sort_no#,#info_state#,#stock#,now(),#user_id#,#cust_id#,#list_img#,#is_recom#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM groupgoods WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM groupgoods gg
+		LEFT JOIN goods g ON gg.goods_id = g.goods_id
+		LEFT JOIN member m ON g.cust_id = m.cust_id
+		LEFT JOIN memberuser mu ON mu.user_id = gg.user_id
+		LEFT JOIN groupladder gl ON( gg.trade_id=gl.group_id AND gl.lownum=1) 
+		<dynamic prepend="WHERE">
+		   <isNotNull prepend="and" property="trade_id"> 
+     		     gg.trade_id=#trade_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="trade_id_no"> 
+     		     gg.trade_id!=#trade_id_no#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="goods_id"> 
+     		     gg.goods_id=#goods_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_state_s"> 
+     		     gg.info_state in ($info_state_s$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_state"> 
+     		     gg.info_state in ($info_state$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="st_put_date">
+				 gg.start_date>=#st_put_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_put_date">
+				 #en_put_date#>=gg.start_date
+			</isNotNull>
+			<isNotNull prepend="and" property="st_en_date">
+				 gg.end_date>=#st_en_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_en_date">
+				 #en_en_date#>=gg.end_date
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id"> 
+			     gg.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_recom"> 
+			     gg.is_recom=#is_recom#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name"> 
+			     instr(m.cust_name,#cust_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(gg.cat_attr,#cat_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="group_title"> 
+			     INSTR(gg. group_title,#group_title#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(area_attr,#area_attr#) >0
+			 </isNotNull>
+			<isNotNull prepend="and" property="difftime">
+				 gg.end_date>= NOW() AND  NOW() >=gg.start_date
+			</isNotNull>
+			<isNotNull prepend="and" property="apply_state">
+				gg.apply_state in ($apply_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="price">
+			(	#eprice#>=price and price >= #sprice#)
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT gg.trade_id, gg.goods_id, gg.group_title,group_type, gg.cat_attr, gg.bond,gg.cust_maxbuy, gg.min_buy, gg.max_buy, gg.start_date, gg.end_date, gg.img_path, gg.group_desc, gg.sort_no, gg.info_state,gg.stock, gg.in_date,gg.list_img, gg.user_id, gg.cust_id,g.goods_name,m.cust_name,mu.user_name,
+		    (select count(*) from orderdetail od where od.goods_id = g.goods_id) as paynum,gl.price,area_attr,
+		       	(SELECT MAX(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as max_sale_price,gg.apply_time,gg.apply_state ,gg.is_recom
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		  <isNotNull property="defaultSort"> 
+		    ORDER BY gg.sort_no ASC,gg.in_date DESC
+		  </isNotNull>
+		  <isNotNull property="paynum"> 
+		    ORDER BY paynum DESC
+		  </isNotNull>
+		  <isNotNull  property="pricedesc"> 
+		    ORDER BY price DESC
+		  </isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

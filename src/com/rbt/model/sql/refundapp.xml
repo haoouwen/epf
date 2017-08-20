@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="refundapp">
+
+	<typeAlias alias="refundapp" type="com.rbt.model.Refundapp" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="refundapp">
+		<![CDATA[ 
+    SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_type,buy_reason,return_no,goods_id_str,
+    buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,info_state,seller_reason,admin_reason,admin_date,is_return,is_get,img_path,refund_amount,info_date,consignee,area_attr,sell_address,zip_code,telephone,mobile,send_mode,send_time,sure_time,sell_remark,send_num,deny_num,is_treated,batch_no,back_goods_num FROM refundapp WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	
+	<select id="getByOrderId" parameterClass="java.lang.String"
+		resultClass="refundapp">
+		<![CDATA[ 
+    SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_type,buy_reason,return_no,goods_id_str,
+    buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,info_state,seller_reason,admin_reason,admin_date,is_return,is_get,img_path,refund_amount,info_date,consignee,area_attr,sell_address,zip_code,telephone,mobile,send_mode,send_time,sure_time,sell_remark,send_num,deny_num,is_treated,batch_no,back_goods_num FROM refundapp WHERE order_id=$order_id$
+    ]]>
+	</select>
+	
+	<select id="getByRefundNo" parameterClass="java.lang.String"
+		resultClass="refundapp">
+		<![CDATA[ 
+    SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_type,buy_reason,return_no,goods_id_str,
+    buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,info_state,seller_reason,admin_reason,admin_date,is_return,is_get,img_path,refund_amount,info_date,consignee,area_attr,sell_address,zip_code,telephone,mobile,send_mode,send_time,sure_time,sell_remark,send_num,deny_num,is_treated,batch_no,back_goods_num FROM refundapp WHERE return_no=#refund_no#
+    ]]>
+	</select>
+	
+	<select id="getByBatchNo" parameterClass="java.lang.String"
+		resultClass="refundapp">
+		<![CDATA[ 
+    SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_type,buy_reason,return_no,goods_id_str,
+    buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,info_state,seller_reason,admin_reason,admin_date,is_return,is_get,img_path,refund_amount,info_date,consignee,area_attr,sell_address,zip_code,telephone,mobile,send_mode,send_time,sure_time,sell_remark,send_num,deny_num,is_treated,batch_no,back_goods_num FROM refundapp WHERE batch_no=#batch_no#
+    ]]>
+	</select>
+	
+
+	<update id="update" parameterClass="refundapp">
+		UPDATE refundapp SET buy_cust_id=#buy_cust_id#,buy_user_id=#buy_user_id#,order_id=#order_id#,
+		buy_type=#buy_type#,buy_reason=#buy_reason#,buy_date=#buy_date#,seller_cust_id=#seller_cust_id#,seller_user_id=#seller_user_id#,
+		seller_state=#seller_state#,seller_date=#seller_date#,refund_state=#refund_state#,info_state=#info_state#,seller_reason=#seller_reason#,
+		admin_reason=#admin_reason#,admin_date=now(),is_return=#is_return#,is_get=#is_get#,img_path=#img_path#,refund_amount=#refund_amount#,
+		consignee=#consignee#,area_attr=#area_attr#,sell_address=#sell_address#,zip_code=#zip_code#,telephone=#telephone#,mobile=#mobile#,
+		send_mode=#send_mode#,send_time=#send_time#,sure_time=#sure_time#,sell_remark=#sell_remark#,send_num=#send_num#,deny_num=#deny_num#,
+		is_treated=#is_treated#,return_no=#return_no#,goods_id_str =#goods_id_str#,batch_no=#batch_no#,back_goods_num=#back_goods_num#
+		 WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="refundapp">
+		INSERT INTO refundapp (trade_id,buy_cust_id,buy_user_id,order_id,buy_type,
+		buy_reason,buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,info_state,seller_reason,admin_reason,admin_date,is_return,is_get,img_path,refund_amount,info_date,return_no,goods_id_str,batch_no,back_goods_num) 
+		VALUES (#trade_id#,#buy_cust_id#,#buy_user_id#,#order_id#,#buy_type#,#buy_reason#,#buy_date#,#seller_cust_id#,
+		#seller_user_id#,#seller_state#,#seller_date#,#refund_state#,#info_state#,#seller_reason#,#admin_reason#,#admin_date#,#is_return#,#is_get#,#img_path#,#refund_amount#,now(),#return_no#,#goods_id_str#,#batch_no#,#back_goods_num#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM refundapp WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM refundapp WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM refundapp as r1 left join member as buser on r1.buy_cust_id=buser.cust_id
+		 left join member as suser on r1.seller_cust_id=suser.cust_id
+		 left join commpara as com on r1.buy_type=com.para_value and com.para_code='buy_refund'
+		<dynamic prepend="WHERE">
+			   <isNotNull prepend="and" property="yrefund">
+		       (  
+				seller_cust_id=#yrefund#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(seller_date) = 1     
+                 )
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="erefund">
+		       (  
+				seller_cust_id=#erefund#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(seller_date) = 2     
+                 )
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="lrefund">
+		       (  
+				seller_cust_id=#lrefund#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(seller_date) = 7     
+                 )
+		    </isNotNull>
+		    <isNotNull prepend="and" property="NoRefund_time"> 
+			    (  
+			      TO_DAYS(NOW()) - TO_DAYS(seller_date) > #NoRefund_time# 
+			      AND r1.info_state <![CDATA[ <> ]]>1
+			      )
+			</isNotNull>
+			
+			 <isNotNull prepend="and" property="refundDealtime"> 
+			    (  
+			      TO_DAYS(NOW()) - TO_DAYS(info_date) > #refundDealtime# 
+			      )
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="cfg_Refundsend_addr_time"> 
+			    (  
+			      TO_DAYS(NOW()) - TO_DAYS(seller_date) > #cfg_Refundsend_addr_time# 
+			      )
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="cfg_Refundsend_goods_time"> 
+			    (  
+			      TO_DAYS(NOW()) - TO_DAYS(seller_date) > #cfg_Refundsend_goods_time# 
+			      )
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="consignee">
+		    	consignee is NULL
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="consigneeed">
+		    	consignee is not NULL
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="seller_state">
+		    	seller_state=#seller_state#
+		    </isNotNull>
+			
+			<isNotNull prepend="and" property="is_return">
+		    	is_return=#is_return#
+		    </isNotNull>
+			
+		    <isNotNull prepend="and" property="order_id">
+		        r1.order_id in ($order_id$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="buy_cust_name">
+		    	buser.cust_name=#buy_cust_name#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="seller_cust_name">
+		    	suser.cust_name=#seller_cust_name#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="refund_state">
+		    	refund_state=#refund_state#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="is_return">
+		    	r1.is_return=#is_return#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="return_no">
+		    	r1.return_no=#return_no#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="info_state">
+		    	r1.info_state=#info_state#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="buy_cust_id">
+		    	r1.buy_cust_id=#buy_cust_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="seller_cust_id">
+		    	r1.seller_cust_id=#seller_cust_id#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="seller_cust_id_no">
+		    	r1.seller_cust_id !=#seller_cust_id_no#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="starttime">
+			     TO_DAYS(r1.info_date)>=TO_DAYS(#starttime#)
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+		    	TO_DAYS(#endtime#)>=TO_DAYS(r1.info_date)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,buy_cust_id,buy_user_id,order_id,buy_type,buy_reason,
+		buy_date,seller_cust_id,seller_user_id,seller_state,seller_date,refund_state,r1.info_state,seller_reason,
+		buser.cust_name as buy_cust_name ,suser.cust_name as seller_cust_name,com.para_key,admin_reason,admin_date,
+		is_return,is_get,r1.img_path,refund_amount,consignee,r1.area_attr,sell_address,zip_code,telephone,mobile,send_mode,
+		send_time,sure_time,sell_remark,send_num,info_date,deny_num,is_treated,return_no,goods_id_str,batch_no,r1.back_goods_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct,COUNT(seller_date) as refundcount
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

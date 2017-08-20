@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="taxrate">
+
+	<typeAlias alias="taxrate" type="com.rbt.model.Taxrate" />
+
+	<cacheModel id="taxrate-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="taxrate.update" />
+		<flushOnExecute statement="taxrate.insert" />
+		<flushOnExecute statement="taxrate.delete" />
+		<flushOnExecute statement="taxrate.updateSort" />
+		<property value="500" name="size" />
+	</cacheModel>
+	
+	<select id="getAll" resultClass="java.util.HashMap" cacheModel="taxrate.taxrate-cache">
+		SELECT 	tax_id, tax_name FROM taxrate
+	</select>
+	
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="taxrate">
+		<![CDATA[ 
+    SELECT tax_id,up_tax_id,tax_name,tax_number,tax_en_name,tax_level,sort_no,tax_unit,tax_price,tax_rate,tax_unit_remark FROM taxrate WHERE tax_id=#value#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="taxrate">
+		UPDATE taxrate SET
+		 tax_id=#tax_id#,up_tax_id=#up_tax_id#,tax_name=#tax_name#,tax_number=#tax_number#,tax_en_name=#tax_en_name#,tax_level=#tax_level#,sort_no=$sort_no$,tax_unit=#tax_unit#,tax_price=#tax_price#,tax_rate=#tax_rate#,tax_unit_remark=#tax_unit_remark# 
+		 WHERE tax_id=$tax_id$
+	</update>
+    <!-- 更新排序sort_no -->
+    <update id="updateSort" parameterClass="java.util.HashMap">
+		UPDATE taxrate SET sort_no=$sort_no$ WHERE tax_id=$tax_id$
+	</update>
+
+	<update id="updateSate" parameterClass="taxrate">
+		UPDATE taxrate SET tax_id=$tax_id$ WHERE tax_id=#tax_id#
+	</update>
+
+	<insert id="insert" parameterClass="taxrate">
+		INSERT INTO taxrate (tax_id,up_tax_id,tax_name,tax_number,tax_en_name,tax_level,sort_no,tax_unit,tax_price,tax_rate,tax_unit_remark)
+		 VALUES (#tax_id#,#up_tax_id#,#tax_name#,#tax_number#,#tax_en_name#,#tax_level#,$sort_no$,#tax_unit#,#tax_price#,#tax_rate#,#tax_unit_remark#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM taxrate WHERE tax_id in (#value#)
+	</delete>
+
+	<sql id="getCommon">
+		FROM taxrate 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="tax_name">
+				tax_name=#tax_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="address">
+				INSTR(#address#,tax_name) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="up_id_str">
+				INSTR(#up_id_str#,up_tax_id) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="tax_en_name">
+				tax_en_name=#tax_en_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_tax_id">
+				up_tax_id=#up_tax_id# 
+			</isNotNull>
+			<isNotNull prepend="and" property="no_tax_level">
+				 tax_level not in(#no_tax_level#)
+			</isNotNull>
+			<isNotNull prepend="and" property="tax_number">
+				 INSTR(#tax_number#,tax_number) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="tax_level">
+				 tax_level = #tax_level#
+			</isNotNull>
+			<isNotNull prepend="and" property="tax_id">
+				 INSTR(tax_id,#tax_id#)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="taxrate.taxrate-cache">
+		SELECT tax_id,up_tax_id,tax_name,tax_number,tax_en_name,tax_level,sort_no,tax_unit,tax_price,tax_rate,tax_unit_remark
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull prepend="" property="address">
+		order by tax_level DESC
+		</isNotNull>
+		<isNull prepend="" property="address1">
+		order by sort_no asc,tax_en_name asc
+		</isNull>
+		<isNull prepend="" property="sort_no_asc">
+		order by sort_no asc,tax_en_name asc
+		</isNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="taxrate.taxrate-cache">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+     <!-- 获取所有上级id为当前id的栏目 -->
+     <select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(tax_id) as tax_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+     
+     
+</sqlMap>
+

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="spikegoods">
+
+	<typeAlias alias="spikegoods" type="com.rbt.model.Spikegoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="spikegoods">
+		<![CDATA[ 
+    SELECT s.trade_id,s.goods_id,s.spike_title,s.cat_attr,s.price,s.start_date,s.end_date,s.img_path,s.spike_desc,s.sort_no,s.info_state,s.user_id,s.cust_id,s.in_date,s.list_img,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr g WHERE g.goods_id=s.goods_id) as stock,(SELECT sale_price FROM goodsattr WHERE goodsattr.goods_id=s.goods_id ORDER BY sale_price LIMIT 0,1) AS sale_price,(select goods_name from goods where goods_id=s.goods_id) as goods_name  FROM spikegoods  AS s WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="spikegoods">
+		UPDATE spikegoods SET trade_id=#trade_id#,goods_id=#goods_id#,spike_title=#spike_title#,cat_attr=#cat_attr#,price=#price#,start_date=#start_date#,end_date=#end_date#,img_path=#img_path#,spike_desc=#spike_desc#,sort_no=#sort_no#,info_state=#info_state#,stock=#stock#,user_id=#user_id#,cust_id=#cust_id#,list_img=#list_img# WHERE trade_id=$trade_id$
+	</update>
+
+   <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE spikegoods SET sort_no=#sort_no# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="spikegoods">
+		INSERT INTO spikegoods (trade_id,goods_id,spike_title,cat_attr,price,start_date,end_date,img_path,spike_desc,sort_no,info_state,stock,user_id,cust_id,in_date,list_img) VALUES (#trade_id#,#goods_id#,#spike_title#,#cat_attr#,#price#,#start_date#,#end_date#,#img_path#,#spike_desc#,#sort_no#,#info_state#,#stock#,#user_id#,#cust_id#,now(),#list_img#)
+	</insert>
+     
+    <insert id="insertGetPk" parameterClass="spikegoods">
+		INSERT INTO spikegoods (trade_id,goods_id,spike_title,cat_attr,price,start_date,end_date,img_path,spike_desc,sort_no,info_state,stock,user_id,cust_id,in_date,list_img) VALUES (#trade_id#,#goods_id#,#spike_title#,#cat_attr#,#price#,#start_date#,#end_date#,#img_path#,#spike_desc#,#sort_no#,#info_state#,#stock#,#user_id#,#cust_id#,now(),#list_img#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM spikegoods WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM spikegoods s
+			left join goods g on s.goods_id = g.goods_id  and g.is_del='1'
+				left join member m on s.cust_id = m.cust_id
+					left join memberuser mu on s.user_id = mu.user_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="info_state_s"> 
+     		     s.info_state in ($info_state_s$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="info_state"> 
+     		     s.info_state in ($info_state$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="st_put_date">
+				 s.start_date >= #st_put_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_put_date">
+				#en_put_date# >= s.start_date
+			</isNotNull>
+			<isNotNull prepend="and" property="st_en_date">
+				s.end_date>=#st_en_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_en_date">
+				#en_en_date#>=s.end_date
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id"> 
+			    s.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name"> 
+			    instr(m.cust_name,#cust_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			    INSTR(s.cat_attr,#cat_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="spike_title"> 
+			    INSTR(s.spike_title,#spike_title#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.trade_id,s.goods_id,s.spike_title,s.cat_attr,s.price,s.start_date,s.end_date,s.img_path,s.spike_desc,s.sort_no,s.info_state,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr g WHERE g.goods_id=s.goods_id) as stock,s.user_id,s.cust_id,s.in_date,m.cust_name,mu.user_name,g.goods_name,s.list_img
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,s.in_date desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM spikegoods s
+			left join goods g on s.goods_id = g.goods_id
+		<dynamic prepend="WHERE">
+		   <isNotNull prepend="and" property="info_state_s"> 
+     		     s.info_state in ($info_state_s$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="cat_attr"> 
+     		     INSTR(s.cat_attr,#cat_attr#)>0
+		   </isNotNull>
+		   <isNotNull prepend="and" property="in_day"> 
+     		      DATE_FORMAT(start_date,'%Y-%m-%d') >= ADDDATE(DATE_FORMAT(NOW(),'%Y%m%d'),INTERVAL $in_day$ DAY)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="end_date"> 
+		   		  ADDDATE(DATE_FORMAT(NOW(),'%Y%m%d'),INTERVAL $in_day$ DAY) >= DATE_FORMAT(end_date,'%Y-%m-%d')
+		   </isNotNull>
+		   	<isNotNull prepend="and" property="time"> 
+		   		   HOUR(s.start_date)=#time#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="spike_title"> 
+			    INSTR(s.spike_title,#spike_title#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.trade_id,s.goods_id,s.spike_title,s.cat_attr,s.list_img,s.price,s.start_date,s.end_date,s.img_path,s.spike_desc,
+			s.sort_no,s.info_state,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr g WHERE g.goods_id=s.goods_id) as stock,s.user_id,s.cust_id,s.in_date,g.goods_name,
+			MONTH(start_date) AS m,DAY(start_date) AS d,HOUR(start_date) AS h,
+			(SELECT sale_price FROM goodsattr WHERE goodsattr.goods_id=s.goods_id ORDER BY sale_price LIMIT 0,1) AS sale_price
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		ORDER BY start_date ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

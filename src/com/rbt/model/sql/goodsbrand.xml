@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsbrand">
+
+	<typeAlias alias="goodsbrand" type="com.rbt.model.Goodsbrand" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodsbrand">
+		<![CDATA[ 
+    SELECT brand_id,brand_name,en_name,en_index,brand_site,logo,content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri FROM goodsbrand WHERE brand_id=$brand_id$
+    ]]>
+	</select>
+<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE goodsbrand SET sort_no=#sort_no# WHERE brand_id=$brand_id$
+	</update>
+	<update id="update" parameterClass="goodsbrand">
+		UPDATE goodsbrand SET brand_id=#brand_id#,brand_name=#brand_name#,en_name=#en_name#,en_index=#en_index#,brand_site=#brand_site#,logo=#logo#,content=#content#,goods_attr=#goods_attr#,sort_no=#sort_no#,info_state=#info_state#,is_recom=#is_recom#,seo_title=#seo_title#,seo_keyword=#seo_keyword#,seo_descri=#seo_descri# WHERE brand_id=$brand_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodsbrand">
+		INSERT INTO goodsbrand (brand_id,brand_name,en_name,en_index,brand_site,logo,content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri) VALUES (#brand_id#,#brand_name#,#en_name#,#en_index#,#brand_site#,#logo#,#content#,#goods_attr#,#sort_no#,#info_state#,#is_recom#,#seo_title#,#seo_keyword#,#seo_descri#)
+	</insert>
+
+
+	<insert id="insertGetPk" parameterClass="goodsbrand">
+		INSERT INTO goodsbrand (brand_id,brand_name,en_name,en_index,brand_site,logo,content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri) VALUES (#brand_id#,#brand_name#,#en_name#,#en_index#,#brand_site#,#logo#,#content#,#goods_attr#,#sort_no#,#info_state#,#is_recom#,#seo_title#,#seo_keyword#,#seo_descri#)
+		 <selectKey resultClass="java.lang.String" keyProperty="brand_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsbrand WHERE brand_id in ($brand_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodsbrand 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="brand_name">
+				instr(brand_name,#brand_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_recom">
+				is_recom=#is_recom#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="is_recom">
+				INSTR(is_recom,#is_recom#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_attr">
+				INSTR(goods_attr,#goods_attr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="en_index">
+				en_index=#en_index#
+			</isNotNull>
+			<isNotNull prepend="and" property="brand_name_all">
+				brand_name=#brand_name_all#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT brand_id,brand_name,en_name,en_index,brand_site,logo,content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY brand_name,sort_no ASC,brand_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<sql id="getRandCommon">
+		FROM goodsbrand 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="brand_name">
+				instr(brand_name,#brand_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_recom">
+				is_recom=#is_recom#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="is_recom">
+				INSTR(is_recom,#is_recom#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_attr">
+				INSTR(goods_attr,#goods_attr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="en_index">
+				en_index=#en_index#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getRandList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT brand_id,brand_name,en_name,en_index,brand_site,logo,content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri
+		<isParameterPresent>
+			<include refid="getRandCommon" />
+		</isParameterPresent>
+		ORDER BY RAND()
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getRandCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getRandCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

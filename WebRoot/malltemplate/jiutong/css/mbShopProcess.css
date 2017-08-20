@@ -1,0 +1,658 @@
+/*购物车为空*/
+.emptyCart{
+	padding:30px 30px 15px;
+	text-align:center;
+}
+.emptyCart p{
+	padding-top:10px;
+	line-height:24px;
+	font-size:14px;
+}
+.emptyCart .emptyP{
+	padding-top:15px;
+}
+.emptyCart .emptyP a{
+	width:50%;
+	height:38px;
+	display:inline;
+	float:left;
+}
+.emptyCart .emptyP i{
+	height:38px;
+	background:#fba540;
+	margin:0 10px;
+	display:block;
+	border-radius:4px;
+	line-height:38px;
+	font-style:normal;
+	color:#fff;
+	font-size:13px;
+}
+.emptyCart .emptyP .iRed{
+	background:#fd5d5d;
+}
+/*购物车不为空*/
+.hasCart{
+	padding:0px 15px 5px;
+}
+.hcDiv{
+	padding:9px;
+	background:#fff;
+	border:#eee solid 1px;
+	border-radius:5px;
+	box-shadow:2px 2px 4px #dcdcdc;
+	margin-top:15px;
+}
+.hcDiv tr{
+	vertical-align:top;
+}
+.hcDiv td{
+	padding:0 5px;
+}
+.hcDiv td .imgDiv{
+	width:60px;
+	height:60px;
+	border:#f1f1f1 solid 1px;
+}
+.hcDiv td .imgDiv img{
+	width:60px;
+	height:60px;
+}
+.hcDiv td p{
+	line-height:20px;
+	padding:5px 0;
+}
+.hcDiv td  .checkBox{
+	width:20px;
+	height:20px;
+	border:#d7d7d7 solid 1px;
+	margin-top:20px;
+}
+.hcDiv td  b{
+	color:#d81d20;
+	font-size:14px;
+}
+.hcDiv td  .hcNum{
+	float:left;
+	line-height:30px;
+}
+.hcDiv td .pColor{
+	color:#b5b5b5;
+}
+/**/
+.hcDiv td .hcSpan{
+	width:100px;
+	height:30px;
+	border:#e5e5e5 solid 1px;
+	border-radius:5px;
+	position:relative;
+	float:left;
+}
+.hcSpan span{
+	width:30px;
+	height:30px;
+	display:inline;
+	position:absolute;
+	cursor:pointer;
+}
+.hcSpan .recNumBut{
+	left:0px;
+	border-right:#e5e5e5 solid 1px;
+}
+.hcSpan .recNumBut:before{
+	content:"";
+	width:25px;
+	height:24px;
+	background:url(../images/recNum.gif) no-repeat;
+	border:#fff solid 1px;
+	display:inline-block;
+	margin:2px 0 0 2px;
+}
+.hcSpan .addNumBut{
+	right:0px;
+	border-left:#e5e5e5 solid 1px;
+}
+.hcSpan .addNumBut:before{
+	content:"";
+	width:25px;
+	height:24px;
+	background:url(../images/addNum.gif) no-repeat;
+	border:#fff solid 1px;
+	display:inline-block;
+	margin:2px 0 0 2px;
+}
+.hcSpan  .numText{
+	width:20px;
+	height:18px;
+	line-height:18px;
+	position:absolute;
+	top:5px;
+	left:38px;
+	color:#888;
+	border:none;
+}
+/*结算*/
+.settlement{
+	width:100%;
+	background:#fff;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	box-shadow:0px -1px 2px #e6e6e6;
+}
+.settlement .settlCont{
+	height:32px;
+	margin:10px;
+	line-height:20px;
+	position:relative;
+}
+.settlCont .setSel{
+	height:24px;
+	position:absolute;
+	left:0px;
+	top:-6px;
+}
+.settlCont .topSel{
+	top:4px;
+}
+.setSel .checkBox{
+	width:20px;
+	height:20px;
+	border:#d7d7d7 solid 1px;
+	float:left;
+}
+.setSel  span{
+	line-height:26px;
+	float:left;
+	margin:0 5px;
+}
+.setSel .clearBut{
+	text-decoration:underline;
+	margin:0 10px;
+	cursor:pointer;
+}
+/**/
+.settlCont .setPrice{
+	position:absolute;
+	left:0px;
+	top:18px;
+}
+.settlCont .setSPrice{
+	position:absolute;
+	left:0px;
+	top:8px;
+}
+.setPrice b,.setSPrice b{
+	color:#d81d20;
+	font-size:14px;
+}
+/**/
+.settlCont .setA{
+	width:35%;
+	height:32px;
+	text-align:center;
+	line-height:32px;
+	background:#F00;
+	display:block;
+	font-size:13px;
+	border-radius:4px;
+	background:#fd5d5d;
+	color:#fff;
+	position:absolute;
+	right:0px;
+	top:0px;
+}
+
+.settlCont .zysetA{
+	width:105px;
+	height:32px;
+	text-align:center;
+	line-height:32px;
+	background:#F00;
+	display:block;
+	font-size:13px;
+	border-radius:4px;
+	background:#fd5d5d;
+	color:#fff;
+	position:absolute;
+	right:0px;
+	top:0px;
+}
+.settlCont .bssetA{
+	width:105px;
+	height:32px;
+	text-align:center;
+	line-height:32px;
+	background:#F00;
+	display:block;
+	font-size:13px;
+	border-radius:4px;
+	background:#fd5d5d;
+	color:#fff;
+	position:absolute;
+	right:115px;
+	top:0px;
+}
+
+
+/*20150409*/
+
+/*地址*/
+.address{
+	padding:0px 15px 5px;
+}
+.addrh2{
+	font-size:14px;
+	padding:15px 0 0px;
+	color:#282828;
+}
+.addrDiv{
+	padding:9px;
+	background:#fff;
+	border:#eee solid 1px;
+	border-radius:5px;
+	margin-top:15px;
+	position:relative;
+}
+.addrDiv .jtDiv{
+	width:9px;
+	height:11px;
+	background:url(../images/rjd.gif) no-repeat;
+	position:absolute;
+	right:15px;
+	top:30px;
+}
+.addrDiv .jtdDiv{
+	background:url(../images/djd.gif) no-repeat;
+}
+/**/
+.addrDiv tr{
+	vertical-align:top;
+}
+.addrDiv td{
+	padding:0 5px;
+}
+.addrDiv td p{
+	line-height:20px;
+	padding:3px 0;
+}
+.addrDiv td  span{
+	padding-left:15px;
+}
+.addrDiv td  .checkBox{
+	width:20px;
+	height:20px;
+	border:#d7d7d7 solid 1px;
+}
+.addModify{
+	border-top:#efefef solid 1px;
+	margin-top:10px;
+	padding:15px 0 5px;
+	display:none;
+}
+.addModify span{
+	width:50%;
+	display:inline-block;
+	float:left;
+}
+.addModify span i{
+	margin:0 10px;
+	height:32px;
+	background:#fd5d5d;
+	display:block;
+	border-radius:3px;
+	text-align:center;
+	line-height:32px;
+	font-style:normal;
+	font-size:13px;
+	color:#fff;
+	cursor:pointer;
+}
+.addModify span .deleteI{
+	background:#fba540;
+}
+/**/
+.address .addAddrBut{
+	height:38px;
+	background:#fd5d5d;
+	line-height:38px;
+	text-align:center;
+	border-radius:5px;
+	font-size:13px;
+	color:#fff;
+	margin-top:12px;
+}
+/*支付,配送方式及发票信息*/
+.way{
+	padding:0px 15px 5px;
+}
+.way .wayh2{
+	font-size:14px;
+	padding:15px 0 0px;
+	color:#282828;
+}
+.way .wayDiv{
+	background:#fff;
+	border:#eee solid 1px;
+	border-radius:5px;
+	margin-top:15px;
+	position:relative;
+}
+.wayDiv li{
+	border-bottom:#efefef solid 1px;
+}
+.wayDiv li:last-child{
+	border:none;
+}
+.wayDiv li h3{
+	height:48px;
+	font-weight:400;
+	font-size:12px;
+	line-height:48px;
+	margin:0 15px;	
+}
+.wayDiv li  .fph3{
+	background:url(../images/rjd.gif) no-repeat right center;
+}
+.wayDiv li .fpdh3{
+	background:url(../images/djd.gif) no-repeat right center;
+}
+.wayDiv .fpDiv{
+	margin:0 10px;
+	border-top:#efefef solid 1px;
+	padding-top:5px;
+	display:none;
+}
+.wayDiv .instDiv{
+	margin:8px 0 0;
+}
+.wayDiv .instDiv span{
+	height:24px;
+	border:#e4e2e3 solid 1px;
+	background:#fff;
+	display:inline-block;
+	margin:0px 10px 0px 0;
+	line-height:24px;
+	padding:1px 12px;
+	cursor:pointer;
+}
+.wayDiv .instDiv  .selSpan{
+	padding:0px 10px;
+	border:#e2383b solid 2px;
+	background:#fff url(../images/selsj.png) no-repeat right bottom;
+}
+.wayDiv .fpCont{
+	margin-top:10px;
+	display:none;
+}
+.wayDiv .fpCont p{
+	padding:6px 0;
+}
+.wayDiv .fpCont p span{
+	width:90px;
+	display:inline-block;
+	text-align:right;
+}
+.wayDiv .fpCont .fpText{
+	height:26px;
+	width:65%;
+	border:#efefef solid 1px;
+}
+.wayDiv .fpBut{
+	height:32px;
+	background:#fd5d5d;
+	border-radius:5px;
+	font-size:13px;
+	color:#fff;
+	line-height:32px;
+	text-align:center;
+	margin:5px 0 15px;
+}
+/*确认订单*/
+.hasCart .orderh2{
+	font-size:14px;
+	padding:15px 0 0px;
+	color:#282828;
+}
+/*支付员信息*/
+.payInfor{
+	background:#fff;
+	margin:10px 15px 0px 15px;
+	border:#e6e6e6 solid 1px;
+	border-radius:5px;
+	padding:10px 15px;
+}
+.payInfor p{
+	line-height:20px;
+	padding:5px 0;
+}
+.payInfor b{
+	color:#d81d20;
+	font-size:14px;
+}
+.payInfor .clearBut{
+	padding:0px 0 0 15px;
+}
+.payInfor .zysetA{
+	width:100%;
+	height:32px;
+	text-align:center;
+	line-height:32px;
+	display:block;
+	font-size:13px;
+	border-radius:4px;
+	background:#fd5d5d;
+	color:#fff;
+}
+/**/
+.setSel .returnA{
+	text-decoration:underline;
+	border:#e2e2e2 solid 1px;
+	text-decoration:none;
+	padding:3px 10px;
+	border-radius:2px;
+	background:#fff;
+}
+/*增加地址*/
+.addAddress{
+	width:250px;
+	position:fixed;
+	right:-250px;
+	top:0px;
+	background:#676767;
+	z-index:50;
+	color:#fff;
+	overflow:auto;
+}
+.addAddress .addh2{
+	height:40px;
+	background:#2f2f2f;
+	padding:0 10px;
+	font-size:14px;
+	line-height:40px;
+	text-align:center;
+}
+.addAddress .closeBut{
+	width:22px;
+	height:22px;
+	background:url(../images/closeBut.gif) no-repeat;
+	display:inline-block;
+	position:absolute;
+	right:10px;
+	top:8px;
+	cursor:pointer;
+}
+.addAddress  .addBut{
+	height:34px;
+	background:#be1a00;
+	display:block;
+	margin:0 15px;
+	font-style:normal;
+	line-height:34px;
+	text-align:center;
+	border-radius:5px;
+	cursor:pointer;
+}
+.addAddress .addTable{
+	margin:10px 0;
+	
+}
+.addAddress .addTable th{
+	width:70px;
+	padding:10px 0;
+	text-align:right;
+}
+.addAddress .addTable td{
+	padding:10px 5px;
+}
+.addAddress .addTable .addText{
+	width:160px;
+	height:24px;
+	border:#fff solid 1px;
+	padding-left:3px;
+	line-height:24px;
+}
+.addAddress .addTable select{
+	width:165px;
+	border:#fff solid 1px;
+	height:24px;
+	line-height:24px;
+}
+.addrClose{
+	width:38px;
+	height:60px;
+	position:fixed;
+	right:-250px;
+	top:100px;
+	display:none;
+}
+
+/*选择支付方式*/
+.wayDiv .zfbh3{
+	height:60px;
+	line-height:60px;
+	background:url(../images/zfb.gif) no-repeat left center,url(../images/rjd.gif) no-repeat right center;
+	padding-left:45px;
+	font-size:13px;
+}
+
+.wayDiv .chinapayh3{
+	height:60px;
+	line-height:60px;
+	background:url(../images/Chinapay.png) no-repeat left center,url(../images/rjd.gif) no-repeat right center;
+	padding-left:65px;
+	font-size:13px;
+}
+.wayDiv .wxpayh3{
+	height:60px;
+	line-height:60px;
+	background:url(../images/wxzf.gif) no-repeat left center,url(../images/rjd.gif) no-repeat right center;
+	padding-left:65px;
+	font-size:13px;
+}
+/*使用积分*/
+.hcDiv  .jfspan{
+	background:url(../images/djd.gif) no-repeat left center;
+	padding-left:15px;
+}
+.hcDiv  .jfp{
+	line-height:24px;
+	display:none;
+}
+.hcDiv .jfText{
+	width:90px;
+	height:18px;
+	padding:2px;
+	border:#efefef solid 1px;
+	margin-right:5px;
+}
+.hcDiv  .syBut{
+	width:50px;
+	height:24px;
+	background:#ededed;
+	border:#e6e6e6 solid 1px;
+}
+/*优惠劵*/
+.youhui{
+	padding:0px 15px 5px;
+}
+.youhui .yhDiv{
+	background:#fff;
+	border:#eee solid 1px;
+	border-radius:5px;
+	margin-top:15px;
+	position:relative;
+}
+.yhDiv li{
+	border-bottom:#efefef solid 1px;
+}
+.yhDiv li:last-child{
+	border:none;
+}
+.yhDiv li h3{
+	height:48px;
+	font-weight:400;
+	font-size:12px;
+	line-height:48px;
+	margin:0 15px;	
+}
+.yhDiv li  .fph3{
+	background:url(../images/rjd.gif) no-repeat right center;
+}
+.yhDiv li .fpdh3{
+	background:url(../images/djd.gif) no-repeat right center;
+}
+.yhDiv .fpDiv{
+	margin:0 10px;
+	border-top:#efefef solid 1px;
+	padding:5px 0;
+	display:none;
+}
+.yhDiv .fpDiv p{
+	padding:6px 0;
+	line-height:22px;
+}
+.yhDiv .checkBox{
+	width:16px;
+	height:16px;
+}
+.yhDiv .fpDiv span{
+	color:#d81d20;
+	font-size:14px;
+	padding:0 5px;
+}
+.yhDiv .fpDiv .fpText{
+	width:100px;
+	height:20px;
+	padding:2px;
+	border:#efefef solid 1px;
+	margin-right:5px;
+}
+
+/**/
+.ship_fee1{
+	cursor:pointer;
+	position:relative;
+}
+.ship_fee1 i{
+	width:140px;
+	position:absolute;
+	left:80px;
+	top:2px;
+	border:#d81d20 solid 1px;
+	background:#fff;
+	font-style:normal;
+	line-height:20px;
+	color:#d81d20;
+}
+.oldP{
+   color:#888;	
+   text-decoration:line-through;
+}
+.salesbcart{
+	background:#e4373b;
+	color:#fff;
+	font-weight:300;
+	padding:1px 3px;
+	margin-right:10px;
+}

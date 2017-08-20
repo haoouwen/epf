@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pushlogistics">
+
+	<typeAlias alias="pushlogistics" type="com.rbt.model.Pushlogistics" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="pushlogistics">
+		<![CDATA[ 
+    SELECT trade_id,number,com,status,time,content,is_ship,is_send,is_sign FROM pushlogistics WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="pushlogistics">
+		UPDATE pushlogistics SET trade_id=#trade_id#,number=#number#,com=#com#,status=#status#,time=#time#,content=#content#,is_ship=#is_ship#,is_send=#is_send#,is_sign=#is_sign# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="pushlogistics">
+		INSERT INTO pushlogistics (trade_id,number,com,status,time,content,is_ship,is_send,is_sign) VALUES (#trade_id#,#number#,#com#,#status#,#time#,#content#,#is_ship#,#is_send#,#is_sign#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM pushlogistics WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM pushlogistics 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="number"> 
+				  number=#number#
+			</isNotNull>
+			<isNotNull prepend="and" property="com"> 
+				  com=#com#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,number,com,status,time,content,is_ship,is_send,is_sign
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

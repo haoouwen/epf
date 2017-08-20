@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ordertrans">
+
+	<typeAlias alias="ordertrans" type="com.rbt.model.Ordertrans" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="ordertrans">
+		<![CDATA[ 
+    SELECT trans_id,cust_id,order_id,order_state,user_id,trans_time,reason,opt_username FROM ordertrans WHERE trans_id=$trans_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="ordertrans">
+		UPDATE ordertrans SET trans_id=#trans_id#,cust_id=#cust_id#,order_id=#order_id#,
+		order_state=#order_state#,user_id=#user_id#,trans_time=#trans_time#,reason=#reason#,opt_username=#opt_username# WHERE trans_id=$trans_id$
+	</update>
+
+	<insert id="insert" parameterClass="ordertrans">
+		INSERT INTO ordertrans (trans_id,cust_id,order_id,order_state,user_id,trans_time,reason,opt_username)
+		 VALUES (#trans_id#,#cust_id#,#order_id#,#order_state#,#user_id#,now(),#reason#,#opt_username#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM ordertrans WHERE trans_id in ($trans_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM ordertrans WHERE order_id in ($order_id$)
+	</delete>	
+
+	<sql id="getCommon">
+		FROM ordertrans o left join memberuser m  on o.user_id=m.user_id
+		<dynamic prepend="WHERE">
+			<isNotNull property="order_id">
+			order_id=#order_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id_s">
+			order_id in ($order_id_s$)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT o.trans_id,o.cust_id,o.order_id,o.order_state,o.user_id,o.trans_time,reason,m.user_name as mem_user_name,o.opt_username
+		,IF(o.opt_username IS NULL ,IF((SELECT m.user_name FROM memberuser m1  WHERE  o.user_id=m1.user_id) IS NULL,
+		(SELECT s.user_name FROM sysuser s  WHERE  o.user_id=s.user_id),m.user_name),o.opt_username) AS user_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY o.trans_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

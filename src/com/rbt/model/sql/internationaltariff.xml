@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="internationaltariff">
+
+	<typeAlias alias="internationaltariff" type="com.rbt.model.Internationaltariff" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="internationaltariff">
+		<![CDATA[ 
+    SELECT ief_id,ief_price,ief_cubic,ief_overweight,ief_overweight_price,ief_name FROM internationaltariff WHERE ief_id=$ief_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="internationaltariff">
+		UPDATE internationaltariff SET ief_id=#ief_id#,ief_price=#ief_price#,ief_cubic=#ief_cubic#,ief_overweight=#ief_overweight#,ief_overweight_price=#ief_overweight_price#,ief_name=#ief_name# WHERE ief_id=$ief_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE internationaltariff SET 
+    	 <isNotNull  property="ief_id"> 
+		   ief_id=$ief_id$
+		 </isNotNull>
+    	 WHERE ief_id=$ief_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="internationaltariff">
+		UPDATE internationaltariff SET ief_id=$ief_id$ WHERE ief_id=$ief_id$
+	</update>
+
+	<insert id="insert" parameterClass="internationaltariff">
+		INSERT INTO internationaltariff (ief_id,ief_price,ief_cubic,ief_overweight,ief_overweight_price,ief_name) VALUES (#ief_id#,#ief_price#,#ief_cubic#,#ief_overweight#,#ief_overweight_price#,#ief_name#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM internationaltariff WHERE ief_id in ($ief_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM internationaltariff 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ief_id">
+				ief_id=#ief_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ief_name">
+				ief_name=#ief_name#
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ief_id,ief_price,ief_cubic,ief_overweight,ief_overweight_price,ief_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY ief_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memrole">
+
+	<typeAlias alias="memrole" type="com.rbt.model.Memrole" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memrole">
+		<![CDATA[ 
+    SELECT memrole_id,cust_id,memrole_name,oper_right,memmenu_right,remark FROM memrole WHERE memrole_id=$memrole_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memrole">
+		UPDATE memrole SET memrole_id=#memrole_id#,cust_id=#cust_id#,memrole_name=#memrole_name#,oper_right=#oper_right#,memmenu_right=#memmenu_right#,remark=#remark# WHERE memrole_id=$memrole_id$
+	</update>
+
+	<insert id="insert" parameterClass="memrole">
+		INSERT INTO memrole (cust_id,memrole_name,oper_right,memmenu_right,remark) VALUES (#cust_id#,#memrole_name#,#oper_right#,#memmenu_right#,#remark#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memrole WHERE memrole_id in ($memrole_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memrole 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="role_id"> 
+			     memrole_id=#memrole_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="mem_cust_id"> 
+			     cust_id=#mem_cust_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT memrole_id,cust_id,memrole_name,oper_right,memmenu_right,remark
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY memrole_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

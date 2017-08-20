@@ -1,0 +1,47 @@
+.morecatdiv{
+	border:1px solid #FFFFFF;
+	min-height:150px;
+}
+.show_add_cat,.newCatItem{
+	border:0px solid #cecece;
+	margin-left:3px;
+	padding:3px;
+	margin-bottom: 20px;
+}
+
+.oper_add{
+	color:#990000;
+}
+
+.oper{
+	margin-left:5px;
+	color:#990000;
+}
+.addcatDiv{
+	display: none;
+}
+.inputtxt{
+	height: 26px;
+	line-height: 26px;
+}
+.catItem{
+	width:300px;
+	line-height:30px;
+	margin-right:20px;
+}
+.catTitle{
+	font-size: 15px;
+	font-weight: bold;
+}
+.ignomsg{
+	color:red;
+	font-size:12px;
+	font-weight: normal;
+}
+.catDiv{
+	margin: 30px 20px;	
+}
+.select {
+	height: 30px;
+	line-height: 30px;
+}

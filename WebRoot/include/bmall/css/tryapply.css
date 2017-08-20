@@ -1,0 +1,9 @@
+.order_img_1{
+	background:url("/include/bmall/images/order_img_1.gif")  ;
+	height:21px;
+	width:52px;
+	display:block;
+	color: #fff;
+	line-height: 21px;
+	text-align: center;
+}

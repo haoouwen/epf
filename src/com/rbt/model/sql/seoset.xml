@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="seoset">
+
+	<typeAlias alias="seoset" type="com.rbt.model.Seoset" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="seoset">
+		<![CDATA[ 
+    SELECT seo_code,seo_title,seo_keyword,seo_decri FROM seoset WHERE seo_code=#seo_code#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="seoset">
+		UPDATE seoset SET seo_code=#seo_code#,seo_title=#seo_title#,seo_keyword=#seo_keyword#,seo_decri=#seo_decri# WHERE seo_code=#seo_code#
+	</update>
+
+	<insert id="insert" parameterClass="seoset">
+		INSERT INTO seoset (seo_code,seo_title,seo_keyword,seo_decri) VALUES (#seo_code#,#seo_title#,#seo_keyword#,#seo_decri#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM seoset WHERE seo_code in ($seo_code$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM seoset 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT seo_code,seo_title,seo_keyword,seo_decri
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY seo_code DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

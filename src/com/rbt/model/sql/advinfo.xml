@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="advinfo">
+
+	<typeAlias alias="advinfo" type="com.rbt.model.Advinfo" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="advinfo">
+		<![CDATA[ 
+    SELECT adv_id,pos_id,keyword,cat_attr,adv_name,adv_desc,img_path,link_url,title,content,start_date,end_date,
+    remark,cust_id,adv_state,iscount,addnum,info_id,area_attr,adv_code,flash_url,bg_color FROM advinfo WHERE adv_id=$adv_id$
+    ]]>
+	</select>
+	<select id="getImg" parameterClass="java.lang.String"
+		resultClass="advinfo">
+		<![CDATA[ 
+    SELECT adv_id,pos_id,keyword,cat_attr,adv_name,adv_desc,img_path,link_url,title,content,start_date,end_date,
+    remark,cust_id,adv_state,iscount,addnum,info_id,area_attr,adv_code,flash_url,bg_color FROM advinfo WHERE pos_id=$pos_id$
+    ]]>
+	</select>
+	<update id="update" parameterClass="advinfo">
+		UPDATE advinfo SET
+		keyword=#keyword#,cat_attr=#cat_attr#,area_attr=#area_attr#,adv_name=#adv_name#,
+		adv_desc=#adv_desc#,img_path=#img_path#,link_url=#link_url#,title=#title#,content=#content#,start_date=#start_date#,end_date=#end_date#,
+		remark=#remark#,cust_id=#cust_id#,adv_state=#adv_state#,iscount=#iscount#,addnum=$addnum$,info_id=#info_id#,adv_code=#adv_code#,flash_url=#flash_url#,bg_color=#bg_color#
+		WHERE adv_id=$adv_id$
+	</update>
+
+	<insert id="insert" parameterClass="advinfo">
+		INSERT INTO
+		advinfo(pos_id,keyword,cat_attr,area_attr,adv_name,adv_desc,img_path,link_url,title,content,start_date,end_date,remark,cust_id,adv_state,iscount,addnum,info_id,adv_code,flash_url,bg_color)
+		VALUES($pos_id$,#keyword#,#cat_attr#,#area_attr#,#adv_name#,#adv_desc#,#img_path#,#link_url#,#title#,#content#,#start_date#,#end_date#,#remark#,#cust_id#,#adv_state#,#iscount#,$addnum$,#info_id#,#adv_code#,#flash_url#,bg_color)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM advinfo WHERE adv_id in ($adv_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM advinfo  
+		LEFT JOIN advpos  ON advinfo.pos_id=advpos.pos_id 
+		INNER JOIN commpara  ON advpos.adv_pos=commpara.para_value 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="adv_name">
+				INSTR(adv_name,#adv_name#) >0
+			</isNotNull>
+				<isNotNull prepend="and" property="area_attr">
+				INSTR(advinfo.area_attr,#area_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="pos_type">
+				pos_type=#pos_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="start_date">
+				INSTR(start_date,#start_date#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="end_date">
+				INSTR(end_date,#end_date#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="pos_id">
+				advinfo.pos_id=#pos_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="adv_state">
+				adv_state=#adv_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="adv_pos">
+				advpos.adv_pos=#adv_pos#
+			</isNotNull>
+			<isNotNull prepend="and" property="iscount">
+				iscount=#iscount#
+			</isNotNull>
+			<isNotNull prepend="and" property="module_type">
+				module_type=#module_type#
+			</isNotNull>
+			<!-- isshow不为空的话，取出正在播放的广告信息 -->
+			<isNotNull prepend="and" property="isshow">
+				TO_DAYS(end_date)>=TO_DAYS(NOW()) AND TO_DAYS(NOW())>=TO_DAYS(start_date)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT
+		advinfo.adv_id,advinfo.pos_id,keyword,cat_attr,area_attr,adv_name,adv_desc,advinfo.img_path,link_url,title,content,start_date,end_date,
+		remark,cust_id,adv_state,iscount,addnum,pos_name,pos_type,pos_type as type,module_type,adv_pos,para_key,flash_url,bg_color,advinfo.info_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY advinfo.info_id ASC , advinfo.adv_id ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 赞助商广告列表信息 -->
+	<select id="getKeywordAdsList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+         SELECT d.info_id,d.title,d.content,d.link_url FROM advinfo d,advpos p where  p.pos_id = d.pos_id and  d.adv_state="0" and  d.iscount="0"  
+			<isNotNull prepend="and" property="keywordName">
+				d.keyword=#keywordName#
+		    </isNotNull>	
+		    <isNotNull prepend="and" property="cat_attr">
+				INSTR(d.cat_attr,#cat_attr#) >0
+		    </isNotNull>	
+         and NOW() BETWEEN d.start_date AND d.end_date 	order by d.adv_id desc	
+	</select>
+
+</sqlMap>

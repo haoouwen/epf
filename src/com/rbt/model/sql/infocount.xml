@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="infocount">
+
+	<typeAlias alias="infocount" type="com.rbt.model.Infocount" />
+
+	 <select id="getrepeattitle" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" >
+	 select count(*) as ct  from $tablename$ where $titlecol$=#trtitle#
+	</select>
+	<sql id="getCommon">
+		FROM goodsorder
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sevendays">
+				DATE(order_time)  > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+			</isNotNull>
+		</dynamic>
+		
+	</sql>
+	<select id="getSevenDaysList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT order_time,COUNT(*) as countnum
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		GROUP BY order_time
+	</select>
+	
+	<!-- 销售额统计开始 -->
+	
+	<sql id="getTotalCommon">
+		FROM goodsorder
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_state">
+				order_state in ($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				sell_cust_id = #cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getTotalList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DATE_FORMAT(order_time,'$timetype$') timetype,SUM(tatal_amount) totalamount,order_state  
+		<isParameterPresent>
+			<include refid="getTotalCommon" />
+		</isParameterPresent>
+		GROUP BY timetype
+	</select>
+	
+
+	<!-- 销售额统计结束 -->
+	
+	
+	
+	<!-- 销售量/额排名统计开始 -->
+	<sql id="getRankingCommon">
+		FROM goods g INNER JOIN orderdetail od ON g.goods_id = od.goods_id INNER JOIN goodsorder go ON od.order_id=go.order_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_state">
+				go.order_state in ($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				g.cust_id = #cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getRankingList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		<![CDATA[ 
+		SELECT g.goods_name,od.goods_id,COUNT(*) AS num,SUM(od.goods_price) AS price
+		]]>
+		<isParameterPresent>
+			<include refid="getRankingCommon" />
+		</isParameterPresent>
+		GROUP BY od.goods_id
+		<isNotNull property="momeny">
+		  order by price DESC
+		</isNotNull>
+		<isNotNull property="count">
+		  order by num DESC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getRankingCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(DISTINCT(g.goods_id)) ct
+		<isParameterPresent>
+			<include refid="getRankingCommon" />
+		</isParameterPresent>
+	</select>
+	<!-- 销售量/额排名统计结束 -->
+	
+	<!-- 会员购物量统计开始 -->
+	<sql id="getBuycountCommon">
+		FROM member m LEFT JOIN goodsorder go ON m.cust_id = go.buy_cust_id LEFT JOIN orderdetail od ON od.order_id = go.order_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_state">
+				go.order_state in($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getBuycountList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT m.cust_name,COUNT(od.trade_id) AS buynum,IFNULL(SUM(od.goods_price),0) AS totalprice
+		<isParameterPresent>
+			<include refid="getBuycountCommon" />
+		</isParameterPresent>
+		GROUP BY cust_name
+		<isNotNull property="momeny">
+		  order by totalprice DESC
+		</isNotNull>
+		<isNotNull property="count">
+		  order by buynum DESC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>	
+	
+	<select id="getBuyCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (
+		SELECT m.cust_name 
+		FROM member m LEFT JOIN goodsorder go ON m.cust_id = go.buy_cust_id LEFT JOIN orderdetail od ON od.order_id = go.order_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_state">
+				go.order_state = #order_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+		</dynamic>
+		GROUP BY cust_name) as abc
+	</select>
+	
+	<!-- 会员购物量统计结束 -->
+	
+	<!-- 订单数统计开始 -->
+	
+	<sql id="getOrdernumCommon">
+		FROM goodsorder
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_state">
+				order_state = #order_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				sell_cust_id = #cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getOrdernumList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DATE_FORMAT(order_time,'$timetype$') timetype,COUNT(order_id) AS totalamount,order_state  
+		<isParameterPresent>
+			<include refid="getOrdernumCommon" />
+		</isParameterPresent>
+		GROUP BY timetype
+	</select>
+	
+	<!-- 订单数统计结束 -->
+	
+	<!-- 会员数统计开始 -->
+	
+	<sql id="getMembernumCommon">
+		FROM member
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="starttime">
+				DATE(in_date)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(in_date)
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getMembernumList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DATE_FORMAT(in_date,'$timetype$') timetype,COUNT(cust_id) AS totalamount  
+		<isParameterPresent>
+			<include refid="getMembernumCommon" />
+		</isParameterPresent>
+		GROUP BY timetype
+	</select>
+	
+	<!-- 会员数统计结束 -->
+	
+	<!-- 财务统计开始 -->
+	
+	<sql id="getMoneyCommon">
+		FROM goodsorder
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				sell_cust_id = #cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getMoneyList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DATE_FORMAT(order_time,'<isNotNull property="timetype">$timetype$</isNotNull>') timetype,IFNULL(SUM(comm_free),0) AS comm_free,IFNULL(SUM(ship_free),0) AS ship_free,IFNULL(SUM(insured),0) AS insured,IFNULL(SUM(tatal_amount),0) AS total_amount
+		<isParameterPresent>
+			<include refid="getMoneyCommon" />
+		</isParameterPresent>
+		GROUP BY timetype 
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getMoneyCount" 
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct from (SELECT DATE_FORMAT(order_time,'<isNotNull property="timetype">$timetype$</isNotNull>') timetype,IFNULL(SUM(comm_free),0) AS comm_free,IFNULL(SUM(ship_free),0) AS ship_free,IFNULL(SUM(insured),0) AS insured,IFNULL(SUM(tatal_amount),0) AS total_amount
+        FROM goodsorder
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="starttime">
+				DATE(order_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				sell_cust_id = #cust_id#
+			</isNotNull>
+		</dynamic>
+          GROUP BY timetype) as abc
+	</select>
+	
+	<!-- 会员数统计结束 -->
+
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="infocount">
+		<![CDATA[ 
+          SELECT infocount_id FROM infocount WHERE infocount_id=$infocount_id$
+        ]]>
+	</select>
+	<update id="update" parameterClass="infocount">
+		UPDATE infocount SET infocount_id=#infocount_id# WHERE infocount_id=$infocount_id$
+	</update>
+	<insert id="insert" parameterClass="infocount">
+		INSERT INTO infocount (infocount_id) VALUES (#infocount_id#)
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM infocount WHERE infocount_id in ($infocount_id$)
+	</delete>
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+	</select>
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cat_name,cat_id FROM category
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="module_type">
+				module_type = #module_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_level">
+				cat_level = #cat_level#
+			</isNotNull>
+		</dynamic> 
+	</select>
+	
+	<!-- 会员总数 -->
+	<select id="getTotalMember" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT COUNT(*) totalMember FROM member where cust_id!='0'
+	</select>
+	
+	<!-- 会员增长数量 -->
+	<select id="getGrowMember" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT COUNT(*) growMember from member m1 
+		     left join memberuser m2 on m1.cust_id=m2.cust_id and m2.user_type='1'
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id_no">  
+                 m1.cust_id != '0'  
+            </isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(m1.in_date)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(m1.in_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr">
+				INSTR(m1.area_attr,#area_attr#)
+			</isNotNull>
+			<isNotNull prepend="and" property="membernum">
+				LEFT(m2.membernum,6)=#membernum#
+			</isNotNull>
+			 
+		</dynamic>
+		
+	</select>
+	
+	<!-- 区域会员消费总金额 -->
+	
+	<select id="getTotalAreaAmount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT IFNULL(SUM(tatal_amount),0) totalAreaAmount FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT JOIN memberuser mu ON m.cust_id=mu.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull> 
+			<isNotNull prepend="and" property="area_attr">
+				INSTR(m.area_attr,#area_attr#)
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="membernum">
+		    	LEFT(mu.membernum,6)=#membernum#
+			</isNotNull>
+			
+			 <isNotNull prepend="and" property="area_number">
+	            LEFT(mu.membernum,3)=#area_number#
+			</isNotNull>
+			
+		</dynamic>
+	</select>
+	
+	
+	<!-- 会员消费的总金额 -->
+	<select id="getTotalAmount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT IFNULL(SUM(tatal_amount),0) totalAmount from goodsorder go LEFT JOIN member m ON go.buy_cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull> 
+			<isNotNull prepend="and" property="starttime">
+				DATE(m.in_date)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(m.in_date)
+			</isNotNull>
+			
+		</dynamic>
+	</select>
+	
+	<!-- 被会员消费的商品数量 -->
+	<select id="getTotalGoods" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT IFNULL(SUM(od.order_num),0) total_goods FROM goodsorder go LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN member m ON go.buy_cust_id=m.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(go.pay_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(go.pay_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr">
+				INSTR(m.area_attr,#area_attr#)
+			</isNotNull>
+			<!--
+			<isNotNull prepend="and" property="store_code">
+				store_code = #store_code#
+			</isNotNull>
+		    -->
+		</dynamic>
+	</select>
+	
+	<!-- 被会员消费的同类商品数量 -->
+	<select id="getTotalCatGoods" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT IFNULL(SUM(order_num),0) cat_goods_num FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="cat_attr">
+				INSTR(g.cat_attr,#cat_attr#)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(go.pay_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(go.pay_time)
+			</isNotNull>
+		    <isNotNull prepend="and" property="area_attr">
+				INSTR(m.area_attr,#area_attr#)
+			</isNotNull>
+			<!--
+			<isNotNull prepend="and" property="store_code">
+				store_code = #store_code#
+			</isNotNull>
+		    -->
+		</dynamic>
+	</select>
+	
+	<sql id="getOperationCommon">
+		
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				order_state IN ($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE_FORMAT(sure_time,'%Y-%m-%d')>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE_FORMAT(sure_time,'%Y-%m-%d')
+			</isNotNull>
+			<isNotNull prepend="and" property="sure_time">
+			    1=1 GROUP BY sales_time ORDER BY sales_time
+	        </isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getOperationCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM(
+		    SELECT DATE_FORMAT(sure_time,'%Y-%m-%d') sales_time FROM goodsorder
+		<isParameterPresent>
+			<include refid="getOperationCommon" />
+		</isParameterPresent>
+		) AS tem_table1
+		
+	</select>
+	
+	<!-- 按时间销售统计 -->
+	<select id="getSalesAmountList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT DATE_FORMAT(sure_time,'%Y-%m-%d') sales_time,COUNT(*) order_count,SUM(tatal_amount) order_total_amount
+		
+		FROM goodsorder
+		
+        <isParameterPresent>
+			<include refid="getOperationCommon" />
+		</isParameterPresent>
+        
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+		
+	</select>
+	
+	<sql id="getOperationByArea">
+		
+		 <dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+			
+		    <isNotNull prepend="and" property="area_attr">
+				INSTR(m.area_attr,#area_attr#)
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<!-- 按地区销售统计 -->
+	<select id="getCountSalesByArea" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT COUNT(*) order_count,SUM(go.tatal_amount) order_total_amount
+		
+		FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id
+		
+       <isParameterPresent>
+			<include refid="getOperationByArea" />
+		</isParameterPresent>
+		
+	</select>
+	
+	<!-- 销售统计，按商品种类 -->
+	<select id="getCountSalesByCat" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT COUNT(*) order_count,SUM(go.tatal_amount) order_total_amount FROM goodsorder go LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="cat_attr">
+				INSTR(g.cat_attr,#cat_attr#)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(go.sure_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(go.sure_time)
+			</isNotNull>
+			
+		</dynamic>
+	</select>
+	
+	
+	
+	<sql id="getSaleByCatCommon">
+		
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="cat_attr">
+				INSTR(g.cat_attr,#cat_attr#)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(go.sure_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(go.sure_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_name">
+				    1=1 GROUP BY g.goods_name
+		        </isNotNull>
+		    </dynamic>
+	</sql>
+	
+	<select id="getSaleByCatCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM 
+		(SELECT g.goods_name,SUM(od.order_num) AS goods_volume FROM goodsorder go 
+		    LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+		   <isParameterPresent>
+			 <include refid="getSaleByCatCommon" />
+		   </isParameterPresent> 
+		 ) AS tmp_table
+		   
+	</select>
+	
+	
+	
+	
+	<!-- 销售统计，按商品种类 -->
+	<select id="getSalesByCatList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		
+		SELECT g.goods_name,SUM(od.order_num) AS goods_volume,SUM(go.tatal_amount) AS order_total_amount FROM goodsorder go 
+		    LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+        
+        <isParameterPresent>
+			<include refid="getSaleByCatCommon" />
+		</isParameterPresent>
+        
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+        
+	</select>
+	
+	
+	<sql id="getCountByPurchasesCommon">
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+				go.order_state IN ($order_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(go.sure_time)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(go.sure_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="memberbuy">
+			   1=1 GROUP BY mu.user_name ORDER BY mem_goods_num DESC
+	        </isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getCountByPurchases" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (
+		SELECT mu.user_name,IFNULL(SUM(od.order_num),0) mem_goods_num
+		FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT JOIN memberuser mu ON m.cust_id=mu.cust_id LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+		<isParameterPresent>
+			<include refid="getCountByPurchasesCommon" />
+		</isParameterPresent>
+		) AS tem_table2
+	</select>
+	
+	<!-- 销售统计，按购买量排序统计 -->
+	<select id="getCountSalesByPurchases" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT mu.user_name,IFNULL(SUM(od.order_num),0) mem_goods_num
+		
+		FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT JOIN memberuser mu ON m.cust_id=mu.cust_id LEFT JOIN orderdetail od ON go.order_id=od.order_id LEFT JOIN goods g ON od.goods_id=g.goods_id
+		
+		<isParameterPresent>
+			<include refid="getCountByPurchasesCommon" />
+		</isParameterPresent>
+        
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+		
+</sqlMap>
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberfund">
+
+	<typeAlias alias="memberfund" type="com.rbt.model.Memberfund" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberfund">
+		<![CDATA[ 
+    SELECT cust_id,fund_num,use_num,freeze_num,pay_passwd FROM memberfund WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberfund">
+		UPDATE memberfund SET cust_id=#cust_id#,fund_num=#fund_num#,use_num=#use_num#,freeze_num=#freeze_num#,pay_passwd=#pay_passwd# WHERE cust_id=$cust_id$
+	</update>
+	
+	<update id="updatenum" parameterClass="java.util.HashMap">
+		UPDATE memberfund SET fund_num=fund_num+#addfund#,use_num=use_num+#addfund# WHERE cust_id=$cust_id$
+	</update>
+
+	<insert id="insert" parameterClass="memberfund">
+		INSERT INTO memberfund (cust_id,fund_num,use_num,freeze_num,pay_passwd) VALUES (#cust_id#,#fund_num#,#use_num#,#freeze_num#,#pay_passwd#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberfund WHERE cust_id in ($cust_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberfund right join member on memberfund.cust_id=member.cust_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_name"> 
+			     INSTR(cust_name,#cust_name#)>0 
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cust_id"> 
+			     memberfund.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="pay_passwd"> 
+			     memberfund.pay_passwd=#pay_passwd#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="fund_cust_id"> 
+			     memberfund.cust_id!=#fund_cust_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT member.cust_id,cust_name,fund_num,use_num,freeze_num,pay_passwd,member.mem_type
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY cust_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+	<select id="getTotalFund" resultClass="java.util.HashMap">
+		SELECT SUM(fund_num) allfund,SUM(use_num) allusedfund,SUM(freeze_num) allfreezefund FROM memberfund
+	</select>
+
+
+</sqlMap>
+

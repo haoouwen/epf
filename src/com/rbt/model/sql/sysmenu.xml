@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysmenu">
+
+	<typeAlias alias="sysmenu" type="com.rbt.model.Sysmenu" />
+	
+	
+	<cacheModel id="sysmenu-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="sysmenu.update" />
+		<flushOnExecute statement="sysmenu.insert" />
+		<flushOnExecute statement="sysmenu.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sysmenu">
+		<![CDATA[ 
+    select menu_id,menu_name,syscode,up_menu_id,menu_level,sort_no,enabled,url,target from sysmenu where menu_id=#value#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sysmenu">
+		UPDATE sysmenu SET
+		menu_name=#menu_name#,syscode=#syscode#,up_menu_id=#up_menu_id#,menu_level=#menu_level#,sort_no=$sort_no$,enabled=#enabled#,url=#url#,target=#target#
+		WHERE menu_id=#menu_id#
+	</update>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE sysmenu SET sort_no=#sort_no# WHERE menu_id=$menu_id$
+	</update>
+	
+	<update id="updateEnable" parameterClass="java.util.HashMap">
+		UPDATE sysmenu SET enabled=#enabled# WHERE menu_id in($menu_id$)
+	</update>
+	
+	<update id="updateEnabled" parameterClass="java.util.HashMap">
+		UPDATE sysmenu SET enabled=#enabled# WHERE up_menu_id in($up_menu_id$)
+	</update>		
+
+	<insert id="insert" parameterClass="sysmenu">
+		INSERT INTO sysmenu
+		(menu_id,menu_name,syscode,up_menu_id,menu_level,sort_no,enabled,url,target)
+		VALUES
+		(#menu_id#,#menu_name#,#syscode#,#up_menu_id#,#menu_level#,$sort_no$,#enabled#,#url#,#target#)
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from sysmenu where menu_id in ($value$)
+	</delete>
+
+	<sql id="getCommon">
+		from sysmenu 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="menu_name">
+				menu_name=#menu_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="syscode">
+				syscode=#syscode#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_menu_id">
+				up_menu_id=#up_menu_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="enabled">
+				enabled=#enabled#
+			</isNotNull>
+			<isNotNull prepend="and" property="ro_menu_level">
+				menu_level=#ro_menu_level#
+			</isNotNull>
+			<isNotNull prepend="and" property="url">
+				INSTR(url,#url#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select menu_id,menu_id as ename,menu_name,syscode,up_menu_id,menu_level,sort_no,enabled,url,target
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		order by sort_no asc,menu_id desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getEnalbeList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(menu_id) as menu_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	
+
+	<!--  cacheModel="sysmenu.sysmenu-cache" -->
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" >
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

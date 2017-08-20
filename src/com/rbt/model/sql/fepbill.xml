@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="fepbill">
+
+	<typeAlias alias="fepbill" type="com.rbt.model.Fepbill" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="fepbill">
+		<![CDATA[ 
+    SELECT fepbill_id,purchasingtotalamount,orderids,in_date FROM fepbill WHERE fepbill_id=$fepbill_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="fepbill">
+		UPDATE fepbill SET fepbill_id=#fepbill_id#,purchasingtotalamount=#purchasingtotalamount#,orderids=#orderids# WHERE fepbill_id=$fepbill_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE fepbill SET 
+    	 <isNotNull  property="fepbill_id"> 
+		   fepbill_id=$fepbill_id$
+		 </isNotNull>
+    	 WHERE fepbill_id=$fepbill_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="fepbill">
+		UPDATE fepbill SET fepbill_id=$fepbill_id$ WHERE fepbill_id=$fepbill_id$
+	</update>
+
+	<insert id="insert" parameterClass="fepbill">
+		INSERT INTO fepbill (fepbill_id,purchasingtotalamount,orderids,in_date) VALUES (#fepbill_id#,#purchasingtotalamount#,#orderids#,date_sub(now(), interval 1 day))
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM fepbill WHERE fepbill_id in ($fepbill_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM fepbill 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="fepbill_id">
+				fepbill_id=#fepbill_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="excid">
+				fepbill_id in($excid$)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT fepbill_id,purchasingtotalamount,orderids,in_date
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY fepbill_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

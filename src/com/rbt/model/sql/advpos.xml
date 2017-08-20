@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="advpos">
+
+	<typeAlias alias="advpos" type="com.rbt.model.Advpos" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="advpos">
+		<![CDATA[ 
+    SELECT pos_id,pos_name,pos_desc,pos_type,p_width,p_height,module_type,price,default_code,isshow,sort_no,img_path,adv_pos FROM advpos WHERE pos_id=$pos_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="advpos">
+		UPDATE advpos SET
+		pos_name=#pos_name#,pos_desc=#pos_desc#,pos_type=#pos_type#,p_width=#p_width#,p_height=#p_height#,module_type=#module_type#,
+		price=$price$,default_code=#default_code#,isshow=#isshow#,sort_no=$sort_no$,img_path=#img_path#,adv_pos=#adv_pos#
+		WHERE pos_id=$pos_id$
+	</update>
+
+	<update id="updateAdvposBatch" parameterClass="java.util.HashMap">
+		UPDATE advpos SET sort_no=$sort_no$ WHERE pos_id=$pos_id$
+	</update>
+
+	<insert id="insert" parameterClass="advpos">
+		INSERT INTO
+		advpos(pos_name,pos_desc,pos_type,p_width,p_height,module_type,price,default_code,isshow,sort_no,img_path,adv_pos)
+		VALUES(#pos_name#,#pos_desc#,#pos_type#,#p_width#,#p_height#,#module_type#,$price$,#default_code#,#isshow#,$sort_no$,#img_path#,#adv_pos#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		<!-- sys_adv 0：非系统广告位 1：系统广告位 -->
+		DELETE FROM advpos WHERE pos_id in ($pos_id$) and sys_adv='0'
+	</delete>
+
+	<sql id="getCommon">
+		FROM advpos  INNER JOIN commpara  ON
+		advpos.pos_type=commpara.para_value 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="pos_name">
+				INSTR(pos_name,#pos_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="pos_type">
+				INSTR(pos_type,#pos_type#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="p_width">
+				p_width=#p_width#
+			</isNotNull>
+			<isNotNull prepend="and" property="p_height">
+				p_height=#p_height#
+			</isNotNull>
+			<isNotNull prepend="and" property="pos_price">
+				INSTR(pos_price,#pos_price#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="isshow">
+				INSTR(isshow,#isshow#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="module_type">
+				module_type=#module_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="para_code"> 
+				commpara.para_code=#para_code#
+			</isNotNull>
+			<isNotNull prepend="and" property="adv_pos"> 
+				advpos.adv_pos=#adv_pos#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT
+		pos_id,pos_name,pos_desc,pos_type,p_width,p_height,module_type,price,default_code,isshow,advpos.sort_no,para_key,sys_adv,advpos.img_path,adv_pos
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY advpos.sort_no,pos_type,pos_id ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+    
+    <select id="getPosNameList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+       SELECT pos_id, pos_name FROM advpos
+    </select>
+</sqlMap>

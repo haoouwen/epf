@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="role">
+
+	<typeAlias alias="role" type="com.rbt.model.Role" />
+	
+	<insert id="insert" parameterClass="role">
+		INSERT INTO role (cust_id,role_name,menu_right,oper_right,remark,user_id) 
+		VALUES ($cust_id$,#role_name#,#menu_right#,#oper_right#,#remark#,#user_id#)
+	</insert>
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="role">
+	<![CDATA[ 
+    SELECT role_id,cust_id,role_name,menu_right,oper_right,remark,user_id,is_system FROM role WHERE role_id=$VALUE$
+    ]]>
+	</select>
+	
+	<update id="update" parameterClass="role">
+    	UPDATE role SET cust_id=$cust_id$,role_name=#role_name#,menu_right=#menu_right#,oper_right=#oper_right#,remark=#remark#,user_id=#user_id# WHERE role_id=$role_id$
+	</update>
+	
+	<sql id="getCommon">
+	   from role
+     	<dynamic prepend="WHERE">
+     	     <isNotNull prepend="and" property="cust_id"> 
+			     cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="user_id"> 
+			     user_id=#user_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="role_name"> 
+			     role_name=#role_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="role_name_s"> 
+			     INSTR(role_name,#role_name_s#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_id_in"> 
+			     user_id in($user_id_in$)
+			 </isNotNull>
+			 <isNotNull prepend="or" property="supper"> 
+			     user_id=$supper$
+			 </isNotNull>
+			  <isNotNull prepend="and" property="is_system"> 
+			     is_system=#is_system#
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+        select role_id,role_name,menu_right,oper_right,remark,is_system
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by role_id DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull> 
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from role where role_id in ($value$)
+	</delete>
+
+</sqlMap>

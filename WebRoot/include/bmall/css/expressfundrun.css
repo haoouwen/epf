@@ -1,0 +1,33 @@
+.zhyg{
+	width:800px;
+	padding-top:15px;
+	padding-bottom:15px;
+	background:#F6F6F6;
+	padding-left:18px;
+}
+.zhyg .zhygh2{
+	font-size:14px;
+	font-weight:bold;
+	padding-bottom:10px;
+}
+.zhyg .zhygky{
+	font-size:28px;
+	font-weight:bold;
+}
+.zhyg .zhygys{
+	color:#068EC2;
+}
+.zhyg .zhygbut{
+	padding-top:10px;
+}
+.th{
+	border-top:#c9c8c8 solid 1px;
+	border-bottom:#c9c8c8 solid 1px;
+	background-color:#F6F6F6;
+	height:30px;
+	line-height:30px;
+	width:808px;
+	padding-left:10px;
+}
+
+

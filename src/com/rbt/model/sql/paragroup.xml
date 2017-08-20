@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="paragroup">
+
+	<typeAlias alias="paragroup" type="com.rbt.model.Paragroup" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="paragroup">
+		<![CDATA[ 
+    SELECT para_group_id,para_name,cat_attr,sort_no,in_date FROM paragroup WHERE para_group_id=$para_group_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="paragroup">
+		UPDATE paragroup SET para_group_id=#para_group_id#,para_name=#para_name#,cat_attr=#cat_attr#,sort_no=#sort_no#,in_date=now() WHERE para_group_id=$para_group_id$
+	</update>
+	<!--  批量排序-->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE paragroup SET sort_no=#sort_no# WHERE para_group_id=$para_group_id$
+	</update>
+
+	<insert id="insert" parameterClass="paragroup">
+		INSERT INTO paragroup (para_group_id,para_name,cat_attr,sort_no,in_date) VALUES (#para_group_id#,#para_name#,#cat_attr#,#sort_no#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM paragroup WHERE para_group_id in ($para_group_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM paragroup 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="para_name"> 
+				  INSTR(para_name,#para_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+				  INSTR(cat_attr,#cat_attr#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT para_group_id,para_name,cat_attr,sort_no,in_date
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

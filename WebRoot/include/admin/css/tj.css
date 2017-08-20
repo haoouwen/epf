@@ -1,0 +1,76 @@
+/*侧栏结束*/
+.arrow{
+	width:9px;
+	float:left;
+	height:514px;
+	background:#6f777a;
+	}
+.arrow img{
+	padding-top:257px;
+	}	
+.arrow a{
+	display:block;
+	height:514px;
+	width:9px;
+	}	
+
+.main{
+	width:70%;
+	height:514px;
+	background:#6f767e;	
+	}
+.main_cont{
+	width:100%;
+	height:505px;
+	margin-top:9px;
+	background:#ffffff;
+	}	
+
+.ymgl{
+	width:240px;
+	color:#666666;
+	line-height:20px;
+	background:url(/include/admin/images/ymgl.jpg) no-repeat left center;
+	padding-left:55px;
+	float:left;
+	margin:70px 0 0 30px;
+	}
+.ymgl b{
+	font-size:14px;
+	color:#617c99;
+	}	
+
+
+.gl{
+	padding-left:20px;
+	}	
+.gl .glMain{
+    background:url(/include/admin/images/gl.jpg) no-repeat;
+	padding-left:30px;
+	}
+.gl h2{
+	 background:url(/include/admin/images/glH.jpg) no-repeat;
+	 height:22px;
+	 line-height:22px;
+	 width:249px;
+	 padding-left:15px;
+	 font-size:14px;
+	 color:#FFF;
+	 margin-top:10px;
+	 }	
+	 
+.gl p{
+	width:249px;
+	padding-left:15px;
+	color:#666666;
+	line-height:20px;
+	padding-top:5px;
+	}	
+	
+.gl .glBot{
+	width:20px;
+	height:20px;
+	background:url(/include/admin/images/glBot.jpg) no-repeat;
+	float:left;
+	}	 
+    

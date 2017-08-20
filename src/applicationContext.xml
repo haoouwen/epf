@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+	default-lazy-init="true">
+	
+	<!-- Activates scanning of @Autowired -->
+	<context:annotation-config />
+
+	<!-- Activates scanning of @Service -->
+	<context:component-scan base-package="com.rbt" />
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${datasource.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${datasource.url}</value>
+		</property>
+		<property name="user">
+			<value>${datasource.username}</value>
+		</property>
+		<property name="password">
+			<value>${datasource.password}</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>${c3p0.acquireIncrement}</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>${c3p0.initialPoolSize}</value>
+		</property>
+		<property name="minPoolSize">
+			<value>${c3p0.minPoolSize}</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>${c3p0.maxPoolSize}</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>${c3p0.maxIdleTime}</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>${c3p0.idleConnectionTestPeriod}</value>
+		</property>
+		<property name="maxStatements">
+			<value>${c3p0.maxStatements}</value>
+		</property>
+		<property name="numHelperThreads">
+			<value>${c3p0.numHelperThreads}</value>
+		</property>
+	</bean>
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation"
+			value="classpath:sqlmap.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 数据连接事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 拦截事务的方法设置 -->
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<!-- 
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				 -->
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 拦截事务Beans设置-->
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames"> <value>*Service</value></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>transactionInterceptor</value>
+				<!-- 此处增加新的Interceptor --> 
+			</list> 
+		</property> 
+	</bean>
+
+	<!-- 通知器，用它来对属性值进行处理    -->
+	<bean
+		class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+		<property name="transactionInterceptor" ref="transactionInterceptor" />
+	</bean>
+</beans>

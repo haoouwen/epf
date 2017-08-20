@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="navigation">
+
+	<typeAlias alias="navigation" type="com.rbt.model.Navigation" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="navigation">
+		<![CDATA[ 
+    SELECT n_id,goods_id,tab_id,sort_no,in_date,tab_number FROM navigation WHERE n_id=$n_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="navigation">
+		UPDATE navigation SET n_id=#n_id#,goods_id=#goods_id#,tab_id=#tab_id#,
+		sort_no=#sort_no#,in_date=#in_date#,tab_number=#tab_number# WHERE n_id=$n_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE navigation SET 
+    	 <isNotNull  property="n_id"> 
+		   n_id=$n_id$
+		 </isNotNull>
+    	 WHERE n_id=$n_id$
+    </update>
+     
+     <!-- 批量排序 sort_no -->
+    <update id="updateSort" parameterClass="java.util.HashMap">
+      UPDATE navigation SET sort_no=#sort_no# where n_id=$n_id$
+    </update>
+    
+    
+	<update id="updateSate" parameterClass="navigation">
+		UPDATE navigation SET n_id=$n_id$ WHERE n_id=$n_id$
+	</update>
+
+	<insert id="insert" parameterClass="navigation">
+		INSERT INTO navigation (n_id,goods_id,tab_id,sort_no,in_date,tab_number)
+		 VALUES (#n_id#,#goods_id#,#tab_id#,#sort_no#,now(),#tab_number#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM navigation WHERE n_id in ($n_id$)
+	</delete>
+
+	<sql id="getCommon">
+		 FROM navigation n 
+         LEFT JOIN navtab t ON  n.tab_id = t.tab_id  
+         LEFT JOIN goods g ON n.goods_id = g.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="n_id">
+				n_id=#n_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="tab_id">
+				n.tab_id=#tab_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_name">
+				g.goods_name=#goods_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="sale_price">
+				(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)=#sale_price#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr">
+			 g.cat_attr=#cat_attr#
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+				DATE(g.in_date)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(g.in_date)
+			</isNotNull>
+		
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT  distinct(n.goods_id),n_id,n.goods_id,n.tab_id,n.sort_no,g.goods_name,
+		g.cat_attr,g.cat_attr as goods_cat,g.in_date,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as sale_price
+		,n.tab_number
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC, n_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		 FROM navigation n 
+	        LEFT JOIN goods g ON n.goods_id = g.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="n_id">
+				n_id=#n_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="tab_number">
+				n.tab_number=#tab_number#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_up">
+				g.is_up=#is_up#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del">
+				g.is_del=#is_del#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT n_id,n.goods_id,n.tab_id,
+		n.sort_no,g.goods_name,g.cat_attr,g.depot_id,
+		g.in_date,(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as  sale_price,
+		n.tab_number,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as min_sale_price,
+		(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as goods_market_price
+		,g.is_up,g.is_del,g.info_state,g.list_img,g.img_path,IFNULL(g.sale_num,0) as sale_num,
+		(SELECT COUNT(trade_id) FROM goodseval WHERE  goodseval.goods_id=g.goods_id) AS eval_num
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		ORDER BY
+		<isNotNull property="in_date_asc">
+			 g.in_date ASC,
+		</isNotNull>
+		<isNotNull property="in_date_desc">
+			 g.in_date DESC,
+		</isNotNull>
+		
+		<isNotNull property="sale_num_asc">
+			 g.sale_num ASC,
+		</isNotNull>
+		<isNotNull property="sale_num_desc">
+			 g.sale_num DESC,
+		</isNotNull>
+		
+		<isNotNull property="sale_price_asc">
+			 sale_price ASC,
+		</isNotNull>
+		<isNotNull property="sale_price_desc">
+			 sale_price DESC,
+		</isNotNull>
+		<isNotNull property="sort_no_asc">
+			 n.sort_no ASC,
+		</isNotNull>
+		     g.goods_id ASC
+		
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+</sqlMap>
+

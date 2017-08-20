@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="orderinvoice">
+
+	<typeAlias alias="orderinvoice" type="com.rbt.model.Orderinvoice" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="orderinvoice">
+		<![CDATA[ 
+    SELECT invoice_id,look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license FROM orderinvoice WHERE invoice_id=$invoice_id$
+    ]]>
+	</select>
+		<select id="getByCustId" parameterClass="java.lang.String"
+		resultClass="orderinvoice">
+		<![CDATA[ 
+    SELECT invoice_id,look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license FROM orderinvoice WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+	
+	<select id="getByInvoid" parameterClass="java.lang.String"
+		resultClass="orderinvoice">
+		<![CDATA[ 
+    SELECT invoice_id,look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license FROM orderinvoice WHERE invoice_id=$invoice_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="orderinvoice">
+		UPDATE orderinvoice SET invoice_id=#invoice_id#,look_up=#look_up#,p_content=#p_content#,invoice_type=#invoice_type#,company_name=#company_name#,identifier=#identifier#,re_address=#re_address#,re_phone=#re_phone#,bank_name=#bank_name#,bank_id=#bank_id#,z_content=#z_content#,ticket_name=#ticket_name#,ticket_cell=#ticket_cell#,area_attr=#area_attr#,address=#address#,cust_id=#cust_id#,user_id=#user_id#
+		,certificate=#certificate#,license=#license#
+		 WHERE invoice_id=$invoice_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE orderinvoice SET 
+    	 <isNotNull  property="invoice_id"> 
+		   invoice_id=$invoice_id$
+		 </isNotNull>
+    	 WHERE invoice_id=$invoice_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="orderinvoice">
+		UPDATE orderinvoice SET invoice_id=$invoice_id$ WHERE invoice_id=$invoice_id$
+	</update>
+
+	<insert id="insert" parameterClass="orderinvoice">
+		INSERT INTO orderinvoice (invoice_id,look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license) VALUES (#invoice_id#,#look_up#,#p_content#,#invoice_type#,#company_name#,#identifier#,#re_address#,#re_phone#,#bank_name#,#bank_id#,#z_content#,#ticket_name#,#ticket_cell#,#area_attr#,#address#,#cust_id#,#user_id#,#certificate#,#license#)
+	</insert>
+
+	<insert id="insertGetPk" parameterClass="orderinvoice">
+		INSERT INTO orderinvoice (look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license) VALUES (#look_up#,#p_content#,#invoice_type#,#company_name#,#identifier#,#re_address#,#re_phone#,#bank_name#,#bank_id#,#z_content#,#ticket_name#,#ticket_cell#,#area_attr#,#address#,#cust_id#,#user_id#,#certificate#,#license#)
+		 <selectKey resultClass="java.lang.String" keyProperty="invoice_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM orderinvoice WHERE invoice_id in ($invoice_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM orderinvoice WHERE invoice_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM orderinvoice 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="invoice_id">
+				invoice_id=#invoice_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT invoice_id,look_up,p_content,invoice_type,company_name,identifier,re_address,re_phone,bank_name,bank_id,z_content,ticket_name,ticket_cell,area_attr,address,cust_id,user_id,certificate,license
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY invoice_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

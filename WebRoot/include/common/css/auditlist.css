@@ -1,0 +1,40 @@
+.auditdiv{
+}
+
+.auditlist{
+	border:1px solid #e1e2e3;
+	margin-top:5px;
+	margin-bottom:2px;
+}
+
+.auditlist .audit_tr{
+	background:#F1F5FA;
+}
+
+.auditlist td{
+	padding:7px;
+}
+
+.auditlist .audit_title{
+	background:url('/include/common/images/table_title_bg.gif');
+}
+
+.audit_td1{
+	text-align:center;
+	font-weight:600;
+	color:#333333;
+}
+.audit_td2{
+	text-align:center;	
+	font-weight:600;
+	color:#333333;
+}
+.audit_td3{
+	font-weight:600;
+	color:#333333;
+}
+.audit_td4{
+	text-align:center;
+	font-weight:600;
+	color:#333333;
+}

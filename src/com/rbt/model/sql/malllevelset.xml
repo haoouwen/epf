@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="malllevelset">
+
+	<typeAlias alias="malllevelset" type="com.rbt.model.Malllevelset" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="malllevelset">
+		<![CDATA[ 
+          SELECT level_code,level_name,inter_lower,inter_height,mem_type,img_url,discount,menu_right,oper_right,note,validity_period,dedu_growth_value FROM malllevelset WHERE level_code=#level_code#
+        ]]>
+	</select>
+
+	<update id="update" parameterClass="malllevelset">
+		UPDATE malllevelset SET level_code=#level_code#,level_name=#level_name#,inter_lower=#inter_lower#,inter_height=#inter_height#,mem_type=#mem_type#,img_url=#img_url#,
+		discount=#discount#,menu_right=#menu_right#,oper_right=#oper_right#,note=#note#,validity_period=#validity_period#,dedu_growth_value=#dedu_growth_value# WHERE level_code=#level_code#
+	</update>
+
+	<insert id="insert" parameterClass="malllevelset">
+		INSERT INTO malllevelset (level_code,level_name,inter_lower,inter_height,mem_type,img_url,discount,menu_right,oper_right,note,validity_period,dedu_growth_value)
+		VALUES (#level_code#,#level_name#,#inter_lower#,#inter_height#,#mem_type#,#img_url#,#discount#,#menu_right#,#oper_right#,#note#,#validity_period#,#dedu_growth_value#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM malllevelset WHERE level_code in (#level_code#)
+	</delete>
+
+	<sql id="getCommon">
+		FROM malllevelset 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="level_name"> 
+     		    INSTR(level_name,#level_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="mem_type"> 
+     		    mem_type=#mem_type#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="level_code"> 
+     		    level_code in ($level_code$)
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT level_code,level_name,inter_lower,inter_height,mem_type,img_url,discount,menu_right,oper_right,note,validity_period,dedu_growth_value
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY level_code ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

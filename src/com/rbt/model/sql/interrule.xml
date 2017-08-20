@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="interrule">
+
+	<typeAlias alias="interrule" type="com.rbt.model.Interrule" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="interrule">
+		<![CDATA[ 
+    SELECT rule_id,rule_code,rule_name,internum FROM interrule WHERE rule_id=$rule_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="java.util.HashMap">
+		 UPDATE interrule SET internum=#internum# WHERE rule_id=$rule_id$
+	</update>
+
+	<insert id="insert" parameterClass="interrule">
+		INSERT INTO interrule (rule_id,rule_code,rule_name,internum) VALUES (#rule_id#,#rule_code#,#rule_name#,#internum#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM interrule WHERE rule_id in ($rule_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM interrule 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="rule_code">
+		    	rule_code=#rule_code#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT rule_id,rule_code,rule_name,internum
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY rule_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

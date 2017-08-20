@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="paravalue">
+
+	<typeAlias alias="paravalue" type="com.rbt.model.Paravalue" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="paravalue">
+		<![CDATA[ 
+    SELECT para_id,para_group_id,para_name,value,sort_no,in_date FROM paravalue WHERE para_id=$para_id$
+    ]]>
+	</select>
+	<update id="update" parameterClass="paravalue">
+		UPDATE paravalue SET para_id=#para_id#,para_group_id=#para_group_id#,para_name=#para_name#,value=#value#,sort_no=#sort_no#,in_date=now() WHERE para_id=$para_id$
+	</update>
+	
+	<!--  批量排序-->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE paravalue SET sort_no=#sort_no# WHERE para_id=$para_id$
+	</update>
+
+	<insert id="insert" parameterClass="paravalue">
+		INSERT INTO paravalue (para_id,para_group_id,para_name,value,sort_no,in_date) VALUES (#para_id#,#para_group_id#,#para_name#,#value#,#sort_no#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM paravalue WHERE para_id in ($para_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM paravalue p1
+		      left join paragroup p2 on p1.para_group_id=p2.para_group_id
+		<dynamic prepend="WHERE">
+			<!-- 过滤参数列表的值 -->
+			 <isNotNull prepend="and" property="para_group_id"> 
+		    		p1.para_group_id in ($para_group_id$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="para_name"> 
+				  INSTR(p1.para_name,#para_name#)>0
+			</isNotNull>
+			 <isNotNull prepend="and" property="cat_attr"> 
+				  INSTR(cat_attr,#cat_attr#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT p1.para_id,p1.para_group_id,p1.para_name,p1.value,p1.sort_no,p1.in_date,p2.para_name as paras_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY p2.para_name ASC,p1.sort_no ASC,p1.in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getParaList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT p1.para_id,p1.para_group_id,p1.para_name,VALUE,p1.sort_no,p1.in_date,s1.slef_para_value
+			FROM paravalue p1 
+				LEFT JOIN paragroup p2 ON p1.para_group_id=p2.para_group_id
+					LEFT JOIN selfparavalue s1 ON s1.para_id=p1.para_id 
+						LEFT JOIN selfparagroup sp ON s1.slef_para_group_id = sp.slef_para_group_id  WHERE 
+		<isNotNull property="cat_attr"> 
+			  INSTR(cat_attr,#cat_attr#)>0
+		</isNotNull>
+		<isNotNull prepend="and" property="goods_id"> 
+			  sp.goods_id=#goods_id#
+		</isNotNull>
+		ORDER BY p1.sort_no ASC,p1.in_date DESC
+		
+	</select>
+	
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

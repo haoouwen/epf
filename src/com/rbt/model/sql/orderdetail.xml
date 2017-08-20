@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="orderdetail">
+
+	<typeAlias alias="orderdetail" type="com.rbt.model.Orderdetail" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="orderdetail">
+		<![CDATA[ 
+    SELECT trade_id,order_id,goods_id,goods_price,order_num,goods_attr,remark,spec_id,temporary_goodsname,
+    temporary_goodsimg ,orderdetail_state,tax_rate,coupon_id,subtotal,coupon_money,use_coupon,apply_num,final_apply_num FROM orderdetail WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="orderdetail">
+		UPDATE orderdetail SET trade_id=#trade_id#,order_id=#order_id#,goods_id=#goods_id#,
+		goods_price=#goods_price#,order_num=#order_num#,goods_attr=#goods_attr#,remark=#remark#,
+		spec_id=#spec_id#,temporary_goodsname=#temporary_goodsname#,temporary_goodsimg=#temporary_goodsimg#,
+		orderdetail_state=#orderdetail_state#,tax_rate=#tax_rate#,coupon_id=#coupon_id#,subtotal=#subtotal#,
+		coupon_money=#coupon_money#,use_coupon=#use_coupon#,apply_num=#apply_num#,final_apply_num=#final_apply_num# WHERE trade_id=$trade_id$
+	</update>
+	
+	
+	<update id="updateState" parameterClass="java.util.HashMap">
+		UPDATE orderdetail SET 
+	  <isNotNull property="is_eval">
+	    	is_eval=#is_eval#
+	  </isNotNull>
+		WHERE trade_id in($trade_id$)
+	</update>	
+
+	<insert id="insert" parameterClass="orderdetail">
+		INSERT INTO orderdetail (trade_id,order_id,goods_id,goods_price,order_num,goods_attr,remark,spec_id,
+		temporary_goodsname,temporary_goodsimg,tax_rate,coupon_id,subtotal,coupon_money,use_coupon) VALUES (#trade_id#,#order_id#,#goods_id#,#goods_price#,
+		#order_num#,#goods_attr#,#remark#,#spec_id#,#temporary_goodsname#,#temporary_goodsimg#,#tax_rate#,#coupon_id#,#subtotal#,#coupon_money#,#use_coupon#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM orderdetail WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM orderdetail WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM orderdetail  o  
+   			LEFT JOIN goods g ON g.goods_id=o.goods_id
+   			LEFT JOIN goodsattr a ON a.goods_id=g.goods_id    
+   			LEFT JOIN goodsorder go ON go.order_id=o.order_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_id">
+			o.order_id=#order_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id_s">
+			FIND_IN_SET(o.order_id,#order_id_s#)
+			</isNotNull>
+			<isNotNull  prepend="and"  property="goods_id">
+			o.goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull  prepend="and"  property="cust_id">
+			go.buy_cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="trade_id_s">
+			#trade_id_s# in (o.trade_id)
+			</isNotNull>
+			<isNotNull prepend="and" property="trade_ids_s">
+			o.trade_id in ($trade_ids_s$)
+			</isNotNull>
+			<isNotNull prepend="and" property="orderdetail_state_s">
+			o.orderdetail_state  in ($orderdetail_state_s$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="order_state">
+			go.order_state in ($order_state$)
+			</isNotNull>
+		   <isNotNull prepend="and" property="is_eval">
+			o.is_eval =#is_eval#
+			</isNotNull>
+		</dynamic>
+		GROUP BY o.trade_id
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+
+		SELECT DISTINCT (o.trade_id),o.order_id,o.goods_id,o.goods_price,o.order_num,o.apply_num,o.final_apply_num,o.goods_attr,g.list_img,g.goods_name as ogoods_name,g.goods_no as ogoods_no,g.goods_no,o.remark,a.specstr,o.spec_id
+		,o.temporary_goodsname as goods_name,o.temporary_goodsimg as img_path,a.goods_item,go.order_time,o.temporary_goodsname,o.temporary_goodsimg,o.orderdetail_state,o.is_eval,o.tax_rate,o.coupon_id,o.subtotal,
+		o.coupon_money,g.kjt_id as kjt_id,o.use_coupon
+
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT g.goods_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		)abc
+	</select>
+	
+	<select id="getBuyCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT SUM(o.order_num) ct  
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+</sqlMap>

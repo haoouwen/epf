@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="selfextendattr">
+
+	<typeAlias alias="selfextendattr" type="com.rbt.model.Selfextendattr" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="selfextendattr">
+		<![CDATA[ 
+    SELECT self_attr_id,ex_attr_id,ex_attr_alias,ex_attr_value,goods_id FROM selfextendattr WHERE self_attr_id=$self_attr_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="selfextendattr">
+		UPDATE selfextendattr SET self_attr_id=#self_attr_id#,ex_attr_id=#ex_attr_id#,ex_attr_alias=#ex_attr_alias#,ex_attr_value=#ex_attr_value#,goods_id=#goods_id# WHERE self_attr_id=$self_attr_id$
+	</update>
+
+	<insert id="insert" parameterClass="selfextendattr">
+		INSERT INTO selfextendattr (self_attr_id,ex_attr_id,ex_attr_alias,ex_attr_value,goods_id) VALUES (#self_attr_id#,#ex_attr_id#,#ex_attr_alias#,#ex_attr_value#,#goods_id#)
+	</insert>
+
+	<delete id="deleteByGoodsid" parameterClass="java.lang.String">
+		DELETE FROM selfextendattr WHERE goods_id in ($goods_id$)
+	</delete>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM selfextendattr WHERE self_attr_id in ($self_attr_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM selfextendattr 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id">
+		    	goods_id=#goods_id#
+		    </isNotNull>
+			<isNotNull prepend="and" property="ex_attr_id">
+		    	ex_attr_id  in ($ex_attr_id$)
+		    </isNotNull>		    
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT self_attr_id,ex_attr_id,ex_attr_alias,ex_attr_value,goods_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY self_attr_id ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

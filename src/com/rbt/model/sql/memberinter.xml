@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberinter">
+
+	<typeAlias alias="memberinter" type="com.rbt.model.Memberinter" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberinter">
+		<![CDATA[ 
+    SELECT cust_id,fund_num FROM memberinter WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberinter">
+		UPDATE memberinter SET cust_id=#cust_id#,fund_num=#fund_num# WHERE cust_id=$cust_id$
+	</update>
+
+	<insert id="insert" parameterClass="memberinter">
+		INSERT INTO memberinter (cust_id,fund_num) VALUES (#cust_id#,#fund_num#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberinter WHERE cust_id in ($cust_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberinter left join member on memberinter.cust_id=member.cust_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_name"> 
+			     instr(cust_name,#cust_name#)>0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cust_id"> 
+			     memberinter.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="fund_num"> 
+			 <![CDATA[ 
+			     memberinter.fund_num>=$fund_num$
+			    ]]>
+			 </isNotNull>
+			 <isNotNull prepend="and" property="last_fund_num_s"> 
+			     <![CDATA[ 
+			     memberinter.fund_num<=$last_fund_num_s$
+			    ]]>
+			 </isNotNull>
+			  <isNotNull prepend="and" property="inte_cust_id"> 
+			     memberinter.cust_id!=#inte_cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="fund_num_s"> 
+			     instr( memberinter.fund_num,#fund_num_s#)>0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT member.cust_id,cust_name,fund_num,member.mem_type
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY fund_num DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+	<select id="getSumCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT SUM(fund_num) ct FROM memberinter
+	</select>
+
+
+</sqlMap>
+

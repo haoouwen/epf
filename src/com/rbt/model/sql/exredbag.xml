@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="exredbag">
+
+	<typeAlias alias="exredbag" type="com.rbt.model.Exredbag" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="exredbag">
+		<![CDATA[ 
+    SELECT ex_id,red_id,ex_state,red_no,ex_date,in_date FROM exredbag WHERE ex_id=$ex_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="exredbag">
+		UPDATE exredbag SET ex_id=#ex_id#,red_id=#red_id#,ex_state=#ex_state#,red_no=#red_no#,ex_date=#ex_date# WHERE ex_id=$ex_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE exredbag SET 
+    	 <isNotNull  property="ex_id"> 
+		   ex_id=$ex_id$
+		 </isNotNull>
+    	 WHERE ex_id=$ex_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="exredbag">
+		UPDATE exredbag SET ex_id=$ex_id$ WHERE ex_id=$ex_id$
+	</update>
+
+	<insert id="insert" parameterClass="exredbag">
+		INSERT INTO exredbag (ex_id,red_id,ex_state,red_no,ex_date,in_date) VALUES (#ex_id#,#red_id#,#ex_state#,#red_no#,#ex_date#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM exredbag WHERE ex_id in ($ex_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM exredbag 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ex_id">
+				ex_id=#ex_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ex_state">
+				ex_state=#ex_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="red_id">
+				red_id=#red_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="red_no">
+				red_no=#red_no#
+			</isNotNull>		
+			<isNotNull prepend="and" property="redkeyId">
+				ex_id in($redkeyId$)
+			</isNotNull>						
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ex_id,red_id,ex_state,red_no,ex_date,in_date,
+		(SELECT red_name FROM redpacket  where redpacket.red_id=exredbag.red_id) as red_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY ex_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="consultation">
+
+	<typeAlias alias="consultation" type="com.rbt.model.Consultation" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="consultation">
+		<![CDATA[ 
+    SELECT trade_id,goods_id,c_type,mem_id,c_content,contact,mem_ip,c_date,is_display,re_men_id FROM consultation WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="consultation">
+		UPDATE consultation SET trade_id=#trade_id#,goods_id=#goods_id#,c_type=#c_type#,mem_id=#mem_id#,c_content=#c_content#,contact=#contact#,mem_ip=#mem_ip#,c_date=#c_date#,is_display=#is_display#,re_men_id=#re_men_id# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="consultation">
+		INSERT INTO consultation (trade_id,goods_id,c_type,mem_id,c_content,contact,mem_ip,c_date,is_display,re_men_id) VALUES (#trade_id#,#goods_id#,#c_type#,#mem_id#,#c_content#,#contact#,#mem_ip#,now(),#is_display#,#re_men_id#)
+	</insert> 
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM consultation WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM consultation c
+			left join consulting cg on c.trade_id=cg.trade_id
+				left join memberuser on cg.user_id=memberuser.user_id 
+					left join member on c.mem_id=member.cust_id 
+		 				left join goods on goods.goods_id=c.goods_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="buy_cust_id">
+		   		 c.mem_id=#buy_cust_id#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="trade_id">
+		    	c.trade_id=#trade_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="goods_id">
+		    	c.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="area_attr"> 
+			INSTR(member.area_attr,#area_attr#)>0
+			</isNotNull>
+		  
+		    <isNotNull prepend="and" property="cust_id">
+		    c.re_men_id=#cust_id#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="cust_id_no">
+		    c.re_men_id!=#cust_id_no#
+		    </isNotNull>
+
+		    <isNotNull prepend="and" property="goods_name">
+		    INSTR(goods_name,#goods_name#)>0
+		    </isNotNull>
+		 
+		    <isNotNull prepend="and" property="c_type">
+		    c_type=#c_type#
+		    </isNotNull>
+			<isNotNull prepend="and" property="start_time"> 
+		    DATE(c_date)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time"> 
+			#end_time#>=DATE(c_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="rstart_time"> 
+		    DATE(re_date)>=#rstart_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="rend_time"> 
+			#rend_time#>=DATE(re_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_display">
+			c.is_display=#is_display#
+			</isNotNull>
+			<isNotNull prepend="and" property="today">
+		          DAY(c_date)=DAY(NOW()) AND MONTH(c_date)=MONTH(NOW()) AND YEAR(c_date)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="re_date"> 
+				re_date is null
+			</isNotNull>
+			<isNotNull prepend="and" property="reg"> 
+				re_date is not null
+				</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT c.trade_id,c.goods_id,c_type,mem_id,c_content,contact,mem_ip,c_date,c.is_display,re_men_id,
+		member.cust_name as cust_name,memberuser.user_name as user_name, goods.goods_name,goods.list_img,cg.re_content,cg.re_date,member.logo_path
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM consultation c
+			left join consulting cg on c.trade_id=cg.trade_id
+				left join memberuser on cg.user_id=memberuser.user_id 
+					left join member on c.mem_id=member.cust_id 
+			 			left join goods on goods.goods_id=c.goods_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="buy_cust_id">
+		   		 c.mem_id=#buy_cust_id#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="goods_id">
+		    	c.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="area_attr"> 
+			INSTR(member.area_attr,#area_attr#)>0
+			</isNotNull>
+		  
+		    <isNotNull prepend="and" property="cust_id">
+		    goods.cust_id=#cust_id#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="goods_name">
+		    INSTR(goods_name,#goods_name#)>0
+		    </isNotNull>
+		 
+		    <isNotNull prepend="and" property="c_type">
+		    c_type=#c_type#
+		    </isNotNull>
+			<isNotNull prepend="and" property="start_time"> 
+		    DATE(c_date)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time"> 
+			#end_time#>=DATE(c_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="rstart_time"> 
+		    DATE(re_date)>=#rstart_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="rend_time"> 
+			#rend_time#>=DATE(re_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_enable">
+			is_enable=#is_enable#
+			</isNotNull>
+			<isNotNull prepend="and" property="today">
+		          DAY(c_date)=DAY(NOW()) AND MONTH(c_date)=MONTH(NOW()) AND YEAR(c_date)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="re_date"> 
+				re_date is null
+			</isNotNull>
+			<isNotNull prepend="and" property="reg"> 
+				re_date is not null
+				</isNotNull>
+				
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT c.trade_id,c.goods_id,c_type,mem_id,c_content,contact,mem_ip,c.is_display,re_men_id,
+		IF(c_date IS NULL,'',DATE_FORMAT(c_date,'%Y-%c-%d %H:%i:%s')) AS c_date,
+		IF(cg.re_content IS NULL,'暂未回复',cg.re_content ) AS re_content,
+		IF(memberuser.user_name IS NULL,'',memberuser.user_name ) AS user_name,
+		IF(cg.re_date IS NULL,'',DATE_FORMAT(cg.re_date,'%Y-%c-%d %H:%i:%s')) AS re_date,
+		member.cust_name as cust_name,goods.goods_name,IF(member.logo_path IS NULL,'/malltemplate/bmall/images/defaultHead.gif',member.logo_path) AS logo_path
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM consultation c LEFT JOIN goods g ON c.goods_id=g.goods_id 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="goods_name">
+				INSTR(g.goods_name,#goods_name#)>0 and 
+			</isNotNull>
+			 g.goods_name IS NOT NULL
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+			SELECT goods_name,COUNT(*) AS info_num,g.goods_id  
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+			GROUP BY g.goods_name ORDER BY c.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT goods_name,COUNT(*) AS info_num,c.goods_id  
+			FROM consultation c LEFT JOIN goods g ON c.goods_id=g.goods_id  
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="goods_name">
+					INSTR(g.goods_name,#goods_name#)>0 and 
+				</isNotNull>
+				 g.goods_name IS NOT NULL
+			</dynamic>
+		GROUP BY c.trade_id ORDER BY c.trade_id DESC ) a
+	</select>
+	<!-- 分组查询 结束 -->
+
+</sqlMap>
+

@@ -1,0 +1,132 @@
+/*购买步骤*/
+.paymentStep{
+	width:1180px;
+	height:34px;
+	background:url(../images/buyStep.gif) no-repeat;
+	background-position:0 -80px;
+}
+/*支付*/
+.payment{
+	width:1160px;
+	padding:20px 10px 0px;
+	color:#666666;
+}
+.payment .paymentp{
+	width:1130px;
+	height:40px;
+	background:#f3f3f3;
+	line-height:40px;
+	padding:0 15px;
+	font-size:14px;
+	font-weight:bold;
+	border-bottom:#d1d1d1 solid 3px;
+	color:#333333;
+}
+.payment .paymentp strong{
+	font-size:16px;
+}
+.payment .orderbut{
+	width:80px;
+	height:21px;
+	background:url(../images/ddxqfbut_03.gif) no-repeat;
+	cursor:pointer;
+	margin-left:1070px;
+}
+/*账号支付*/
+.paymentcont{
+	width:1130px;
+	background:#f9f9f9;
+	padding:10px 15px;
+	border-top:#d1d1d1 solid 1px;
+	margin-top:10px;
+}
+.paymentcont p{
+	padding:10px 0px 5px;
+}
+.paymentcont span{
+	margin-right:15px;
+}
+.paymentcont .paytext{
+	width:180px;
+	height:24px;
+	line-height:24px;
+	border:#d1d1d1 solid 1px;
+}
+
+.paymentcont .paybut{
+	padding-left:25px;
+}
+.paymentcont a{
+	color:#2953a6;
+	text-decoration:underline;
+	margin-left:10px;
+} 
+.paymentcont a:hover{
+	color:#c80002;
+	text-decoration:underline;
+} 
+/*订单内容*/
+.ordercont{
+	width:1160px;
+	padding:15px 0px;
+}
+.ordercont th{
+	background:#f9f9f9;
+	padding:10px 0px;
+	border-bottom:#d1d1d1 solid 1px;
+}
+.ordercont td{
+	text-align:center;
+	padding:15px 0px;
+	border-bottom:#d1d1d1 solid 1px;
+	border-left:#d1d1d1 solid 1px;
+}
+.ordercont .nltd{
+	border-left:none;
+}
+.ordercont .orderline{
+	border-left:#d1d1d1 solid 1px;
+}
+.ordercont p{
+	float:right;
+	padding-top:10px;
+	margin-right:10px;
+}
+.ordercont  strong{
+	font-size:16px;
+	color:#c80002;
+	margin-right:10px;
+}
+/*其他支付方式*/
+.oPayment{
+	width:1150px;
+	background:#f9f9f9;
+	padding:5px;
+}
+.oPayment h2{
+	font-size:14px;
+	height:40px;
+	line-height:40px;
+	padding-left:10px;
+	color:#333333;
+}
+.oPaymentcont{
+	width:1150px;
+	background:#ffffff;
+}
+.oPaymentcont ul{
+}
+.oPaymentcont li{
+	padding:15px 15px 10px  10px;
+	float:left;
+}
+.oPaymentcont input{
+	float:left;
+	margin-top:10px;
+	margin-right:10px;
+}
+.oPaymentcont p{
+	padding-top:10px;
+	padding-bottom:15px;
+	padding-left:40px;
+}

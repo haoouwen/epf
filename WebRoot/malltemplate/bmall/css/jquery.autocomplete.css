@@ -1,0 +1,44 @@
+.ac_results {
+	padding: 0px;
+	border: 1px solid #ccc;
+	background-color:#fff;
+	overflow: hidden;
+	top:39px;
+	left:0px;
+}
+
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.ac_results li {
+	height:28px;
+	margin: 0px;
+	padding:0px 5px;
+	cursor: default;
+	display: block;
+	font-size: 12px;
+	line-height:28px;
+	overflow: hidden;
+	position: relative;
+}
+.ac_results li span{
+	position: absolute;
+	right: 5px;
+	top:0px;
+}
+.ac_loading {
+	background: white url('indicator.gif') right center no-repeat;
+}
+/*
+.ac_odd {
+	background-color:#eee;
+}*/
+.ac_over {
+	background-color:#eee;
+	//color: white;
+}

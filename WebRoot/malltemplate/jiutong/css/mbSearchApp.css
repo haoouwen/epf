@@ -1,0 +1,109 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,
+blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,
+em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,
+b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,
+details,embed,figure,figcaption,footer,header,hgroup,menu,nav,
+output,ruby,section,summary,time,mark,audio,video{
+	margin:0;
+	padding:0;
+	border:0;
+}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{
+	display:block;
+}
+body{
+	background:#f5f5f5;
+	font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif;
+	font-size:12px;
+	color:#888;
+	-webkit-text-size-adjust:none;
+}
+ol,ul{
+	list-style:none;
+}
+blockquote:before,blockquote:after,q:before,q:after{
+	content:'';
+	content:none;
+}
+table{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+input,textarea{
+	outline:0;
+	resize:none;
+}
+a{color:#888;text-decoration:none;}
+a:hover{color:#888;text-decoration:none;}
+.f_left{float:left;}
+.f_right{float:right;}	
+.clear{clear: both;}
+
+/*顶部条*/
+.top{
+	height:46px;
+	background:url(../images/topBack.gif);
+	font-size:15px;
+	line-height:46px;
+	text-align:center;
+	padding:0 40px 0 10px;
+	position:relative;
+}
+.top .topPageSear{
+	width:30px;
+	height:45px;
+	position:absolute;
+	right:5px;
+	top:0px;
+	background:url(../images/topSear.png) center center;
+	border:none;
+	
+}
+/*搜索页*/
+.searPage{
+	background:#f8f8f8;
+	position:absolute;
+	left:0;
+	top:0px;
+	z-index:30;
+    width:100%
+}
+.searPage .searDiv{
+	padding:6px 0 0;
+}
+.sptcDiv{
+	height:32px;
+	background:#fff;
+	border:#e2e2e2 solid 1px;
+	border-radius:5px;
+	position:relative;
+}
+.sptcDiv .searText{
+	width:90%;
+	height:22px;
+	position:absolute;
+	left:2px;
+	top:3px;
+	line-height:22px;
+	border:none;
+}
+.hotSear p{
+	padding:0 10px;
+}
+.hotSear .hoth2{
+	height:44px;
+	line-height:44px;
+	font-size:14px;
+	color:#333;
+	border-bottom:#dadada solid 1px;
+	background:#eee;
+}
+.hotSear a{
+	border:#c8c9ca solid 1px;
+	margin:10px 5px 0;
+	padding:5px 15px;
+	background:#fff;
+	border-radius:50px;
+	display:inline-block;
+}

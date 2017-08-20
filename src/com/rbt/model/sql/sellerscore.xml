@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sellerscore">
+
+	<typeAlias alias="sellerscore" type="com.rbt.model.Sellerscore" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sellerscore">
+		<![CDATA[ 
+    SELECT trade_id,get_cust_id,user_id,self_cust_id,desc_score,service_score,delivery_score,in_date FROM sellerscore WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sellerscore">
+		UPDATE sellerscore SET trade_id=#trade_id#,get_cust_id=#get_cust_id#,user_id=#user_id#,self_cust_id=#self_cust_id#,desc_score=#desc_score#,service_score=#service_score#,delivery_score=#delivery_score#,in_date=now() WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="sellerscore">
+		INSERT INTO sellerscore (trade_id,get_cust_id,user_id,self_cust_id,desc_score,service_score,delivery_score,in_date) VALUES (#trade_id#,#get_cust_id#,#user_id#,#self_cust_id#,#desc_score#,#service_score#,#delivery_score#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM sellerscore WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM sellerscore s
+			left join member m1  on s.get_cust_id = m1.cust_id 
+				left join member m2 on s.self_cust_id = m2.cust_id 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_nameg"> 
+     		    INSTR(m1.cust_name,#cust_nameg#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_names"> 
+     		    INSTR(m2.cust_name,#cust_names#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="self_cust_id"> 
+     		   s.self_cust_id=#self_cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="get_cust_id"> 
+			     s.get_cust_id=#get_cust_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.trade_id,s.get_cust_id,s.user_id,s.self_cust_id,s.desc_score,s.service_score,s.delivery_score,s.in_date,m1.cust_name as m1_cust_name,m2.cust_name as m2_cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<sql id="getCountCommon">
+		 FROM  sellerscore AS ss LEFT JOIN member AS mu ON mu.cust_id =ss.get_cust_id 
+		       left join  shopconfig s on ss.get_cust_id=s.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_name">
+				instr(mu.cust_name,#cust_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="mem_type">
+				mu.mem_type=#mem_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				mu.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr"> 
+			    INSTR(mu.area_attr,#area_attr#)>0
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+	<select id="getcountList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		 SELECT mu.cust_id,mu.cust_name,  ss.get_cust_id , ss.user_id ,ss.self_cust_id, AVG(ss.desc_score) AS desc_score,
+ 		AVG(ss.service_score) AS service_score ,AVG(ss.delivery_score) AS delivery_score
+		<isParameterPresent>
+			<include refid="getCountCommon" />
+		</isParameterPresent>
+		 GROUP BY mu.cust_id  ORDER BY (desc_score+service_score+delivery_score) DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM sellerscore s LEFT JOIN member m ON s.self_cust_id =m.cust_id 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_name">
+				INSTR(m.cust_name,#cust_name#)>0 
+			</isNotNull>
+		</dynamic>
+	</sql>
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT m.cust_name,s.self_cust_id ,COUNT(*) AS info_num 
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+		 GROUP BY s.self_cust_id ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT COUNT(*) FROM sellerscore s LEFT JOIN member m ON s.self_cust_id =m.cust_id  
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="cust_name">
+					INSTR(m.cust_name,#cust_name#)>0 
+				</isNotNull>
+			</dynamic>
+		 GROUP BY s.self_cust_id ORDER BY trade_id DESC ) a
+	</select>
+	<!-- 分组查询 结束 -->
+</sqlMap>
+

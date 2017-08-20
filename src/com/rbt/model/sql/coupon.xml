@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="coupon">
+
+	<typeAlias alias="coupon" type="com.rbt.model.Coupon" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="coupon">
+		<![CDATA[ 
+    SELECT coupon_id,coupon_name,coupon_no,info_state,coupon_type,content,start_time,end_time,member_level,coupon_money,need_money,coupon_state,need_state,coupon_num,term,is_show FROM coupon WHERE coupon_id=$coupon_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="coupon">
+		UPDATE coupon SET coupon_id=#coupon_id#,coupon_name=#coupon_name#,coupon_no=#coupon_no#,info_state=#info_state#,coupon_type=#coupon_type#,content=#content#,start_time=#start_time#,end_time=#end_time#,member_level=#member_level#,coupon_money=#coupon_money#,need_money=#need_money#,coupon_state=#coupon_state#,need_state=#need_state#,coupon_num=#coupon_num#,term=#term#,is_show=#is_show# WHERE coupon_id=$coupon_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE coupon SET 
+    	 <isNotNull  property="coupon_id"> 
+		   coupon_id=$coupon_id$
+		 </isNotNull>
+    	 WHERE coupon_id=$coupon_id$
+    </update>
+    
+	<update id="updateState" parameterClass="java.util.HashMap">
+		UPDATE coupon SET info_state=#info_state# WHERE coupon_id=$coupon_id$
+	</update>
+
+	<insert id="insert" parameterClass="coupon">
+		INSERT INTO coupon (coupon_id,coupon_name,coupon_no,info_state,coupon_type,content,start_time,end_time,member_level,coupon_money,need_money,coupon_state,need_state,coupon_num,term,is_show) VALUES (#coupon_id#,#coupon_name#,#coupon_no#,#info_state#,#coupon_type#,#content#,#start_time#,#end_time#,#member_level#,#coupon_money#,#need_money#,#coupon_state#,#need_state#,#coupon_num#,#term#,#is_show#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM coupon WHERE coupon_id in ($coupon_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM coupon 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="coupon_name">
+				INSTR(coupon_name,#coupon_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="coupon_no">
+				coupon_no=#coupon_no#
+			</isNotNull>
+			<isNotNull prepend="and" property="coupon_state">
+				coupon_state=#coupon_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="coupon_type">
+				coupon_type=#coupon_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="start_time">
+				 DATE(start_time)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time">
+				#end_time#>=DATE(end_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="member_level">
+				INSTR(member_level,#member_level#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="time">
+				DATE_FORMAT(NOW(),'%y-%m-%d')>=DATE(start_time) and DATE(end_time) >= DATE_FORMAT(NOW(),'%y-%m-%d')
+ 			</isNotNull>
+			<isNotNull prepend="and" property="sgis"> 
+			      coupon_id in ($sgis$)
+			</isNotNull> 	
+			<isNotNull prepend="and" property="is_show"> 
+			     is_show=#is_show#
+			</isNotNull> 	
+			<isNotNull prepend="and" property="coupon_id"> 
+			     coupon_id=#coupon_id#
+			</isNotNull> 																							
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT coupon_id,coupon_name,coupon_no,info_state,coupon_type,content,
+		start_time,end_time,member_level,coupon_money,need_money,coupon_state,
+		need_state,coupon_num,term,is_show,
+		( SELECT COUNT(*) FROM excoupons WHERE excoupons.coupon_id=coupon.coupon_id) AS down_count,
+		( SELECT COUNT(*) FROM excoupons WHERE excoupons.ex_state='0' AND excoupons.coupon_id=coupon.coupon_id) AS down_count_no_use
+		
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY coupon_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

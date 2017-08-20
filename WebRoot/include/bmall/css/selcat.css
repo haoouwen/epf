@@ -1,0 +1,65 @@
+.contentDiv{
+	border:1px solid #D3D3D3;
+	width:250px;
+	height:388px;
+	margin-top:15px;
+	margin-left:10px;
+	float:left;
+}
+.contentDiv h3{
+	height: 36px;
+	line-height: 36px;
+	margin: 0px;
+	padding: 0 4px;
+	border-bottom: 1px dotted #d3d3d3;
+	background: #f7f7f7
+}
+
+.licontent{
+	height:315px;
+	overflow:auto;
+}
+
+.licontent li{
+	border-bottom: 1px dotted #999999;
+	line-height:32px;
+	vertical-align:middle;
+	cursor: pointer;
+}
+
+.contxt{
+	overflow:hidden;
+	padding-right:8px;
+	padding-left:6px;
+}
+
+.sortno{
+	width:28px;
+	margin-left:5px;
+}
+
+.operbt{
+	float:right;
+}
+
+.operimg{
+	cursor: pointer;
+	margin-top:8px;
+	margin-right:8px;
+}
+
+.bottomoper img{
+
+}
+
+.libackground{
+	background-color:#F6DDA1;
+}
+.thewidth{
+margin-left:0px;
+width:800px;
+}
+.goodsbuttom{
+margin-left:42%;
+margin-top:-30px;
+}

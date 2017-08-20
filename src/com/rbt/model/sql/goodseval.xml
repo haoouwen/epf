@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodseval">
+
+	<typeAlias alias="goodseval" type="com.rbt.model.Goodseval" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodseval">
+		<![CDATA[ 
+    SELECT trade_id,goodseval.goods_id,goodseval.cust_id,user_id,g_eval,g_comment,is_two,eval_date,explan_cust_id,explan_man,explan_content,explan_date,is_enable,e_type,order_id=#order_id#,is_img=#is_img# FROM goodseval WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodseval">
+		UPDATE goodseval SET g_comment=#g_comment#,explan_cust_id=#explan_cust_id#,explan_man=#explan_man#,explan_content=#explan_content#,g_eval=#g_eval#,explan_date=now(),is_enable=#is_enable#,is_two=#is_two#,e_type=#e_type#,is_img=#is_img# WHERE trade_id=$trade_id$
+	</update>
+	<update id="updatebuy" parameterClass="goodseval">
+		UPDATE goodseval SET g_comment=#g_comment#,g_eval=#g_eval#,eval_date=now() WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodseval">
+		INSERT INTO goodseval (goods_id,cust_id,user_id,g_eval,g_comment,eval_date,is_two,explan_cust_id,e_type,order_id,is_img) VALUES (#goods_id#,#cust_id#,#user_id#,#g_eval#,#g_comment#,now(),#is_two#,#explan_cust_id#,#e_type#,#order_id#,#is_img#)
+	</insert>
+    
+    <insert id="insertGetPk" parameterClass="goodseval">
+		INSERT INTO goodseval (trade_id,goods_id,cust_id,user_id,g_eval,g_comment,eval_date,is_two,explan_cust_id,e_type,order_id,is_img) VALUES (#trade_id#,#goods_id#,#cust_id#,#user_id#,#g_eval#,#g_comment#,now(),#is_two#,#explan_cust_id#,#e_type#,#order_id#,#is_img#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodseval WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM goodseval WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodseval 
+	    	left join goods on goodseval.goods_id=goods.goods_id 
+				left join memberuser u on goodseval.user_id = u.user_id
+					left join member m on goodseval.cust_id = m.cust_id
+						left join member m2 on goodseval.explan_cust_id = m2.cust_id
+							left join memberuser u2 on goodseval.explan_man = u2.user_id
+								left join orderdetail od on goodseval.goods_id=od.goods_id and goodseval.order_id= od.order_id
+		<dynamic prepend="WHERE">
+		   
+		    <isNotNull prepend="and" property="goods_name">
+		    	INSTR(goods_name,#goods_name#)>0
+		    </isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+		   	 	goodseval.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="g_eval">
+		   	 	g_eval=#g_eval#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_enable">
+		    	is_enable=#is_enable#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="g_comment">
+		    g_comment=#null#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="explan_cust_id"> 
+			     goodseval.explan_cust_id=#explan_cust_id#
+			 </isNotNull>
+			 
+			 <isNotNull prepend="and" property="explan_cust_id_no"> 
+			     goodseval.explan_cust_id!=#explan_cust_id_no#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+			    goodseval.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="explan_man"> 
+			   INSTR( u2.user_name,#explan_man#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_name"> 
+			   INSTR( u.user_name,#user_name#)>0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="e_type"> 
+			    goodseval.e_type=#e_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="order_id"> 
+			   goodseval.order_id=#order_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_img"> 
+			   goodseval.is_img=#is_img#
+			 </isNotNull>
+			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT 
+			goodseval.trade_id,goodseval.goods_id,goodseval.cust_id,goodseval.user_id,goodseval.g_eval,goodseval.g_comment,is_two,IF(goodseval.eval_date IS NULL,'',DATE_FORMAT(goodseval.eval_date,'%Y-%c-%d %H:%i:%s')) AS eval_date,goodseval.explan_cust_id,goodseval.explan_man,goodseval.explan_content,IF(goodseval.explan_date IS NULL,'',DATE_FORMAT(goodseval.explan_date,'%Y-%c-%d %H:%i:%s')) AS explan_date,goodseval.is_enable,
+				goods.goods_name,u.user_name as buy_user_name,u2.user_name as sell_user_name,m.cust_name as buy_cust_name,m2.cust_name as sell_cust_name,goodseval.e_type,goodseval.order_id,(select share_pic from goodsshare where eval_id=goodseval.trade_id) as share_pics,od.goods_price,od.order_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+			ORDER BY goodseval.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM goodseval 
+	    	left join goods on goodseval.goods_id=goods.goods_id 
+				left join memberuser u on goodseval.user_id = u.user_id
+					left join member m on goodseval.cust_id = m.cust_id
+						left join member m2 on goodseval.explan_cust_id = m2.cust_id
+							left join memberuser u2 on goodseval.explan_man = u2.user_id
+							   left join goodsshare u3 on goodseval.trade_id = u3.eval_id
+							   LEFT JOIN orderdetail od ON od.order_id =goodseval.order_id and goodseval.goods_id= od.goods_id
+		<dynamic prepend="WHERE">
+		   
+		    <isNotNull prepend="and" property="goods_name">
+		    	INSTR(goods_name,#goods_name#)>0
+		    </isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+		   	 	goodseval.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="g_eval">
+		   	 	g_eval=#g_eval#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_enable">
+		    	is_enable=#is_enable#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="explan_cust_id"> 
+			     goodseval.explan_cust_id=#explan_cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+			    goodseval.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="explan_man"> 
+			   INSTR( u2.user_name,#explan_man#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="e_type"> 
+			    goodseval.e_type=#e_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_img"> 
+			   goodseval.is_img=#is_img#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT 
+			goodseval.trade_id,goodseval.goods_id,goodseval.cust_id,goodseval.user_id,goodseval.g_eval,goodseval.g_comment,is_two,IF(goodseval.eval_date IS NULL,'',DATE_FORMAT(goodseval.eval_date,'%Y-%c-%d ')) AS eval_date,goodseval.explan_cust_id,goodseval.explan_man,IF(goodseval.explan_content IS NULL,'暂未回复',goodseval.explan_content ) AS explan_content ,IF(goodseval.explan_date IS NULL,'',DATE_FORMAT(goodseval.explan_date,'%Y-%c-%d %H:%i:%s')) AS explan_date,goodseval.is_enable,
+				goods.goods_name,u.user_name as buy_user_name,u2.user_name as sell_user_name,
+				CONCAT(SUBSTRING(m.cust_name,1,1),'****',SUBSTRING(m.cust_name,-1)) AS buy_cust_name,od.goods_attr,
+				m2.cust_name as sell_cust_name,IF(m.logo_path IS NULL,'/malltemplate/bmall/images/defaultHead.gif',m.logo_path) AS logo_path,u3.share_pic,goodseval.e_type,goodseval.order_id
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+			ORDER BY goodseval.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		 FROM goodseval gs LEFT JOIN goods g ON gs.goods_id=g.goods_id 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="goods_name">
+				INSTR(g.goods_name,#goods_name#)>0 and 
+			</isNotNull>
+			g.goods_name is not null 
+		</dynamic>
+	</sql>
+
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods_name, COUNT(*) AS info_num ,g.goods_id 
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+		 	GROUP BY g.goods_name ORDER BY gs.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+		
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) AS ct FROM  (SELECT goods_name, COUNT(*) AS info_num ,g.goods_id 
+			FROM goodseval gs LEFT JOIN goods g ON gs.goods_id=g.goods_id    
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="goods_name">
+					INSTR(g.goods_name,#goods_name#)>0 and 
+				</isNotNull>
+					g.goods_name is not null 
+			</dynamic>
+		GROUP BY g.goods_name ORDER BY gs.trade_id DESC ) a
+	</select>
+	<!-- 分组查询 结束 -->
+	
+</sqlMap>
+

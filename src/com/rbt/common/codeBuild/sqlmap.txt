@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="{TABLENAME}">
+
+	<typeAlias alias="{TABLENAME}" type="com.rbt.model.{CLASSNAME}" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="{TABLENAME}">
+		<![CDATA[ 
+    SELECT {fieldlist}[field_node],{/fieldlist} FROM {TABLENAME} WHERE {TABLEKEY}=${TABLEKEY}$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="{TABLENAME}">
+		UPDATE {TABLENAME} SET {fieldlist}[field_node_u]=#[field_u_node]#,{/fieldlist} WHERE {TABLEKEY}=${TABLEKEY}$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE {TABLENAME} SET 
+    	 <isNotNull  property="{TABLEKEY}"> 
+		   {TABLEKEY}=${TABLEKEY}$
+		 </isNotNull>
+    	 WHERE {TABLEKEY}=${TABLEKEY}$
+    </update>
+    
+	<update id="updateSate" parameterClass="{TABLENAME}">
+		UPDATE {TABLENAME} SET {TABLEKEY}=${TABLEKEY}$ WHERE {TABLEKEY}=${TABLEKEY}$
+	</update>
+
+	<insert id="insert" parameterClass="{TABLENAME}">
+		INSERT INTO {TABLENAME} ({fieldlist}[field_node],{/fieldlist}) VALUES ({fieldlist}#[field_u_node]#,{/fieldlist})
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM {TABLENAME} WHERE {TABLEKEY} in (${TABLEKEY}$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM {TABLENAME} 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="{TABLEKEY}">
+				{TABLEKEY}=#{TABLEKEY}#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT {fieldlist}[field_node],{/fieldlist}
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY {TABLEKEY} DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

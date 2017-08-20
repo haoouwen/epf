@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="shopconfig">
+
+	<typeAlias alias="shopconfig" type="com.rbt.model.Shopconfig" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="shopconfig">
+		<![CDATA[ 
+    SELECT shop_id,cust_id,shop_name,shop_logo,header_img,back_img,back_color,
+    shop_site,shop_intro,busi_range,busi_mode,phone,area_attr,address,contant_man,
+    email,qq,msn,alliwang,mobile,info_state,is_colse,user_id,in_date,template_code,
+    sale_time,shop_code,radom_no,cfg_imagemarktype,cfg_imagemark,cfg_imagemarktext,
+    cfg_imagemaricon ,postcode FROM shopconfig WHERE shop_id=$shop_id$
+    ]]>
+	</select>
+    
+    <select id="getByCustId" parameterClass="java.lang.String"
+		resultClass="shopconfig">
+		<![CDATA[ 
+    SELECT shop_id,cust_id,shop_name,shop_logo,header_img,back_img,back_color,shop_site,postcode,shop_intro,busi_range,busi_mode,phone,area_attr,address,contant_man,email,qq,msn,alliwang,mobile,info_state,is_colse,user_id,in_date,template_code,sale_time,shop_code,radom_no,cfg_imagemarktype,cfg_imagemark,cfg_imagemarktext,cfg_imagemaricon FROM shopconfig WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+    
+	<update id="update" parameterClass="shopconfig">
+		UPDATE shopconfig SET shop_id=#shop_id#,cust_id=#cust_id#,postcode=#postcode#,shop_name=#shop_name#,shop_logo=#shop_logo#,header_img=#header_img#,back_img=#back_img#,back_color=#back_color#,shop_site=#shop_site#,shop_intro=#shop_intro#,busi_range=#busi_range#,busi_mode=#busi_mode#,phone=#phone#,area_attr=#area_attr#,address=#address#,contant_man=#contant_man#,email=#email#,qq=#qq#,msn=#msn#,alliwang=#alliwang#,mobile=#mobile#,info_state=#info_state#,is_colse=#is_colse#,user_id=#user_id#,in_date=now(),template_code=#template_code#,sale_time=#sale_time#,shop_code=#shop_code#,cfg_imagemarktype=#cfg_imagemarktype#,cfg_imagemark=#cfg_imagemark#,cfg_imagemarktext=#cfg_imagemarktext#,cfg_imagemaricon=#cfg_imagemaricon# WHERE shop_id=$shop_id$
+	</update>
+
+	<insert id="insert" parameterClass="shopconfig">
+		INSERT INTO shopconfig (shop_id,cust_id,shop_name,shop_logo,header_img,back_img,back_color,shop_site,shop_intro,
+		busi_range,busi_mode,phone,area_attr,address,contant_man,email,qq,msn,alliwang,mobile,info_state,is_colse,
+		user_id,in_date,template_code,sale_time,shop_code,radom_no,cfg_imagemarktype,cfg_imagemark,cfg_imagemarktext,cfg_imagemaricon,postcode) 
+		VALUES (#shop_id#,#cust_id#,#shop_name#,#shop_logo#,#header_img#,#back_img#,#back_color#,#shop_site#,#shop_intro#,
+		#busi_range#,#busi_mode#,#phone#,#area_attr#,#address#,#contant_man#,#email#,#qq#,#msn#,#alliwang#,#mobile#,#info_state#,
+		#is_colse#,#user_id#,now(),#template_code#,#sale_time#,#shop_code#,#radom_no#,#cfg_imagemarktype#,#cfg_imagemark#,
+		#cfg_imagemarktext#,#cfg_imagemaricon#,#postcode#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM shopconfig WHERE shop_id in ($shop_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM shopconfig s
+		left join member m on s.cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="shop_name"> 
+     		    INSTR(s.shop_name,#shop_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="info_state_s"> 
+     		    s.info_state in ($info_state_s$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+     		   s.cust_id = #cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="no_cust_id"> 
+     		   s.cust_id != #no_cust_id#
+			 </isNotNull>
+			 <!-- 修改操作人时注释 因为现在的user_id注入的是user_name字符串，而不是user_id编号
+			<isNotNull prepend="and" property="user_id"> 
+     		   s.user_id = #user_id#
+			 </isNotNull>-->
+			 <isNotNull prepend="and" property="radom_no"> 
+     		   s.radom_no = #radom_no#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.shop_id,s.cust_id,s.shop_name,s.shop_logo,s.header_img,s.back_img,postcode,
+		s.back_color,s.shop_site,s.shop_intro,s.busi_range,s.busi_mode,s.phone,s.area_attr,
+		address,s.contant_man,s.email,s.qq,s.msn,s.alliwang,s.mobile,s.info_state,s.is_colse,
+		s.user_id,s.user_id AS user_name,s.in_date,s.template_code,m.cust_name,sale_time,s.shop_code,s.radom_no,s.cfg_imagemarktype,s.cfg_imagemark,s.cfg_imagemarktext,s.cfg_imagemaricon
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY s.shop_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

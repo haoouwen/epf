@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="filterword">
+
+	<typeAlias alias="filterword" type="com.rbt.model.Filterword" />
+	
+	<cacheModel id="filterword-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="filterword.update" />
+		<flushOnExecute statement="filterword.insert" />
+		<flushOnExecute statement="filterword.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="filterword">
+		<![CDATA[
+        SELECT word_id,name,rep_name from filter_word where word_id=$word_id$
+      ]]>
+	</select>
+
+	<update id="update" parameterClass="filterword">
+		UPDATE filter_word SET name=#name#,rep_name=#rep_name# where
+		word_id=$word_id$
+	</update>
+
+	<insert id="insert" parameterClass="filterword">
+		INSERT INTO filter_word(word_id,name,rep_name)
+		VALUES(#word_id#,#name#,#rep_name#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM filter_word WHERE word_id in ($word_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM filter_word
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="name">
+				INSTR(name,#name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="rep_name">
+				INSTR(rep_name,#rep_name#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="filterword.filterword-cache">
+		SELECT word_id,name,rep_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY word_id DESC
+		<isNotNull prepend="limit" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="filterword.filterword-cache">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

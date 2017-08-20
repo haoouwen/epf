@@ -1,0 +1,56 @@
+/*tableAjaxPageUI样式*/
+.contentTable {
+    width: 100%;
+    border:1px solid #C7DBE5;
+}
+.th_title{
+	height:33px;
+}
+.pageBar {
+    padding-bottom: 13px;
+    padding-top: 10px;
+    text-align: center;
+}
+.current {
+    background-color: #2266BB;
+    color: #FFFFFF;
+}
+.pprev, .pnext, .pageBar a {
+    border: 1px solid #AAAAEE;
+    cursor: pointer;
+    margin-right: 7px;
+    padding: 3px 8px;
+}
+.pageBar a:hover {
+    background-color: #2266BB;
+    color: #FFFFFF;
+}
+.pcount {
+    border: 1px solid #AAAAEE;
+    margin-right: 50px;
+    padding: 3px 8px;
+}
+.tabletitle{
+	background:#8D0100;
+	color:#FFFFFF;
+	padding:8px;
+	font-weight:600;
+	padding-left:14px;
+}
+.nulldata {
+    background: #FDFFE7 url('/include/common/images/nulldata.gif') no-repeat 8px 7px;
+    color: #666666;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    padding-left:36px;
+    border:1px solid #E1D0B2;
+    margin:2px 0px 8px 0px;
+}
+.cover {
+    background: none repeat scroll 0 0 black;
+}
+.tth{
+	line-height:25px;
+	height:25px;
+}

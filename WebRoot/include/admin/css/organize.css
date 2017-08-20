@@ -1,0 +1,81 @@
+#orgalist{
+	background:#FFFFFF;
+}
+.areadiv{
+	width:263px;
+	height:365px;
+	margin:20px 0px 0px 15px;
+	border:1px solid #d3d3d3;
+	float:left;
+	display:inline;
+    background-color:#FFFFFF;
+ }
+.areacontent{
+	overflow:auto;
+	width:263px;
+	height:300px;
+	}
+.areatitle{
+	height:32px; 
+	line-height:32px;
+	margin:0px;
+    padding:0 4px;
+    border-bottom:1px dotted #d3d3d3;
+    background:#f7f7f7
+    }
+.areaadd{
+	background:#f7f7f7;
+	height:30px;
+	line-height:30px;
+	width:261px;
+	display:inline-block;
+	border:1px solid #FFF;
+	}
+.catelist{
+	width:263px;
+	height:280px;
+	overflow:auto;
+	}
+.areaspan{
+	padding-left:5px;
+	width:170px;
+	display:inline-block;
+	font-family:"宋体";
+	border:1px solid #FFF;
+	font-size:14px;
+	}
+.spantitle{
+	width:250px;
+	overflow:hidden;
+	}
+.add{
+	cursor:pointer;
+	margin:10px 0px 0px 3px;
+	}
+.edit{
+	cursor:pointer;
+	margin-left:10px;
+	}
+.delete{
+	cursor:pointer;
+	margin-left:10px;
+	}
+.textsort{
+	width:35px;
+	}
+.addclass{
+	margin-left:6px;
+	}
+.areadiv li{
+	float:left;
+	background:#FFF;
+	width:238px;
+	list-style-type:none;
+	padding:2px 0px 0px 6px;
+	cursor:pointer;
+    line-height:25px;
+    font-family:"宋体";
+    border:1px solid #FFF;
+    font-size:14px;
+    border-bottom:1px dotted #999999;
+    }

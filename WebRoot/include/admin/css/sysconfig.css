@@ -1,0 +1,134 @@
+.oper_seo_div{
+	border:1px solid #D0D0D0;
+	margin:0px 0px 0px 0px;
+	width:99%;
+	background:#FFFFFF;
+	padding:8px;
+}
+
+.tabbar{
+	margin-top:0px;
+	margin-left:-1px;
+	width:100%;
+	height:26px;
+	background:url(../images/line.gif) repeat-x bottom;
+}
+.tabbar ul{
+}
+.tabbar li{
+	float:left;
+	margin-right:5px;
+	height:26px;
+	background:url(../images/topbar2.gif) repeat-x;
+	color:#666666;
+	font-size:12px;
+	line-height:26px;
+	border-left:#d0d0d0 solid 1px;
+	border-right:#d0d0d0 solid 1px;
+	cursor:pointer;
+}
+.tabbar li.selected{
+	background:url(../images/topbar1.gif) repeat-x;
+	font-weight:600;
+}
+
+.tabdiv{
+	margin-top:5px;
+	display:none;
+	margin-bottom:10px;
+	background: white;
+}
+
+.main_cont{
+	width:100%;
+	background:#FFF;
+	padding-top:1px;
+	margin-top:3px;
+}	
+.main_content{
+	width: 97%;
+	background: #EEEEEE;
+	margin-left:0px;
+	padding:10px 16px 10px 10px;
+}
+.optionDiv{
+	border:1px solid #C7DEFF;
+	background:#F5F9FE;
+	width:479px;
+	padding:10px 10px 5px 10px;
+	float:left;
+	margin-top:5px;
+}
+
+.backoption{
+	border-top:1px solid #98BBD2;
+	padding-top:5px;
+}
+
+.option{
+	padding:4px 6px 4px 6px;
+	border:1px solid #98BBD2;
+	background:#D6EDF4;
+	margin:0px 10px 5px 0px;
+	float:left;
+	cursor:pointer;
+}
+
+.operoption{
+	padding:4px 10px 4px 10px;
+	border:1px solid #C3C8CB;
+	background:#E5E9EC;
+	margin:0px 10px 5px 0px;
+	float:left;
+	cursor:pointer;
+}
+
+.showtitle{
+	height:15px;
+	margin-top:28px;
+	margin-bottom:5px;
+	padding:8px;
+	padding-left:10px;
+	color:#666666;
+	background:#F5F5F5;
+}
+.showtitle  b{
+	 float: left;
+}
+.showtitle span{
+    float: right;
+}
+.showtitle span a{
+    color: red;
+}
+.ctd{
+	width: 30%;
+	background: #E3E8EB;
+}
+.rtd{
+	width: 65%;
+}
+.sort{
+	width: 5%;
+	background: #E3E8EB;
+}
+.sortinput{
+	text-align:center;
+}
+
+.sztable{
+	margin-left:10px;
+}
+.sztable .ctd{
+	width: 30%;
+	background: #E3E8EB;
+}
+.sztable .rtd{
+	width: 65%;
+	padding-left:10px;
+	text-align:left;
+}
+.sztable .sort{
+	width: 5%;
+	background: #E3E8EB;
+}

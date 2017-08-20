@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsattr">
+
+	<typeAlias alias="goodsattr" type="com.rbt.model.Goodsattr" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodsattr">
+		<![CDATA[ 
+    SELECT goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,up_goods,sale_num,volume,logsweight,tax_price FROM goodsattr WHERE goods_item=#goods_item#
+    ]]>
+	</select>
+	
+	<select id="getGoodsPk" parameterClass="java.lang.String"
+		resultClass="goodsattr">
+		<![CDATA[ 
+    SELECT goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,up_goods,sale_num,volume,logsweight,tax_price FROM goodsattr WHERE goods_id=#goods_id#
+    ]]>
+	</select>
+	
+	<select id="getByGoodsId" parameterClass="java.util.HashMap"
+		resultClass="goodsattr">
+		<![CDATA[ 
+    SELECT goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,up_goods,sale_num,volume,logsweight,tax_price FROM goodsattr WHERE goods_id=#goods_id# AND specstr=#spec_id#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodsattr">
+		UPDATE goodsattr SET goods_item=#goods_item#,goods_id=#goods_id#,specstr=#specstr#,market_price=#market_price#,sale_price=#sale_price#,cost_price=#cost_price#,stock=#stock#,up_goods=#up_goods#,sale_num=#sale_num#,volume=#volume#,logsweight=#logsweight#,tax_price=#tax_price# WHERE goods_item=#goods_item#
+	</update>
+   
+    <update id="updateStock">
+        UPDATE goodsattr SET stock=stock-#stock# WHERE goods_id=#goods_id# and specstr=#specstr# 
+    </update>
+    
+	<insert id="insert" parameterClass="goodsattr">
+		INSERT INTO goodsattr (goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,up_goods,sale_num,volume,logsweight,tax_price) VALUES (#goods_item#,#goods_id#,#specstr#,#market_price#,#sale_price#,#cost_price#,#stock#,#up_goods#,#sale_num#,#volume#,#logsweight#,#tax_price#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsattr WHERE goods_item in ($goods_item$)
+	</delete>
+	
+	<delete id="deleteByGoodsid" parameterClass="java.lang.String">
+		DELETE FROM goodsattr WHERE goods_id=#goods_id#
+	</delete>
+	<sql id="getCommon">
+		FROM goodsattr 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id"> 
+			     goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr"> 
+			    specstr=#specstr#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_item"> 
+			    INSTR(goods_item,#goods_item#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,volume,logsweight,up_goods,sale_num,
+		goods_item as goods_item_str,specstr as specstr_str,market_price as market_price_str,
+		sale_price as sale_price_str,cost_price as cost_price_str,stock as stock_str,up_goods as up_goods_str,sale_num,volume as volume_str,logsweight as logsweight_str,tax_price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY goods_item asc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM goodsattr 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id"> 
+			     goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_item"> 
+			     goods_item=#goods_item#
+			</isNotNull>			
+			<isNotNull prepend="and" property="specstr"> 
+			     INSTR(specstr,#specstr#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="spec_id"> 
+			    specstr=#spec_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like0"> 
+			     specstr LIKE '%$specstr_like0$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like1"> 
+			     specstr LIKE '%$specstr_like1$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like2"> 
+			     specstr LIKE '%$specstr_like2$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like3"> 
+			     specstr LIKE '%$specstr_like3$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like4"> 
+			     specstr LIKE '%$specstr_like4$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like5"> 
+			     specstr LIKE '%$specstr_like5$%'
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods_item,goods_id,specstr,market_price,sale_price,cost_price,stock,up_goods,sale_num,
+		goods_item as goods_item_str,specstr as specstr_str,market_price as market_price_str,sale_price as sale_price_str,
+		cost_price as cost_price_str,stock as stock_str,up_goods as up_goods_str,sale_num,volume,logsweight,tax_price
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		<isNotNull property="sale_price_asc"> 
+		     ORDER BY sale_price ASC
+		</isNotNull>
+		<isNotNull property="market_price_asc"> 
+		     ORDER BY market_price ASC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getTotalStock" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT SUM(stock) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>

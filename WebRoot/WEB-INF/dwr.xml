@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+
+<dwr>
+    <!-- 检查用户名是否存在 ValidateName的映射文件-->
+    <allow>
+      <create  creator="spring" javascript="ValidateName" >
+          <param name="beanName" value="validateName"/>
+          <include method="valid"/>
+      </create>
+     </allow>
+</dwr>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+
+	<typeAlias alias="member" type="com.rbt.model.Member" />
+    <!-- 
+    <cacheModel id="member-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="member.update" />
+		<flushOnExecute statement="member.insert" />
+		<flushOnExecute statement="member.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+     -->
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="member">
+		<![CDATA[ 
+    SELECT cust_id,cust_name,logo_path,mem_type,sell_level,buy_level,info_state,is_active,in_date,area_attr,growthvalue,growthtime FROM member WHERE cust_id=$cust_id$
+    ]]>
+	</select>
+	
+	<select id="getByCustName" parameterClass="java.lang.String"
+		resultClass="member">
+		<![CDATA[ 
+    SELECT cust_id,cust_name,logo_path,mem_type,sell_level,buy_level,info_state,is_active,in_date,area_attr,growthvalue,growthtime FROM member WHERE cust_name=#cust_name#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="member">
+		UPDATE member SET cust_id=#cust_id#,cust_name=#cust_name#,logo_path=#logo_path#,mem_type=#mem_type#,sell_level=#sell_level#,buy_level=#buy_level#,
+		info_state=#info_state#,is_active=#is_active#,area_attr=#area_attr#,growthvalue=#growthvalue#,growthtime=#growthtime# WHERE cust_id=$cust_id$
+	</update>
+
+	<insert id="insert" parameterClass="member">
+		INSERT INTO member (cust_id,cust_name,logo_path,mem_type,sell_level,buy_level,info_state,is_active,in_date,area_attr,growthvalue,growthtime) VALUES (#cust_id#,#cust_name#,#logo_path#,#mem_type#,#sell_level#,#buy_level#,#info_state#,#is_active#,now(),#area_attr#,#growthvalue#,now())
+	</insert>
+	
+
+    <insert id="insertGetPk" parameterClass="member">
+		INSERT INTO member (cust_name,logo_path,mem_type,sell_level,buy_level,info_state,is_active,in_date,area_attr,growthvalue,growthtime) VALUES (#cust_name#,#logo_path#,#mem_type#,#sell_level#,#buy_level#,#info_state#,#is_active#,now(),#area_attr#,#growthvalue#,now())
+		 <selectKey resultClass="java.lang.String" keyProperty="cust_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM member WHERE cust_id in ($cust_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM member m1 
+		     left join memberuser m2 on m1.cust_id=m2.cust_id and m2.user_type='1'
+		     	left join shopconfig m3 on m1.cust_id=m3.cust_id
+		     	     left join malllevelset m5 on m1.buy_level=m5.level_code
+		     	      
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_name"> 
+			        INSTR(cust_name,#cust_name#)>0
+		    </isNotNull>
+		    <isNotNull prepend="and" property="cust_id_name"> 
+			        m1.cust_name=#cust_id_name#
+		    </isNotNull>
+		     <!-- 根据状态筛选 -->
+		    <isNotNull prepend="and" property="info_state_s"> 
+		    		m1.info_state in ($info_state_s$)
+			 </isNotNull>
+			  <!--设置用户类型 -->
+			  <isNotNull prepend="and" property="mem_type"> 
+			        m1.mem_type=#mem_type#
+			 </isNotNull>
+			 <!-- 设置状态 -->
+			 <isNotNull prepend="and" property="info_state"> 
+		    		m1.info_state in ($info_state$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="todayin">
+		          DAY(m1.in_date)=DAY(NOW()) AND MONTH(m1.in_date)=MONTH(NOW()) AND YEAR(m1.in_date)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="ydatein">
+		          TO_DAYS(NOW()) - TO_DAYS(m1.in_date) = 1
+		    </isNotNull>
+		    <isNotNull prepend="and" property="mem_cust_id">
+				m1.cust_id!=#mem_cust_id#
+	         </isNotNull> 
+	         <isNotNull prepend="and" property="cust_id_no">
+				m1.cust_id!=#cust_id_no#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="buy_level_no">
+				m1.buy_level!=#buy_level_no#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="buy_level">
+				m1.buy_level in ($buy_level$)
+	         </isNotNull>
+	         <isNotNull prepend="and" property="area_attr">
+	           INSTR(m1.area_attr,#area_attr#)
+	         </isNotNull>
+	          <isNotNull prepend="and" property="user_name">
+	          m2.user_name=#user_name#
+	         </isNotNull>
+	         <isNotNull prepend="and" property="starttime">
+				DATE(m1.in_date)>=#starttime#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+				#endtime#>=DATE(m1.in_date)
+			</isNotNull>
+	         <isNotNull prepend="and" property="membernum">
+	            LEFT(m2.membernum,6)=#membernum#
+			</isNotNull>
+			 <isNotNull prepend="and" property="area_number">
+	            LEFT(m2.membernum,3)=#area_number#
+			</isNotNull>
+			<isNotNull prepend="and" property="cellphone">
+			  m2.cellphone=#cellphone#
+			</isNotNull>
+			<isNotNull prepend="and" property="email">
+			 m2.email=#email#
+			</isNotNull>
+			<isNotNull prepend="and" property="membernumall">
+			 m2.membernum=#membernumall#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" >
+		SELECT m1.cust_id,m2.user_id,m2.user_name,m1.cust_name,m1.logo_path,m1.mem_type,m1.sell_level,m1.buy_level,
+		m1.info_state,m1.is_active,m1.in_date,m1.growthtime,m1.area_attr,m1.in_date,m2.email,m2.cellphone,m2.login_time,m2.login_count,
+		m2.login_ip,m2.membernum,m5.level_name as buy_level_name,m3.shop_name,IFNULL(m1.growthvalue,0) growthvalue,growthtime,
+		(select IFNULL(SUM(tatal_amount),0) from goodsorder where goodsorder.buy_cust_id=m1.cust_id and goodsorder.order_state IN (7,8)) as total_amount,
+		m5.validity_period,m5.dedu_growth_value
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY cust_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 各个地区 -->
+	<select id="getAreaMember" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT IFNULL(count(*),0) area_member_num FROM member
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_id">
+				cust_id!='0'
+			</isNotNull>
+		    <isNotNull prepend="and" property="area_attr">
+				INSTR(area_attr,#area_attr#)
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	
+	<sql id="getAreaCommon">
+		FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id	     
+		<dynamic prepend="WHERE">
+		     <isNotNull prepend="and" property="cust_id">
+	           m.cust_id!='0'
+	         </isNotNull>
+		     
+		     <isNotNull prepend="and" property="order_state">
+	           go.order_state IN ($order_state$)
+	         </isNotNull>
+		
+	         <isNotNull prepend="and" property="area_attr">
+	           INSTR(m.area_attr,#area_attr#)
+	         </isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getAreaTotalAmountList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT m.area_attr,IFNULL(SUM(go.tatal_amount),0.0) area_total_amount 
+		<isParameterPresent>
+			<include refid="getAreaCommon" />
+		</isParameterPresent>
+		 GROUP BY m.area_attr 
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	
+
+</sqlMap>
+

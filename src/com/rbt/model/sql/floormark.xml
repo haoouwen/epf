@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="floormark">
+
+	<typeAlias alias="floormark" type="com.rbt.model.Floormark" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="floormark">
+		<![CDATA[ 
+    SELECT fm_id,fm_name,fm_remark,fm_sort,f_id,fm_type FROM floormark WHERE fm_id=$fm_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="floormark">
+		UPDATE floormark SET fm_id=#fm_id#,fm_name=#fm_name#,fm_remark=#fm_remark#,fm_sort=#fm_sort#,f_id=#f_id#,fm_type=#fm_type# WHERE fm_id=$fm_id$
+	</update>
+    
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE floormark SET 
+    	 <isNotNull  property="f_id"> 
+		   f_id=#f_id#
+		 </isNotNull>
+    	 WHERE f_id=#ff_id#
+    </update>
+    
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE floormark SET fm_sort=#fm_sort# WHERE fm_id=$fm_id$
+	</update>
+    
+	<update id="updateSate" parameterClass="floormark">
+		UPDATE floormark SET fm_id=$fm_id$ WHERE fm_id=$fm_id$
+	</update>
+    
+    <update id="updateCheckbox" parameterClass="java.util.HashMap">
+      UPDATE floormark SET f_id=$f_id$  where fm_id in ($fm_id$)
+    </update>
+    
+    
+	<insert id="insert" parameterClass="floormark">
+		INSERT INTO floormark (fm_id,fm_name,fm_remark,fm_sort,f_id,fm_type) VALUES (#fm_id#,#fm_name#,#fm_remark#,#fm_sort#,0,#fm_type#)
+	</insert>
+	
+	
+	<insert id="insertGetPk" parameterClass="floormark">
+		INSERT INTO floormark (fm_id,fm_name,fm_remark,fm_sort,f_id,fm_type) VALUES (#fm_id#,#fm_name#,#fm_remark#,#fm_sort#,0,#fm_type#)
+		 <selectKey resultClass="java.lang.String" keyProperty="fm_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey> 
+	</insert>
+	
+	
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM floormark WHERE fm_id in ($fm_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM floormark 
+		left join floorinfo f on floormark.f_id =f.f_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="fm_id">
+				fm_id=#fm_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="fm_name">
+			  fm_name=#fm_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="fm_type">
+			  fm_type=#fm_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="f_id">
+			  floormark.f_id=#f_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="f_id_all">
+			  floormark.f_id=#f_id_all#  or  floormark.f_id=0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT fm_id,fm_name,fm_remark,fm_sort,floormark.f_id,fm_type,f.f_name,f.f_tag
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY fm_sort ASC,fm_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,93 @@
+<html>
+  <head>
+    <title>新增消息推送</title>
+    	<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+  </head>
+  <body>  
+<@s.form action="/admin_Messagepush_insert.action" method="post" validate="true"  id="detailForm">
+<div class="postion">
+	当前位置：当前位置：网站管理 > 消息推送 > 消息推送列表 > 新增消息推送
+</div>
+<div class="rtdcont">
+	<div class="rdtable">
+		<table  width="100%" cellspacing="0" cellpadding="0">
+	    
+			 <tr>
+	           <td class="table_name"  width="10%">标题<font color='red'>*</font></td>
+	           <td class="table_right">
+	             	<@s.textfield name="messagepush.msgpush_name" cssClass="txtinput" maxLength="200" cssStyle="width:400px;"  />
+	             	<@s.fielderror><@s.param>messagepush.msgpush_name</@s.param></@s.fielderror>
+	           </td>
+	        </tr>	
+	        
+	        
+	         <tr>
+	           <td class="table_name">摘要<font color='red'>*</font></td>
+	           <td class="table_right">
+	             	<@s.textarea name="messagepush.mp_abstract" cssClass="txtinput" maxLength="500" cssStyle="width:450px;height:100px;" />
+	             	<@s.fielderror><@s.param>messagepush.mp_abstract</@s.param></@s.fielderror>
+	           </td>
+	        </tr>	
+	        
+	        
+	        <tr>
+	           <td class="table_name"  width="10%">消息类型<font color='red'>*</font></td>
+	           <td class="table_right">
+	             <input type="radio" value="1" name="messagepush.apns_type" checked />
+					<img src="/include/admin/appimg/apns_type1.png" width="30px" height="30px" title="活动" />[活动]
+					<input type="radio" value="2" name="messagepush.apns_type"  />
+					<img src="/include/admin/appimg/apns_type2.png" width="30px" height="30px" title="降价提醒" />[降价提醒]
+					<input type="radio" value="3" name="messagepush.apns_type"  />
+					<img src="/include/admin/appimg/apns_type3.png" width="30px" height="30px" title="通知消息" />[通知消息]
+					<input type="radio" value="4" name="messagepush.apns_type"  />
+					<img src="/include/admin/appimg/apns_type4.png" width="30px" height="30px" title="资讯"  />[资讯]
+					<input type="radio" value="5" name="messagepush.apns_type"  />
+					<img src="/include/admin/appimg/apns_type5.png" width="30px" height="30px" title="新品" />[新品]
+					<input type="radio" value="6" name="messagepush.apns_type"  />
+					<img src="/include/admin/appimg/apns_type6.png" width="30px" height="30px" title="行业动态" />[行业动态]
+	           </td>
+	        </tr>	
+	           <tr>
+		             <td class="table_name">内容<font color='red'>*</font></td>
+			         <td>
+			             <@s.textarea id="content" name="messagepush.content" cssClass="txtinput" cssStyle="width:60%;height:300px;" onkeyup="checkLength(this,25000);" maxlength="25000"/>
+			             <script>
+							KindEditor.ready(function(K) {
+								var editor1 = K.create('textarea[name="messagepush.content"]', {
+									uploadJson : '/kindeditor/jsp/upload_json.jsp',
+									fileManagerJson : '/kindeditor/jsp/file_manager_json.jsp',
+									allowFileManager : true,
+									afterCreate : function() {
+									    var self = this;
+										K.ctrl(document, 13, function() {
+											self.sync();
+										});
+										K.ctrl(self.edit.doc, 13, function() {
+											self.sync();
+										});
+									},
+									afterBlur: function(){this.sync();}
+								});
+							});
+						</script>
+		                 <@s.fielderror><@s.param>messagepush.content</@s.param></@s.fielderror>
+			             </td>
+		           </tr>
+	        
+        </table>
+	</div>
+	<div class="clear"/>
+   <div class="bsbut_detail">
+           <@s.token/>    
+           <@s.hidden name="token_value" value="${get_token_value?if_exists}"/>
+	       ${listSearchHiddenField?if_exists}
+            <@s.hidden name="messagepush.info_state" value="0"/>
+           <@s.submit value="保存"/>
+	       <input type="button" name="returnList" value="返回列表" onclick="linkToInfo('/admin_Messagepush_list.action','');"/>
+   </div>
+</div>
+<div class="clear"></div>
+</@s.form>  
+</body>
+</html>
+

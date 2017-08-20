@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="receivebox">
+
+	<typeAlias alias="receivebox" type="com.rbt.model.Receivebox" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="receivebox">
+		<![CDATA[ 
+    SELECT receive_id,send_id,get_cust_id,is_read,is_get_del FROM receivebox WHERE receive_id=$receive_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="receivebox">
+		UPDATE receivebox SET receive_id=#receive_id#,send_id=#send_id#,get_cust_id=#get_cust_id#,is_read=#is_read#,is_get_del=#is_get_del# WHERE receive_id=$receive_id$
+	</update>
+
+	<insert id="insert" parameterClass="receivebox">
+		INSERT INTO receivebox (receive_id,send_id,get_cust_id,is_read,is_get_del) VALUES (#receive_id#,#send_id#,#get_cust_id#,#is_read#,#is_get_del#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM receivebox WHERE receive_id in ($receive_id$)
+	</delete>
+
+
+	<update id="deletelogic" parameterClass="java.util.HashMap">
+		UPDATE receivebox SET is_get_del=#is_get_del# WHERE receive_id=$receive_id$
+	</update>
+
+	<sql id="getCommon">
+		FROM receivebox r
+		     left join sendbox s on r.send_id=s.send_id
+				left join member m on s.send_cust_id=m.cust_id
+		<dynamic prepend="WHERE">
+			 <!-- 根据cust_id过滤-->
+		 <isNotNull prepend="and" property="cust_id"> 
+	    		get_cust_id in ($cust_id$)
+		 </isNotNull>
+		 <!-- 设置已读未读过滤 -->
+		 <isNotNull prepend="and" property="is_read"> 
+	    		is_read in ($is_read$)
+		 </isNotNull>
+		 <!-- 设置删除过滤 -->
+		 <isNotNull prepend="and" property="is_get_del"> 
+	    		is_get_del in ($is_get_del$)
+		 </isNotNull>
+		 <isNotNull prepend="and" property="cust_name"> 
+	    		m.cust_name=#cust_name#
+		 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT receive_id,r.send_id,get_cust_id,is_read,is_get_del,m.cust_name,s.title,s.in_date,s.recevie_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY receive_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+		 
+		
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

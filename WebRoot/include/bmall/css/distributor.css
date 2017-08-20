@@ -1,0 +1,22 @@
+.topgoods{
+	height:auto;
+	width:815px;
+	margin:0px;
+}
+.goodsname{
+	margin-left:10px;
+	display:inline-block;
+	line-height:26px;
+}
+.buynow{
+	float:right;
+	margin-right:10px;
+	display:inline-block;
+	line-height:26px;
+}
+.tabgoods{
+	width:805px;
+	height:auto;
+	margin-left:10px;
+	
+}

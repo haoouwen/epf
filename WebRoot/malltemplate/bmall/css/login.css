@@ -1,0 +1,138 @@
+.logoSearDiv{
+	width:990px;
+}
+/*注册logo*/
+.regLogo{
+	width:99px;
+	height:27px;
+	background:url(../images/bTitle.gif) no-repeat;
+	background-position:0 -34px;
+	position:absolute;
+	left:300px;
+	top:38px;
+}
+/*会员登陆*/
+.loginb{
+	width:100%;
+	background:#f6f6f6;
+	margin-top:10px;
+	padding:15px 0;
+}
+.login1{
+	width:970px;
+	height:380px;
+	border:#e8e8e8 solid 1px;
+	margin:0 auto;
+	background:#fff;
+	position:relative;
+	padding:9px;
+}
+/**/
+.advertising{
+	width:620px;
+	height:375px;
+}
+.advertising img{
+	width:620px;
+	height:375px;
+}
+/**/
+.logincont{
+	width:320px;
+	position:absolute;
+	right:15px;
+	top:10px;
+}
+.logintab td{
+	padding:3px 0px;
+}
+.logintab td p{
+	font-size:14px;
+	padding:5px 0;
+	position:relative; 
+}
+.logintab td .prompt{
+	width:240px;
+	background:#ffebec;
+	padding:0;
+	font-size:12px;
+	padding:5px;
+	border:#ffbdbf solid 1px;
+	color:#e6393d;
+	position:absolute;
+	top:45px;
+	left:66px;
+	display:inline-block;
+}
+.logintab .zctext{
+	width:310px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/login.gif) no-repeat;
+	background-position:275px 0px;
+}
+.logintab .mmtext{
+	width:310px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/login.gif) no-repeat;
+	background-position:275px -45px;
+	font-family:Arial;
+}
+.logintab  .yztext{/**/
+	width:85px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+}
+.logintab .yzmPic{
+	padding:9px;
+}
+.logintab  .logintd p{
+	font-size:12px;
+	padding:5px 0; 
+}
+.logintab  .logintd span{
+	padding-right:15px;
+}
+.logintd .loginbut{
+	width:315px;
+	height:36px;
+	background:#d71d20;
+	border:none;
+	cursor:pointer;
+	font-family:"微软雅黑";
+	font-size:14px;
+	color:#fff;
+}
+.logintd a{
+	color:#2262b0;
+}
+.logintd a:hover{
+	color:#2262b0;
+	text-decoration:underline;
+}
+.logintd .hzP{
+	text-align:center;
+	margin-top:10px;
+}
+/**/
+.regbut{
+	width:33px;
+	height:117px;
+	position:absolute;
+	right:-34px;
+	top:45px;
+}
+.regbut a{
+	width:33px;
+	height:117px;
+	background:url(../images/login.gif) no-repeat;
+	background-position:0 -87px;
+	display:inline-block;
+}

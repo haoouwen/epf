@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rate">
+
+	<typeAlias alias="rate" type="com.rbt.model.Rate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="rate">
+		<![CDATA[ 
+    SELECT rate_id,rate_name,rate_unit,rate_mark,rate_img,enables,exchangerate,endefault FROM rate WHERE rate_id=$rate_id$
+    ]]>
+	</select>
+	<select id="getAll" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+    	SELECT rate_id,rate_name,rate_mark,rate_img,enables,exchangerate,endefault FROM rate
+	</select>
+	<update id="update" parameterClass="rate">
+		UPDATE rate SET rate_id=#rate_id#,rate_name=#rate_name#,rate_unit=#rate_unit#,rate_mark=#rate_mark#,rate_img=#rate_img#,enables=#enables#,exchangerate=#exchangerate#,endefault=#endefault# WHERE rate_id=$rate_id$
+	</update>
+	<update id="updateendefault">
+		UPDATE rate SET endefault=1
+	</update>
+	<insert id="insert" parameterClass="rate">
+		INSERT INTO rate (rate_id,rate_name,rate_unit,rate_mark,rate_img,enables,exchangerate,endefault) VALUES (#rate_id#,#rate_name#,#rate_unit#,#rate_mark#,#rate_img#,#enables#,#exchangerate#,#endefault#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM rate WHERE rate_id in ($rate_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM rate 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="enables"> 
+				  enables=#enables#
+			</isNotNull>
+			<isNotNull prepend="and" property="rate_name"> 
+			        INSTR(rate_name,#rate_name#)>0
+		    </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT rate_id,rate_name,rate_unit,rate_mark,rate_img,enables,exchangerate,endefault
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY rate_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,30 @@
+/*.selproul li .selsize .checked{
+	color:#333333;
+	text-decoration:none;
+	border:#cc0000 solid 1px;
+	background:url(../images/checked.gif) no-repeat right bottom;
+}
+.disable{
+	color:#333333;
+	text-decoration:none;
+	border:#cc0000 dashed 1px;
+	cursor:not-allowed; 
+}
+ .checked{
+	border:#cc0000 solid 1px;
+	background:url(../images/checked.gif) no-repeat right bottom;
+	position: relative; 
+    z-index: 3;  
+}*/
+.spttext li  .disable{
+	border:#E2E1E3 solid 1px;
+	position: relative; 
+    z-index: 3;  
+    cursor:not-allowed; 
+}
+.selcolor li  .disable{
+	border:#E2E1E3 solid 1px;
+	position: relative; 
+    z-index: 3;  
+    cursor:not-allowed; 
+}

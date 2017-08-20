@@ -1,0 +1,123 @@
+/*品牌列表*/
+.searBrandul{
+	width:927px;
+	height:34px;
+	background:url(../images/brandsbg_03.gif) repeat-x;
+	border-right:#cccccc solid 1px;
+}
+.searBrandul li{
+	float:left;
+}
+.searBrandul li a{
+	width:32px;
+	height:32px;
+	line-height:32px;
+	border-left:#cccccc solid 1px;
+	display:inline-block;
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	color:#333333;
+}
+.searBrandul li a:hover{
+	text-decoration:none;
+	color:#fff;
+	background:#333333;
+	border-left:#333333 solid 1px;
+}
+.searBrandul li .currentA{
+	text-decoration:none;
+	color:#fff;
+	background:#333333;
+	border-left:#333333 solid 1px;
+}
+.searBrandul li  .searall{
+	width:68px;
+	color:#fff;
+	background:#333333;
+	font-size:12px;
+	border-left:#333333 solid 1px;
+}
+/*分类查询*/
+.searbrandcla{
+	width:926px;
+	border:#f0eceb solid 1px;
+	border-top:none;
+}
+.lsearcla{
+	width:90px;
+	height:60px;
+	padding:20px 10px;
+	background:#f7f5f5;
+	color:#806f66;
+	float:left;
+}
+.rsearcla{
+	width:810px;
+	padding:20px 0px;
+	float:left;
+	line-height:28px;
+}
+.rsearcla a{
+	padding:0 10px;
+	margin:0 15px;
+	color:color:#806f66;
+	display:inline-block;
+}
+.rsearcla a:hover{
+	background:#333333;
+	color:#ffffff;
+	text-decoration:none;
+}
+.rsearcla .currentCat{
+	background:#333333;
+	color:#ffffff;
+	text-decoration:none;
+}
+/*排序*/
+.searSort{
+	width:928px;
+	margin-top:10px;
+}
+.searSort h2{
+	width:180px;
+	height:29px;
+	background:url(../images/brandtitle_07.gif) no-repeat;
+	font-family:Arial;
+	font-size:14px;
+	color:#ffffff;
+	line-height:20px;
+	padding-left:19px;
+}
+.searSortcont{
+	width:895px;
+	border:#e3e3e3 solid 1px;
+	margin-left:10px;
+	padding:10px;
+}
+.searSortcont ul{
+	padding-left:5px;
+}
+.searSortcont li{
+	width:125px;
+	height:55px;
+	float:left;
+	padding:10px;
+}
+.searSortcont li img{
+	width:125px;
+	height:55px;
+	border:#e3e3e3 solid 1px;
+}
+.searSortcont li .abmore{
+	width:62px;
+	height:25px;
+	background:url(../images/abmore_07.gif) no-repeat;
+	display:inline-block;
+	margin-top:15px;
+	margin-left:30px;
+}
+.searSortcont li .abmore:hover{
+	background:url(../images/ahbmore_07.gif) no-repeat;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rechargeablecard">
+
+	<typeAlias alias="rechargeablecard" type="com.rbt.model.Rechargeablecard" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="rechargeablecard">
+		<![CDATA[ 
+    SELECT cardid,cardname,cardmoney,cardnum,cardused,carddate,cardstate FROM rechargeablecard WHERE cardid=$cardid$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="rechargeablecard">
+		UPDATE rechargeablecard SET cardid=#cardid#,cardname=#cardname#,cardmoney=#cardmoney#,cardnum=#cardnum#,cardused=#cardused#,carddate=#carddate#,cardstate=#cardstate# WHERE cardid=$cardid$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE rechargeablecard SET 
+    	 <isNotNull  property="cardid"> 
+		   cardid=$cardid$
+		 </isNotNull>
+    	 WHERE cardid=$cardid$
+    </update>
+    
+	<update id="updateSate" parameterClass="rechargeablecard">
+		UPDATE rechargeablecard SET cardid=$cardid$ WHERE cardid=$cardid$
+	</update>
+
+	<insert id="insert" parameterClass="rechargeablecard">
+		INSERT INTO rechargeablecard (cardid,cardname,cardmoney,cardnum,cardused,carddate,cardstate) VALUES (#cardid#,#cardname#,#cardmoney#,#cardnum#,#cardused#,#carddate#,#cardstate#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM rechargeablecard WHERE cardid in ($cardid$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM rechargeablecard 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cardid">
+				cardid=#cardid#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cardid,cardname,cardmoney,cardnum,cardused,carddate,cardstate
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY cardid DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

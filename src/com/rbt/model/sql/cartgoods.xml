@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="cartgoods">
+
+	<typeAlias alias="cartgoods" type="com.rbt.model.Cartgoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="cartgoods">
+		<![CDATA[ 
+    SELECT trade_id,buy_num,cust_id,cookie_id,shop_name,shop_qq,shop_cust_id,user_name,goods_id,img_path,goods_name,spec_name,spec_id,sale_price,integral,privilege_way,is_virtual,in_date,radom_no FROM cartgoods WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="cartgoods">
+		UPDATE cartgoods SET trade_id=#trade_id#,buy_num=#buy_num#,cust_id=#cust_id#,cookie_id=#cookie_id#,shop_name=#shop_name#,shop_qq=#shop_qq#,shop_cust_id=#shop_cust_id#,user_name=#user_name#,goods_id=#goods_id#,img_path=#img_path#,goods_name=#goods_name#,spec_name=#spec_name#,spec_id=#spec_id#,sale_price=#sale_price#,integral=#integral#,privilege_way=#privilege_way#,is_virtual=#is_virtual#,in_date=#in_date# WHERE trade_id=$trade_id$
+	</update>
+    <!-- 修改购物车中商品 -->
+    <update id="updateCustId" parameterClass="cartgoods">
+		UPDATE cartgoods SET cust_id=#cust_id#,buy_num=#buy_num# WHERE trade_id=$trade_id$
+	</update>
+	
+	<insert id="insert" parameterClass="cartgoods">
+		INSERT INTO cartgoods (trade_id,buy_num,cust_id,cookie_id,shop_name,shop_qq,shop_cust_id,user_name,goods_id,img_path,goods_name,spec_name,spec_id,sale_price,integral,privilege_way,is_virtual,in_date,radom_no) VALUES (#trade_id#,#buy_num#,#cust_id#,#cookie_id#,#shop_name#,#shop_qq#,#shop_cust_id#,#user_name#,#goods_id#,#img_path#,#goods_name#,#spec_name#,#spec_id#,#sale_price#,#integral#,#privilege_way#,#is_virtual#,now(),#radom_no#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM cartgoods WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM cartgoods 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id"> 
+			      goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cookie_id"> 
+			      cookie_id=#cookie_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="spec_id"> 
+			      sepc_id=#sepc_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id"> 
+			      cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like0"> 
+			     spec_id LIKE '%$specstr_like0$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like1"> 
+			     spec_id LIKE '%$specstr_like1$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like2"> 
+			     spec_id LIKE '%$specstr_like2$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like3"> 
+			     spec_id LIKE '%$specstr_like3$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like4"> 
+			     spec_id LIKE '%$specstr_like4$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_like5"> 
+			     spec_id LIKE '%$specstr_like5$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="shop_cust_id"> 
+			     shop_cust_id=#shop_cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,buy_num,cust_id,cookie_id,shop_name,shop_qq,shop_cust_id,user_name,goods_id,img_path,goods_name,spec_name,spec_id,sale_price,integral,privilege_way,is_virtual,in_date,radom_no,
+		(select cat_attr from goods where goods.goods_id=cartgoods.goods_id) as goods_cat,
+		(select tax_rate from goods where goods.goods_id=cartgoods.goods_id) as tax_rate,
+		(select use_integral from goods where goods.goods_id=cartgoods.goods_id) as use_integral
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull property="group_shop"> 
+		     GROUP BY shop_cust_id 
+		</isNotNull>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

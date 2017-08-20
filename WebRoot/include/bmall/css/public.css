@@ -1,0 +1,342 @@
+/*
+ FileName: public.css
+ */
+body {
+    margin:0;
+    padding:0px;
+    font-size: 12px;
+    font-family: "宋体";
+	background:#FFF;
+	color:#333;
+}
+ul ,li{
+    padding:0px;
+    margin:0px;
+    list-style-type: none;
+}
+div, ul, p, h2 ,h3{
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+img {
+	padding:0px;
+    margin:0px;
+    border:0;
+}
+a{ 
+	text-decoration:none;
+	color:#333333;
+ }
+a:hover{
+	text-decoration:none;
+	color:#d00202;
+}
+.w1000{
+	width:1000px;
+	margin:0 auto;
+	margin-top:10px;
+}		
+.f_left{
+	float:left;
+}
+.f_right{
+	float:right;
+}	
+.clear {
+    clear: both;
+}
+.red{
+	color:#ff0000;
+}
+.bule{
+	color:#005aa0;
+}
+.green{
+	color:#3d6f02;
+}
+/*顶部*/
+.user_top{
+	width:100%;
+	height:33px;
+	background:url(/include/bmall/images/user_bg.gif) repeat-x;
+}
+.user{
+	width:1000px;
+	margin:0 auto;
+	height:33px;
+	line-height:33px;
+}
+.welcome{
+	float:left;
+}		
+.welcome a{
+	color:#d00202;
+}
+.welcome a:hover{
+	color:#d00202;
+	text-decoration:underline;
+}
+.help{
+	float:right;
+}
+.help span{
+	padding:0 10px;
+	border-right:1px solid #cccccc;
+}
+.help a:hover{
+	color:#d00202;
+}
+.help_car{
+	background:url(/include/bmall/images/car.gif) no-repeat;
+	padding-left:25px;
+}
+.help .nbspan{
+	border:none;
+}
+.lrecboximg{
+	float:left;
+	padding-top:8px;
+}
+/*logo,搜索，电话*/
+.logoSear{
+	width:1000px;
+	height:90px;
+	margin:0 auto;
+	margin-top:10px;
+}
+.lsjLogo{
+	float:left;
+	margin-top:10px;
+}
+.lsearch{
+	width:530px;
+	height:90px;
+	float:right;
+	position:relative;
+}
+.seaMain{
+	width:440px; 
+	height:30px;
+	position:absolute;
+	border:#72abe0 solid 2px;
+	right:0px;
+	top:30px;
+}
+.sea_text{
+	width:330px;
+	height:22px;
+	_height:24px;
+	line-height:22px;
+	_line-height:24px;
+	float:left;
+	font-size:14px;
+	margin:1px 0 0 3px;
+	border:#fff solid 1px;
+	color:#878787;
+}
+.sea_button{
+	width:92px;
+	height:32px;
+	float:right;
+	background:url(/include/bmall/images/button.gif) no-repeat;
+	border:0;
+	cursor:pointer;
+}			
+.fphone{
+	width:160px;
+	height:90px;
+	float:right;
+}
+.se_dp li{
+	float:left;
+	width:49px;
+	height:22px;
+	line-height:22px;
+	text-align:center;
+	cursor:pointer;
+	}
+.se_dp .se_dp_h{
+	font-weight:bold;
+	color:#FFF;
+	background:url(/include/bmall/images/button.gif) no-repeat;
+	}
+.pagebar{
+	text-align:center;
+	margin-top:5px;
+	}				
+/*导航*/
+.title_nav{
+	width:999px;
+	height:33px;
+	background:url(/include/bmall/images/title_nav_back.gif) repeat-x bottom;
+}
+.title_nav li{
+	width:102px;
+	height:33px;
+	background:url(/include/bmall/images/ht_title.gif) no-repeat;
+	float:left;
+	background-position:0 0;
+	line-height:33px;
+	font-weight:bold;
+	text-align:center;
+	cursor:pointer;
+}
+.title_nav a{
+	color:#333333;
+}
+.title_nav a:hover{
+	color:#333333;
+}
+.title_nav .title_navli{
+	width:101px;
+	height:33px;
+	background:url(/include/bmall/images/ht_title.gif) no-repeat;
+	background-position:0 -37px;
+}
+.title_nav .title_navli a{
+	color:#ffffff;
+}.title_nav .title_navli a:hover{
+	color:#ffffff;
+}	
+/*尾部*/
+.sjBottom{
+	border-top:1px solid #e1e2e3;
+	text-align:center;
+	margin-top:15px;
+	padding:15px 0;
+}
+/*内容左边*/
+.leftside{
+	width:168px;
+	border:#c9c8c8 solid 1px;
+	border-top:none;
+	float:left;
+}
+.lsul{
+	font-weight:bold;
+	line-height:29px;
+}
+.lsul li{
+	width:168px;
+	background:url(/include/bmall/images/lefttul.gif) no-repeat;
+	cursor:pointer;
+}
+.lsul .lih2a{
+	padding-left:10px;
+}
+.lsul a:hover{
+	color:#352d2d;
+}
+.lsul .lsul2{
+	padding-left:10px;
+	width:150px;
+	font-weight:normal;
+}
+.lsul .lsul2 li{
+	width:150px;
+	height:29px;
+	background:url(/include/bmall/images/ul2li.gif) no-repeat bottom;
+}
+.lsul .lsul2 .lsul2nli{
+	background:none;
+}
+.lsul .lsul2 a:hover{
+	color:#cc0000;
+}
+
+
+
+
+/*向下箭头显示*/
+.lsul_down{
+	font-weight:bold;
+	line-height:29px;
+}
+.lsul_down li{
+	width:168px;
+	background:url(/include/bmall/images/lefttudown.gif) no-repeat;
+	cursor:pointer;
+}
+.lsul_down .lih2a{
+	padding-left:10px;
+}
+.lsul_down a:hover{
+	color:#352d2d;
+}
+.lsul_down .lsul2{
+	padding-left:10px;
+	width:150px;
+	font-weight:normal;
+}
+.lsul_down .lsul2 li{
+	width:150px;
+	height:29px;
+	background:url(/include/bmall/images/ul2li.gif) no-repeat bottom;
+}
+.lsul_down .lsul2 .lsul2nli{
+	background:none;
+}
+.lsul_down .lsul2 a:hover{
+	color:#cc0000;
+}
+/*向下箭头显示结束*/
+
+
+/*内容右边*/
+.lsul .blockdiv{
+	display:none;
+}
+/*内容左边*/
+.rightside{
+	width:820px;
+	float:right;
+}
+/*位置*/
+.postion{
+	width:820px;
+	height:30px;
+	line-height:30px;
+}
+.postion b{
+	font-size:14px;
+}
+.postion a{
+	color:#100f0f;
+}
+.postion a:hover{
+	color:#c80101;
+}
+.postion span{
+	padding-left:5px;
+	padding-right:5px;
+}
+/**/
+.inputbut{
+	height:25px;
+	background:url(../images/ainputback_03.gif) repeat-x;
+	border:#fed690 solid 1px;
+	color:#cc3300;
+	cursor:pointer;
+}			
+/* 系统信息提示框*/
+.decorate{
+  font-size:18px;width:200px;color:#FE7E03;font-weight:bold;text-align:center;
+}
+.count_down{
+  font-size:14px;width:200px;color:#474747;text-align:center;margin-top:10px;
+}
+/* jquery后台帮助按钮提示开始*/
+.showtip{
+	font-size:13px;
+	width:auto;
+	padding:5px;
+}
+/* jquery后台帮助按钮提示结束*/
+.error{
+	height:45px;
+	line-height:45px;
+	background:url(/malltemplate/bmall/images/cw.gif) no-repeat  center;
+	padding-left:35px;
+	color:#898989;
+}

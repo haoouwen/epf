@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="commutemplate">
+
+	<typeAlias alias="commutemplate" type="com.rbt.model.Commutemplate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="commutemplate">
+		<![CDATA[ 
+    SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp,
+     temp_type,temp_conTwo,send_who FROM commutemplate WHERE temp_id=$temp_id$
+    ]]>
+	</select>
+	
+   <select id="getByTempcode" parameterClass="java.lang.String"
+		resultClass="commutemplate">
+		<![CDATA[ 
+    SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp,temp_type,temp_conTwo,send_who FROM commutemplate WHERE temp_code=#temp_code#
+    ]]>
+	</select>
+	
+	<update id="update" parameterClass="commutemplate">
+		UPDATE commutemplate SET temp_id=#temp_id#,temp_name=#temp_name#,
+		temp_con=#temp_con#,tag_desc=#tag_desc#,temp_code=#temp_code#,sys_temp=#sys_temp#,
+		temp_type=#temp_type#,temp_conTwo=#temp_conTwo#,send_who=#send_who# WHERE temp_id=$temp_id$
+	</update>
+
+	<insert id="insert" parameterClass="commutemplate">
+		INSERT INTO commutemplate (temp_id,temp_name,temp_con,tag_desc, temp_code,sys_temp,temp_type)
+		 VALUES (#temp_id#,#temp_name#,#temp_con#,#tag_desc#,#temp_code#,#sys_temp#,#temp_type#,#temp_conTwo#,#send_who#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM commutemplate WHERE temp_id in ($temp_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM commutemplate 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="temp_name"> 
+     		    INSTR(temp_name,#temp_name#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="temp_type"> 
+     		   temp_type=#temp_type#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT temp_id,temp_name,temp_con,tag_desc,temp_code,sys_temp,temp_type
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY temp_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

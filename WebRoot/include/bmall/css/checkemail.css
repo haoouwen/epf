@@ -1,0 +1,36 @@
+.cemailno{
+width:830px;
+margin: auto;
+margin-top:40px;
+background:#FEE9E8;
+}
+.cemailyes{
+width:830px;
+margin: auto;
+margin-top:40px;
+margin-bottom:30px;
+background:#FFFDEE;
+}
+
+
+.cemailyes .p1{
+font-size:20px;
+line-height:30px;
+margin-bottom:30px;
+margin-left:10px;
+margin-top:10px;
+}
+.cemailno .p1{
+font-size:20px;
+line-height:30px;
+margin-bottom:15px;
+margin-left:10px;
+margin-top:10px;
+}
+.cemailno .p2{
+font-size:14px;
+margin-top:30px;
+line-height:18px;
+margin-bottom:15px;
+margin-left:10px;
+}

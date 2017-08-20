@@ -1,0 +1,187 @@
+/*
+ * Package:com.rbt.action
+ * FileName: {CLASSNAME}Action.java 
+ */
+package com.rbt.action;
+
+import java.util.*;
+import com.rbt.action.BaseAction;
+import com.rbt.model.{CLASSNAME};
+import com.rbt.service.I{CLASSNAME}Service;
+import com.opensymphony.xwork2.Preparable;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+/**
+ * @function 功能 {FUNNAME}action类
+ * @author 创建人 {AUTHOR}
+ * @date 创建日期 {DATE}
+ */
+@Controller
+public class {CLASSNAME}Action extends BaseAction implements Preparable{
+	
+	private static final long serialVersionUID = 1L;
+	/*******************实体层********************/
+	/*
+	 * {FUNNAME}对象
+	 */
+	private {CLASSNAME} {TABLENAME};
+	/*******************业务层接口****************/
+	/*
+	 * {FUNNAME}业务层接口
+	 */
+	@Autowired
+	private I{CLASSNAME}Service {TABLENAME}Service;
+	
+	/*********************集合*******************/
+	/*
+	 * {FUNNAME}信息集合
+	 */
+	public List {TABLENAME}List;
+	/*********************字段*******************/
+	public String chb_id; //批量排序ID串
+	public String sort_val; //批量排序值串
+	public String state_val;//状态值
+	
+		
+	/**
+	 * 方法描述：返回新增{FUNNAME}页面
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String add() throws Exception {
+		return goUrl(ADD);
+	}
+
+	/**
+	 * 方法描述：新增{FUNNAME}
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String insert() throws Exception {
+		super.commonValidateField({TABLENAME});
+		if(super.ifvalidatepass){
+			return add();
+		}
+	
+		this.{TABLENAME}Service.insert({TABLENAME});
+		this.addActionMessage("新增{FUNNAME}成功！");
+		this.{TABLENAME} = null;
+		return INPUT;
+	}
+
+	/**
+	 * 方法描述：修改{FUNNAME}信息
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String update() throws Exception {
+			super.commonValidateField({TABLENAME});
+		if(super.ifvalidatepass){
+			return view();
+		}
+	
+		this.{TABLENAME}Service.update({TABLENAME});
+		this.addActionMessage("修改{FUNNAME}成功！");
+		return list();
+	}
+	/**
+	 * 方法描述：删除{FUNNAME}信息
+	 * @return
+	 * @throws Exception
+	 */
+	public String delete() throws Exception {
+		commonDel();
+		return list();
+	}
+	
+	/**
+	 * 方法描述：公用删除{FUNNAME}信息
+	 * @return
+	 * @throws Exception
+	 */
+	public void commonDel(){
+		boolean flag = this.{TABLENAME}Service.delete(chb_id);
+		if(flag){
+			this.addActionMessage("删除{FUNNAME}信息成功!");
+		}else{
+			this.addActionMessage("删除{FUNNAME}信息失败!");
+		}
+	}
+	
+	
+	/**
+	 * 方法描述：根据搜索条件列出信息列表
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public String list() throws Exception {
+		Map pageMap = new HashMap();
+		
+		//根据页面提交的条件找出信息总数
+		int count=this.{TABLENAME}Service.getCount(pageMap);
+		
+		//分页插件
+		pageMap = super.pageTool(count,pageMap);
+		
+		{TABLENAME}List = this.{TABLENAME}Service.getList(pageMap);
+		return goUrl(INDEXLIST);
+	}
+	/**
+	 * 方法描述：根据主键找出{FUNNAME}信息
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String view() throws Exception {
+		String id = this.{TABLENAME}.get{TABLEKEYUPPER}();
+		if(id==null || id.equals("")){
+			{TABLENAME} = new {CLASSNAME}();
+		}else{
+			{TABLENAME} = this.{TABLENAME}Service.get(id);
+		}
+		return goUrl(VIEW);
+	}
+	/**
+	 * @return the {CLASSNAME}List
+	 */
+	public List get{CLASSNAME}List() {
+		return {TABLENAME}List;
+	}
+	/**
+	 * @param {TABLENAME}List
+	 *  the {CLASSNAME}List to set
+	 */
+	public void set{CLASSNAME}List(List {TABLENAME}List) {
+		this.{TABLENAME}List = {TABLENAME}List;
+	}
+	
+	public void prepare() throws Exception {
+		super.saveRequestParameter();
+		if({TABLENAME} == null){
+			{TABLENAME} = new {CLASSNAME}();
+		}
+		String id = this.{TABLENAME}.get{TABLEKEYUPPER}();
+		if(!this.validateFactory.isDigital(id)){
+			{TABLENAME} = this.{TABLENAME}Service.get(id);
+		}
+	}
+	/**
+	 * @return the {TABLENAME}
+	 */
+	public {CLASSNAME} get{CLASSNAME}() {
+		return {TABLENAME};
+	}
+	/**
+	 * @param {CLASSNAME}
+	 *            the {TABLENAME} to set
+	 */
+	public void set{CLASSNAME}({CLASSNAME} {TABLENAME}) {
+		this.{TABLENAME} = {TABLENAME};
+	}
+}

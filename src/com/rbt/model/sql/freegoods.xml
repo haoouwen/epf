@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="freegoods">
+
+	<typeAlias alias="freegoods" type="com.rbt.model.Freegoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="freegoods">
+		<![CDATA[ 
+    SELECT fg_id,fg_number,fg_price,fg_date,img_path,fg_state,fg_sort,fg_content,cat_attr,fg_no,key_no,fg_name FROM freegoods WHERE fg_id=$fg_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="freegoods">
+		UPDATE freegoods SET fg_id=#fg_id#,fg_number=#fg_number#,fg_price=#fg_price#,fg_date=now(),img_path=#img_path#,fg_state=#fg_state#,fg_sort=#fg_sort#,fg_content=#fg_content#,cat_attr=#cat_attr#,fg_no=#fg_no#,key_no=#key_no#,fg_name=#fg_name# WHERE fg_id=$fg_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE freegoods SET 
+    	 <isNotNull  property="fg_id"> 
+		   fg_id=$fg_id$
+		 </isNotNull>
+    	 WHERE fg_id=$fg_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="freegoods">
+		UPDATE freegoods SET fg_id=$fg_id$ WHERE fg_id=$fg_id$
+	</update>
+    <!--批量更新fg_sort字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE freegoods SET fg_sort=#fg_sort# WHERE fg_id=$fg_id$
+	</update>
+    
+
+    <!-- fg_state启用/禁用 -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE freegoods SET fg_state=#fg_state# WHERE fg_id=$fg_id$
+	</update>
+	<insert id="insert" parameterClass="freegoods">
+		INSERT INTO freegoods (fg_id,fg_number,fg_price,fg_date,img_path,fg_state,fg_sort,fg_content,cat_attr,fg_no,key_no,fg_name) VALUES (#fg_id#,#fg_number#,#fg_price#,now(),#img_path#,#fg_state#,#fg_sort#,#fg_content#,#cat_attr#,#fg_no#,#key_no#,#fg_name#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM freegoods WHERE fg_id in ($fg_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM freegoods 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="fg_id">
+				fg_id=#fg_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="fg_ids">
+				fg_id in ($fg_ids$)
+			</isNotNull>
+			<isNotNull prepend="and" property="fg_name">
+				INSTR(fg_name,#fg_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="fg_state">
+				fg_state=#fg_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="sgis"> 
+			      fg_id in ($sgis$)
+			</isNotNull> 				
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT fg_id,fg_number,fg_price,fg_date,img_path,fg_state,fg_sort,fg_content,cat_attr,fg_no,key_no,fg_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY fg_sort ASC, fg_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

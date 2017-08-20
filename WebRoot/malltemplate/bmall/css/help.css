@@ -1,0 +1,133 @@
+.logoSearDiv{
+	width:990px;
+}
+.regLogo{
+	width:99px;
+	height:27px;
+	background:url(../images/bTitle.gif) no-repeat;
+	background-position:0 -96px;
+	position:absolute;
+	left:300px;
+	top:38px;
+}
+.helpb{
+	width:100%;
+	background:#f6f6f6;
+	margin-top:10px;
+	padding-bottom:10px;
+}
+/*位置*/
+.postion{
+	width:1000px;
+	border-top:#dddddd solid 1px;
+}
+/**/
+.w1000{
+	width:1000px;
+	margin:0 auto;
+}
+.w245{
+	width:215px;
+	float:left;
+	display:inline;
+	margin-left:1px;
+	background:#fff;
+}
+.w245 h2{
+	width:205px;
+	height:36px;
+	background:#e4b632;
+	border-top:#a3873f solid 1px;
+	color:#fff;
+	font-size:14px;
+	line-height:36px;
+	padding-left:10px;
+}
+.helpCla{
+	width:213px;
+	border:#dbdbdb solid 1px;
+	border-top:none;
+}
+.helpul{
+}
+.helpul li h3{
+	width:180px;
+	height:34px;
+	line-height:34px;
+	font-size:12px;
+	background:#f9f9f9 url(../images/helpf.gif) no-repeat 10px center;
+	color:#4e4e4e;
+	padding-left:33px;
+	cursor:pointer;
+	border-bottom:#dbdbdb dotted 1px;
+}
+.helpul li .addh3{
+	background:#f9f9f9 url(../images/helps.gif) no-repeat 10px center;
+}
+.helpul li ul{
+	width:193px;
+	margin-left:10px;	
+}
+.helpul li ul li{
+	width:180px;
+	height:38px;
+	line-height:38px;
+	border-bottom:#dbdbdb dotted 1px;
+	background:url(../images/dot_03.gif) no-repeat 3px center;
+	padding-left:13px;
+}
+/**/
+.w740{
+	width:740px;
+	float:right;
+	border:#dbdbdb solid 1px;
+	padding:15px;
+	background:#fff;
+}
+.w740 .wh2{
+	width:740px;
+	height:40px;
+	line-height:40px;
+	font-size:16px;
+	text-align:center;
+	border-bottom:#dbdbdb dotted 1px;
+}
+.w740 .helpCont{
+	width:740px;
+	font-size:14px;
+	line-height:24px;
+}
+.helpCont p{
+	text-indent:2em;
+	padding:15px 0 0;
+}
+
+.articleul{
+	color:#b9b9b9;
+}
+.articleul li{
+	border-bottom:1px dashed #dbdbdb;
+	width:690px;
+	height:25px;
+	float:left;
+	background:url(/include/bmall/images/buledot_03.gif) no-repeat left center;
+	padding-left:10px;
+	padding-top:13px;
+	padding-bottom:5px;
+	font-size:10pt;
+}
+.articleul a{
+	width:500px;
+	display:inline-block;
+	color:#3366cc;
+	text-overflow:ellipsis; 
+	white-space:nowrap;
+	overflow:hidden;
+} 
+.articleul a:hover{
+	color:#c80002;
+	text-decoration:none;
+}
+.articleList .clear{
+    padding-top:15px;
+}

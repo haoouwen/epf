@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="directladder">
+
+	<typeAlias alias="directladder" type="com.rbt.model.Directladder" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="directladder">
+		<![CDATA[ 
+    SELECT trade_id,direct_id,lownum,price FROM directladder WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	 <select id="getByDirectId" parameterClass="java.lang.String"
+		resultClass="directladder">
+		<![CDATA[ 
+      SELECT trade_id,direct_id,lownum,price FROM directladder WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	<update id="update" parameterClass="directladder">
+		UPDATE directladder SET trade_id=#trade_id#,direct_id=#direct_id#,lownum=#lownum#,price=#price# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="directladder">
+		INSERT INTO directladder (trade_id,direct_id,lownum,price) VALUES (#trade_id#,#direct_id#,#lownum#,#price#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM directladder WHERE trade_id in ($trade_id$)
+	</delete>
+	<delete id="deleteByDirectId" parameterClass="java.lang.String">
+		DELETE FROM directladder WHERE direct_id in ($direct_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM directladder 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="direct_id">
+				 direct_id=#direct_id#
+			</isNotNull>
+			 <isNotNull prepend="and" property="lownum">
+				 lownum !=#lownum#
+			</isNotNull>
+			<isNotNull prepend="and" property="onlylownum">
+				 lownum = #onlylownum#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,direct_id,lownum,price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY lownum ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

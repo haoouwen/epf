@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="redsumer">
+
+	<typeAlias alias="redsumer" type="com.rbt.model.Redsumer" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="redsumer">
+		<![CDATA[ 
+    SELECT redsumer_id,red_id,use_state,cust_id,use_date,order_id,redsumer_no FROM redsumer WHERE redsumer_id=$redsumer_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="redsumer">
+		UPDATE redsumer SET redsumer_id=#redsumer_id#,red_id=#red_id#,use_state=#use_state#,cust_id=#cust_id#,use_date=#use_date#,order_id=#order_id#,redsumer_no=#redsumer_no# WHERE redsumer_id=$redsumer_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE redsumer SET 
+    	 <isNotNull  property="redsumer_id"> 
+		   redsumer_id=$redsumer_id$
+		 </isNotNull>
+    	 WHERE redsumer_id=$redsumer_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="redsumer">
+		UPDATE redsumer SET redsumer_id=$redsumer_id$ WHERE redsumer_id=$redsumer_id$
+	</update>
+
+	<insert id="insert" parameterClass="redsumer">
+		INSERT INTO redsumer (redsumer_id,red_id,use_state,cust_id,use_date,order_id,redsumer_no) VALUES (#redsumer_id#,#red_id#,#use_state#,#cust_id#,#use_date#,#order_id#,#redsumer_no#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM redsumer WHERE redsumer_id in ($redsumer_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM redsumer WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM redsumer  r left join redpacket t on r.red_id=t.red_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="redsumer_id">
+				redsumer_id=#redsumer_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="red_id">
+				r.red_id=#red_id#
+			</isNotNull>			
+			<isNotNull prepend="and" property="cust_id">
+				cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="use_state">
+				use_state=#use_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="use_state_no">
+				use_state!=#use_state_no#
+			</isNotNull>
+			<isNotNull prepend="and" property="member_level">
+				INSTR(t.member_level,#member_level#) > 0
+			</isNotNull>							
+			<isNotNull prepend="and" property="date">
+			 DATE(t.end_time) >DATE_FORMAT(NOW(),'%y-%m-%d')
+			</isNotNull>	
+			<isNotNull prepend="and" property="outdate">
+			  DATE_FORMAT(NOW(),'%y-%m-%d') > DATE(t.end_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="now">
+			     DATE(t.end_time) >= DATE_FORMAT(NOW(),'%y-%m-%d') and DATE_FORMAT(NOW(),'%y-%m-%d') >= DATE(t.start_time)
+			 </isNotNull>			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT redsumer_id,r.red_id,use_state,cust_id,use_date,order_id,t.red_name,
+		t.red_no,t.start_time,t.end_time,t.member_level,t.money,redsumer_no,t.content
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY redsumer_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

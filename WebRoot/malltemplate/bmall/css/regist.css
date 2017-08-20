@@ -1,0 +1,354 @@
+.logoSearDiv{
+	width:990px;
+}
+/*注册logo*/
+.regLogo{
+	width:99px;
+	height:27px;
+	background:url(../images/bTitle.gif) no-repeat;
+	background-position:0 0;
+	position:absolute;
+	left:300px;
+	top:38px;
+}
+/*注册内容背景*/
+.registb{
+	width:100%;
+	background:#f6f6f6;
+}
+.regist{
+	width:990px;
+	margin:0 auto;
+}
+.regMain{/**/
+	width:990px;
+	padding:15px 0;
+}
+.regMain h2{/*标题*/
+	width:990px;
+	height:36px;
+	line-height:36px;
+	position:relative;
+	z-index:2;
+}
+.regMain h2 span{
+	display:inline-block;
+	font-size:14px;
+	height:35px;
+	border:#dddddd solid 1px;
+	border-bottom:#fff solid 1px;
+	background:#fff;
+	padding:0 20px;
+	color:#d81d20;
+	position:absolute;
+	left:50px;
+	top:0px;
+}
+.regMain h2 a{
+	font-size:12px;
+	font-weight:400;
+	position:absolute;
+	right:10px;
+	color:#999999;
+	color:#1847a9;
+	margin:0 5px;
+}
+.regMain h2 a:hover{
+	color:#1847a9;
+	text-decoration:underline;
+}
+.regcont{/*注册内容*/
+	width:968px;
+	padding:15px 10px 30px  10px;
+	border:#dddddd solid 1px;
+	background:#fff;
+	position:relative;
+}
+.regtab th{
+	font-size:14px;
+	font-weight:400;
+	text-align:right;
+	padding:12px 0px;
+}
+.regtab th span{
+	color:#d81d20;
+	font-size:12px;
+	padding:0 5px;
+}
+.regtab td{
+	padding:12px 0px;
+	color:#999999;
+}
+.regtab .zctext{
+	width:270px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:240px -88px;
+}
+.regtab .mmtext{
+	width:270px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:240px -134px;
+	font-family:Arial;
+}
+.regtab .yzmtext{
+	width:120px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:240px -134px;
+}
+.regtab .yes{
+	height:36px;
+	line-height:36px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0px -257px;
+	padding-left:30px;
+}
+.regtab .not{
+	height:36px;
+	line-height:36px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0px -292px;
+	padding-left:30px;
+}
+.regtab .warning{
+	height:36px;
+	line-height:36px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0px -333px;
+	padding-left:30px;
+}
+/*其他方式登录*/
+.otherLogin{
+	width:180px;
+	height:400px;
+	background:url(../images/regBack.gif) no-repeat;
+	position:absolute;
+	top:20px;
+	right:0px;
+	padding:0 20px 0 60px;
+	color:#999;
+	font-size:13px;
+}
+.otherLogin p{
+	line-height:24px;
+	padding-top:15px;
+}
+.otherLogin a{
+	color:#2b71d3;
+	text-decoration:underline;
+	font-size:14px;
+}
+/*协议*/
+.protocol{
+	padding:0px 0 0 140px;
+}
+.protocol .proBut{
+	width:270px;
+	height:36px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0px 0px;
+	border:none;
+	cursor:pointer;
+	margin:15px 0;
+}
+.protocol .proSpan{
+	cursor:pointer;
+	padding-left:5px;
+}
+.protocol .proSpan a{
+	color:#005AA0;
+}
+.protocol .proSpan a:hover{
+	text-decoration:underline;
+}
+.protocol .proDiv{
+	width:600px;
+	height:140px;
+	border:#dddddd solid 1px;
+	padding:5px 10px;
+	overflow:auto;
+	margin:10px 0 5px;
+	display:none;
+}
+.proDiv p{
+	line-height:22px;
+	padding:5px 0;
+}
+/*手机验证，邮箱验证*/
+.regVerify{
+	width:990px;
+	height:84px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0 -474px;
+}
+.regtab .sjtext{
+	width:270px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:240px -175px;
+}
+.regtab .yxtext{
+	width:270px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:240px -214px;
+}
+.regtab .sjyztext{
+	width:130px;
+	height:36px;
+	line-height:36px;
+	border:#e5e5e5 solid 1px;
+	padding-left:5px;
+	float:left;
+}
+.regtab .sjyrand{
+	width:110px;
+	height:38px;
+	line-height:38px;
+	margin-left: 10px;
+	float:left;
+}
+
+.regul li{
+	padding-top:10px;
+}
+.regul h3{
+	font-size:12px;
+	color:#333333;
+	background:url(../images/register.gif) no-repeat;
+	background-position:-604px 0;
+	padding-left:25px;
+	line-height:16px;
+	cursor:pointer;
+	margin-left:50px;
+	margin-bottom:10px;
+	font-weight:400;
+}
+.regul .ssbut{
+	background-position:-604px -20px;
+}
+.regul .yzzhbut{
+	width:270px;
+	height:36px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0px -46px;
+	border:none;
+	cursor:pointer;
+}
+/*注册成功*/
+.regSucceed{
+	width:990px;
+	height:84px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:0 -570px;
+}
+.regSuMian{
+	width:988px;
+	height:240px;
+	border:#dddddd solid 1px;
+	background:#fff;
+}
+.regsucont{
+	position:relative;
+}
+.regsbpic{
+	width:319px;
+	height:63px;
+	background:url(../images/register.gif) no-repeat;
+	background-position:-282px 0px;
+	position:absolute;
+	left:320px;
+	top:70px;
+}
+.regsucont p{
+	position:absolute;
+	left:310px;
+	top:150px;
+	font-size:14px;
+}
+.regsucont a{
+	color:#d81d20;
+	margin:0 5px;
+}
+.regsucont a:hover{
+	color:#d81d20;
+	text-decoration:underline;
+}
+/*20140815 密码状态*/
+.regcont  .pswState{
+	padding:0px 0 10px 0;
+	display:none;
+}
+.regcont .pswState b{
+	width:191px;
+	height:16px;
+	background:url(../images/register.gif) no-repeat;
+	display:inline-block;
+}
+.regcont .pswState .lowb{
+	background-position:-795px -264px;
+}
+.regcont .pswState .midb{
+	background-position:-795px -288px;
+}
+.regcont .pswState .heightb{
+	background-position:-795px -312px;
+}
+#cpc,#cpe {
+	width:110px;
+	height:38px;
+	color:#333;
+	background:#f4f4f4;
+	display:inline-block;
+	text-align:center;
+	line-height:38px;
+	border:1px solid #dddddd;
+	margin-left:10px;
+}
+#cpc:hover,#cpe:hover{
+	text-decoration:underline;
+}
+
+.regul .yxyz,.regul .sjyz{
+	cursor:pointer;
+	color:#005aa1;
+	text-decoration:underline;
+	
+}
+/*快捷登录显示*/
+.kjdlDiv{
+	width:880px;
+	height:100px;
+	margin:20px auto 15px;
+	border:1px solid #dddddd;
+}
+.kjdlDiv th,.kjdlDiv th img{
+	width:100px;
+	height:100px;
+}
+.kjdlDiv td{
+	font-size:15px;
+	font-family:"微软雅黑";
+	padding-left:15px;
+	line-height:28px;
+}
+.kjdlDiv td span{
+	color:#d81d20;
+}

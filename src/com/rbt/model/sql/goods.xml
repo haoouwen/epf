@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goods">
+
+	<typeAlias alias="goods" type="com.rbt.model.Goods" />
+    <!-- 
+    <cacheModel id="goods-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="goods.update" />
+		<flushOnExecute statement="goods.insert" />
+		<flushOnExecute statement="goods.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+    -->
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goods">
+		<![CDATA[ 
+    SELECT goods_id,cust_id,cat_attr,goods_name,goods_no,goods_wd,brand_id,list_img,
+    img_path,goods_video,goods_detail,self_cat,up_date,down_date,weight,unit,is_ship,
+    seo_title,seo_keyword,seo_desc,relate_goods,give,lab,busi_remark,is_up,is_del,
+    info_state,no_reason,ship_id,in_date,user_id,click_num,volume,logsweight,
+    is_virtual,sort_order,active_state,is_limit,limit_num,phone_goods_detail 
+    ,goods_place,goods_source,use_integral,depot_id,tax_rate,tax_price,tax_attr,ief_id,sale_name,
+    goods_en_name,bar_code,producer,product_address,export,is_customs,inspection,trade_way,
+    quality,brand_store,product_process,import_cert,sale_num
+     ,(SELECT is_international  FROM depot  WHERE depot.depot_id=goods.depot_id) AS is_international,warehouse_number,goods_width,goods_height,goods_long,title,kjt_id
+    FROM goods WHERE goods_id=$goods_id$
+    ]]><!-- -->
+	</select>
+	
+	<select id="getByPkNoDel" parameterClass="java.lang.String"
+		resultClass="goods">
+		<![CDATA[ 
+    SELECT goods_id,cust_id,cat_attr,goods_name,goods_no,goods_wd,brand_id,
+    list_img,img_path,goods_video,goods_detail,self_cat,up_date,down_date,
+    weight,unit,is_ship,seo_title,seo_keyword,seo_desc,relate_goods,give,
+    lab,busi_remark,is_up,is_del,info_state,no_reason,ship_id,in_date,user_id,
+    click_num,volume,logsweight,is_virtual,sort_order,is_limit,limit_num,
+    phone_goods_detail,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=goods.goods_id)  AS total_stock,
+    (SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=goods.goods_id)  as min_sale_price,
+    (SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=goods.goods_id)  as goods_market_price 
+    ,goods_place,goods_source,use_integral,depot_id,tax_rate,tax_price,tax_attr,ief_id,sale_name,
+    goods_en_name,bar_code,producer,product_address,export,is_customs,inspection,trade_way,
+    quality,brand_store,product_process,import_cert,sale_num,warehouse_number,goods_width,goods_height,goods_long,title,kjt_id
+    FROM goods WHERE goods_id=$goods_id$ and is_del='1'
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goods">
+		UPDATE goods SET goods_id=#goods_id#,cust_id=#cust_id#,cat_attr=#cat_attr#,goods_name=#goods_name#,
+		goods_no=#goods_no#,goods_wd=#goods_wd#,brand_id=#brand_id#,list_img=#list_img#,img_path=#img_path#,
+		goods_video=#goods_video#,goods_detail=#goods_detail#,self_cat=#self_cat#,up_date=#up_date#,
+		down_date=#down_date#,weight=#weight#,unit=#unit#,is_ship=#is_ship#,seo_title=#seo_title#,
+		seo_keyword=#seo_keyword#,seo_desc=#seo_desc#,relate_goods=#relate_goods#,give=#give#,lab=#lab#,
+		busi_remark=#busi_remark#,is_up=#is_up#,is_del=#is_del#,info_state=#info_state#,no_reason=#no_reason#,
+		ship_id=#ship_id#,in_date=#in_date#,user_id=#user_id#,click_num=#click_num#,volume=#volume#,
+		is_limit=#is_limit#,limit_num=#limit_num#,phone_goods_detail=#phone_goods_detail#,
+		logsweight=#logsweight#,is_virtual=#is_virtual#,sort_order=#sort_order#,active_state=#active_state# 
+		,goods_place=#goods_place#,goods_source=#goods_source#,use_integral=#use_integral#,
+		depot_id=#depot_id#,tax_rate=#tax_rate#,tax_price=#tax_price#,tax_attr=#tax_attr#,ief_id=#ief_id#,sale_name=#sale_name#,
+		goods_en_name=#goods_en_name#,bar_code=#bar_code#,producer=#producer#,product_address=#product_address#,export=#export#,is_customs=#is_customs#,inspection=#inspection#,trade_way=#trade_way#,
+        quality=#quality#,brand_store=#brand_store#,product_process=#product_process#,import_cert=#import_cert#,sale_num=#sale_num#,warehouse_number=#warehouse_number#,goods_width=#goods_width#,goods_height=#goods_height#,goods_long=#goods_long#,
+        title=#title#,kjt_id=#kjt_id#
+		WHERE goods_id=$goods_id$
+	</update>
+	<!-- 批量上架下架 -->
+	<update id="updateisup" parameterClass="java.util.HashMap">
+    	UPDATE goods SET is_up=#is_up# WHERE goods_id=$goods_id$
+	</update>
+	<!-- 批量逻辑删除 -->
+	<update id="updateisdel" parameterClass="java.util.HashMap">
+    	UPDATE goods SET is_del=#is_del# WHERE goods_id=$goods_id$
+	</update>
+	<!-- 修改商品活动状态 -->
+	<update id="updateActiveState" parameterClass="java.util.HashMap">
+    	UPDATE goods SET active_state=#active_state# WHERE goods_id in ($goods_id$)
+	</update>
+	<!-- 更新商品的销售数量 -->
+	<update id="updateSalesVolume" parameterClass="java.util.HashMap">
+    	UPDATE goods SET sale_num=#sales_volume# WHERE goods_id=$goods_id$
+	</update>
+	<insert id="insert" parameterClass="goods">
+		INSERT INTO goods (goods_id,cust_id,cat_attr,goods_name,goods_no,goods_wd,brand_id,
+		list_img,img_path,goods_video,goods_detail,self_cat,up_date,down_date,weight,unit,
+		is_ship,seo_title,seo_keyword,seo_desc,relate_goods,give,lab,busi_remark,is_up,
+		is_del,info_state,no_reason,ship_id,in_date,user_id,click_num,volume,logsweight,
+		sort_order,is_limit,limit_num,phone_goods_detail,goods_place,goods_source,use_integral,depot_id,tax_rate,tax_price,tax_attr,ief_id,sale_name,goods_en_name,bar_code,producer,product_address,export,is_customs,inspection,trade_way,quality,brand_store,product_process,import_cert,sale_num,warehouse_number,goods_width,goods_height,goods_long,title,kjt_id) 
+		 VALUES (#goods_id#,#cust_id#,#cat_attr#,#goods_name#,#goods_no#,#goods_wd#,#brand_id#,
+		 #list_img#,#img_path#,#goods_video#,#goods_detail#,#self_cat#,#up_date#,#down_date#,
+		 #weight#,#unit#,#is_ship#,#seo_title#,#seo_keyword#,#seo_desc#,#relate_goods#,#give#,
+		 #lab#,#busi_remark#,#is_up#,#is_del#,#info_state#,#no_reason#,#ship_id#,now(),
+		 #user_id#,#click_num#,#volume#,#logsweight#,#sort_order#,#is_limit#,#limit_num#,
+		 #phone_goods_detail#,#goods_place#,#goods_source#,#use_integral#,#depot_id#,#tax_rate#,#tax_price#,#tax_attr#,#ief_id#,#sale_name#,#goods_en_name#,#bar_code#,#producer#,#product_address#,#export#,#is_customs#,#inspection#,#trade_way#,#quality#,#brand_store#,#product_process#,#import_cert#,#sale_num#,#warehouse_number#,#goods_width#,#goods_height#,#goods_long#,#title#,#kjt_id#)
+	</insert>
+	<insert id="insertGetPk" parameterClass="goods">
+		INSERT INTO goods (goods_id,cust_id,cat_attr,goods_name,goods_no,goods_wd,brand_id,
+		list_img,img_path,goods_video,goods_detail,self_cat,up_date,down_date,
+		weight,unit,is_ship,seo_title,seo_keyword,seo_desc,relate_goods,give,
+		lab,busi_remark,is_up,is_del,info_state,no_reason,ship_id,in_date,user_id,
+		click_num,volume,logsweight,is_virtual,sort_order,is_limit,limit_num,phone_goods_detail,
+		goods_place,goods_source,use_integral,depot_id,tax_rate,tax_price,tax_attr,ief_id,sale_name,goods_en_name,bar_code,producer,product_address,export,is_customs,inspection,trade_way,quality,brand_store,product_process,import_cert,sale_num,warehouse_number,goods_width,goods_height,goods_long,title,kjt_id)
+		 VALUES (#goods_id#,#cust_id#,#cat_attr#,#goods_name#,#goods_no#,#goods_wd#,
+		 #brand_id#,#list_img#,#img_path#,#goods_video#,#goods_detail#,#self_cat#,#up_date#,#down_date#,
+		 #weight#,#unit#,#is_ship#,#seo_title#,#seo_keyword#,#seo_desc#,#relate_goods#,
+		 #give#,#lab#,#busi_remark#,#is_up#,#is_del#,#info_state#,#no_reason#,#ship_id#,now(),
+		 #user_id#,#click_num#,#volume#,#logsweight#,#is_virtual#,#sort_order#,#is_limit#,
+		 #limit_num#,#phone_goods_detail#,#goods_place#,#goods_source#,
+		 #use_integral#,#depot_id#,#tax_rate#,#tax_price#,#tax_attr#,#ief_id#,#sale_name#,#goods_en_name#,#bar_code#,#producer#,#product_address#,#export#,#is_customs#,#inspection#,#trade_way#,#quality#,#brand_store#,#product_process#,#import_cert#,#sale_num#,#warehouse_number#,#goods_width#,#goods_height#,#goods_long#,#title#,#kjt_id#)
+		 <selectKey resultClass="java.lang.String" keyProperty="goods_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goods WHERE goods_id in ($goods_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goods g 
+		     left join goodsbrand gb on gb.brand_id=g.brand_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(cat_attr,#cat_attr#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="labs"> 
+			     INSTR(lab,#labs#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="lab"> 
+			     lab in ($lab$)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_up"> 
+			     is_up=#is_up#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del"> 
+			     is_del=#is_del#
+			</isNotNull>
+			<isNotNull prepend="and" property="gd_is_virtual"> 
+			     is_virtual=#gd_is_virtual#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				 g.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state"> 
+			     g.info_state=#info_state#
+			</isNotNull>
+			 <isNotNull prepend="and" property="info_state_in"> 
+		    		g.info_state in ($info_state_in$)
+			 </isNotNull>
+			<isNotNull prepend="and" property="goods_name"> 
+			     INSTR(goods_name,#goods_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_no"> 
+			     INSTR(goods_no,#goods_no#) > 0
+			</isNotNull>
+		  <isNotNull prepend="and" property="goods_name"> 
+			     INSTR(goods_name,#goods_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="sgis"> 
+			      g.goods_id in ($sgis$)
+			</isNotNull>
+			 <!-- 根据状态筛选 -->
+			  <isNotNull prepend="and" property="info_state"> 
+		    		INSTR(g.info_state,#info_state#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="goods_no"> 
+		    		INSTR(goods_no,#goods_no#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="user_name"> 
+		    		INSTR(user_name,#user_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="brand_name"> 
+		    		INSTR(gb.brand_name,#brand_name#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="active_state"> 
+		    		active_state in ($active_state$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="self_cat"> 
+			     INSTR(self_cat,#self_cat#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr"> 
+			    specstr=#specstr#
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr_no"> 
+			    specstr="" or specstr is NULL
+			</isNotNull>
+			<isNotNull prepend="and" property="maxtotal_stock"> 
+				(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id) > #maxtotal_stock#
+			</isNotNull>
+			<isNotNull prepend="and" property="mixtotal_stock"> 
+			  #mixtotal_stock# >= (SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id) 
+			</isNotNull>
+			<isNotNull prepend="and" property="g_goods_stockend_s"> 
+				#g_goods_stockend_s# >=(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)
+			</isNotNull>
+			<isNotNull prepend="and" property="g_goods_stockstart_s"> 
+			   (SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id) >= #g_goods_stockstart_s#
+			</isNotNull>
+			 <isNotNull prepend="and" property="g_goods_brandid_s"> 
+		    		g.brand_id=#g_goods_brandid_s#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="tax_attr"> 
+		    		INSTR(g.tax_attr,#tax_attr#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_marketstart_s"> 
+		    		(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id) >= #g_goods_marketstart_s#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_marketend_s"> 
+		    		#g_goods_marketend_s# >= (SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_salestart_s"> 
+			       (SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id) >= #g_goods_salestart_s#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_saleend_s"> 
+		    		#g_goods_saleend_s# >= (SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_source_s"> 
+		    		INSTR(g.goods_source,#g_goods_source_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_depot_s"> 
+		    		INSTR(g.depot_id,#g_goods_depot_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_useintegral_s"> 
+		    		INSTR(g.use_integral,#g_goods_useintegral_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_warehouse_s"> 
+		    		INSTR(g.warehouse_number,#g_goods_warehouse_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_kjtid_s"> 
+		    		INSTR(g.kjt_id,#g_goods_kjtid_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_place_s"> 
+		    		INSTR(g.goods_place,#g_goods_place_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_barcode_s"> 
+		    		INSTR(g.bar_code,#g_goods_barcode_s#) > 0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="g_goods_producer_s"> 
+		    		INSTR(g.producer,#g_goods_producer_s#) > 0
+			 </isNotNull>
+			   <isNotNull prepend="and" property="g_goods_en_name_s"> 
+		    		INSTR(g.goods_en_name,#g_goods_en_name_s#) > 0
+			 </isNotNull>
+			   <isNotNull prepend="and" property="g_starttime_s"> 
+				DATE(g.in_date)>=#g_starttime_s#
+			 </isNotNull>
+		     <isNotNull prepend="and" property="g_endtime_s"> 
+				#g_endtime_s#>=DATE(g.in_date)
+			 </isNotNull>
+		     <isNotNull prepend="and" property="sale_str"> 
+				$sale_str$
+			 </isNotNull>			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" >
+		SELECT g.goods_id,g.cust_id,g.cat_attr,g.cat_attr as goods_cat,goods_name,goods_no,goods_wd,g.brand_id,list_img,img_path,g.sort_order,g.is_limit,g.limit_num,phone_goods_detail,
+		goods_video,goods_detail,self_cat,up_date,down_date,weight,unit,is_ship,g.seo_title,g.seo_keyword,g.logsweight,g.is_virtual,g.volume
+		seo_desc,relate_goods,give,lab,busi_remark,is_up,g.is_del,g.info_state,g.no_reason,ship_id,g.in_date,g.user_id AS goods_user_name,click_num,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as min_sale_price,
+		(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as goods_market_price,gb.brand_name,g.user_id
+		,(SELECT user_name FROM memberuser m2 WHERE m2.cust_id=g.cust_id AND m2.user_type="1") AS cust_name,g.active_state 
+		,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  AS total_stock
+		,g.goods_place,g.goods_source,g.use_integral,g.depot_id,g.tax_rate,g.tax_price,g.tax_attr,ief_id,
+		g.sale_name,g.goods_en_name,g.bar_code,g.producer,g.product_address,g.export,g.is_customs,
+		g.inspection,g.trade_way,g.quality,g.brand_store,g.product_process,g.import_cert,g.sale_num,
+		g.warehouse_number,g.goods_width,g.goods_height,g.goods_long,g.title,g.kjt_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY goods_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap" 
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM goods g 
+			LEFT JOIN goodsattr ga ON g.goods_id=ga.goods_id
+				LEFT JOIN orderdetail od ON od.goods_id=g.goods_id
+					LEFT JOIN goodsorder go ON go.order_id=od.order_id
+						LEFT JOIN reviews r ON r.goods_id=g.goods_id
+							LEFT JOIN shopconfig sc ON g.cust_id=sc.cust_id
+							 LEFT JOIN collect c ON g.goods_id=c.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_name"> 
+			     INSTR(goods_name,#goods_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+				g.goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id_in"> 
+			     g.goods_id in ($goods_id_in$)
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(cat_attr,#cat_attr#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="area_attr"> 
+			     INSTR(sc.area_attr,#area_attr#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="self_cat"> 
+			     INSTR(g.self_cat,#self_cat#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="specstr"> 
+			     INSTR(ga.specstr,#specstr#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="lab"> 
+			     INSTR(g.lab,#lab#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="is_up"> 
+			     g.is_up=#is_up#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del"> 
+			     g.is_del=#is_del#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state"> 
+			     g.info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id"> 
+			     g.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="brand_id"> 
+			    g.brand_id=#brand_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_state"> 
+			     order_state=#order_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_name">
+				INSTR(g.goods_name,#goods_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="dsale_price">
+				<![CDATA[
+				ga.sale_price>=#dsale_price#
+				 ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="usale_price">
+				<![CDATA[
+				ga.sale_price<=#usale_price#
+				 ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="min_price">
+				<![CDATA[
+				ga.sale_price>=#min_price#
+				 ]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="max_price">
+				<![CDATA[
+				ga.sale_price<=#max_price#
+				 ]]>
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT distinct(g.goods_id), g.goods_id, cat_attr, goods_name, goods_no, g.brand_id, list_img, img_path, self_cat, up_date,
+		 down_date, lab,  g.in_date, g.user_id,g.logsweight,g.volume,phone_goods_detail,
+		 click_num,ga.stock
+		,COUNT(c.goods_id) as collNum,
+		(SELECT MAX(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as max_market_price,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as min_sale_price,
+		(SELECT MAX(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as max_sale_price,
+		(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  AS total_stock
+		,g.goods_place,g.goods_source,g.use_integral,g.depot_id,g.tax_rate,g.tax_price,g.tax_attr,g.ief_id,g.sale_name,
+		g.goods_en_name,g.bar_code,g.producer,g.product_address,g.export,g.is_customs,g.inspection,g.trade_way,
+		g.quality,g.brand_store,g.product_process,g.import_cert,g.sale_num,g.warehouse_number,g.goods_width,g.goods_height,g.goods_long,g.title,g.kjt_id
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		    GROUP BY g.goods_id 
+		<isNotNull property="price_asc"> 
+		     ORDER BY sale_price ASC
+		</isNotNull>
+		<isNotNull property="price_desc"> 
+		     ORDER BY sale_price DESC
+		</isNotNull>
+		<isNotNull property="sale_num_desc"> 
+		     ORDER BY order_num desc
+		</isNotNull>
+		<isNotNull property="sale_price_asc"> 
+		     ORDER BY sale_price asc
+		</isNotNull>
+		<isNotNull  property="in_date_desc"> 
+		     ORDER BY in_date DESC
+		</isNotNull>
+		<isNotNull property="collect_desc"> 
+		     ORDER BY c.goods_id DESC
+		</isNotNull>
+		<isNotNull property="time_asc"> 
+		     ORDER BY g.in_date DESC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(DISTINCT(g.goods_id)) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+	<sql id="getsum">
+		FROM goods INNER JOIN collect ON goods.goods_id = collect.goods_id
+			LEFT JOIN goodsattr ga ON goods.goods_id=ga.goods_id
+				LEFT JOIN member m on m.cust_id=goods.cust_id
+		<dynamic prepend="WHERE">
+		<isNotNull prepend="and" property="cust_id">
+			goods.cust_id=#cust_id#
+		</isNotNull>
+		<isNotNull prepend="and" property="is_up"> 
+			     goods.is_up=#is_up#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del"> 
+			     goods.is_del=#is_del#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state"> 
+			     goods.info_state=#info_state#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getsumList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods.goods_id,sale_price,img_path,list_img,goods_name,COUNT(*) AS collect_num
+		<isParameterPresent>
+			<include refid="getsum" />
+		</isParameterPresent>
+		 GROUP BY goods.goods_id ORDER BY collect_num DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<sql id="getsale">
+		FROM goods INNER JOIN orderdetail ON goods.goods_id = orderdetail.goods_id
+		LEFT JOIN goodsattr ga ON goods.goods_id=ga.goods_id
+			left join member m on m.cust_id=goods.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id">
+				goods.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_up"> 
+			     goods.is_up=#is_up#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del"> 
+			     goods.is_del=#is_del#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state"> 
+			     goods.info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr">
+				INSTR(goods.cat_attr,#cat_attr#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getsaleList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods.goods_id,sale_price,img_path,list_img,goods_name,SUM(orderdetail.order_num) AS sale_num
+		<isParameterPresent>
+			<include refid="getsale" />
+		</isParameterPresent>
+		 GROUP BY goods.goods_id ORDER BY sale_num DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	
+	<select id="getAll" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT goods_id,cust_id,cat_attr,goods_name,goods_no,goods_wd,brand_id,
+		list_img,img_path,goods_video,goods_detail,self_cat,up_date,down_date,weight,
+		unit,is_ship,seo_title,seo_keyword,seo_desc,relate_goods,give,lab,
+		busi_remark,is_up,is_del,info_state,no_reason,ship_id,in_date,user_id,
+		click_num,volume,logsweight,is_virtual,sort_order,phone_goods_detail 
+		,goods_place,goods_source,use_integral,depot_id,tax_rate,tax_price,tax_attr,ief_id
+		,sale_name,goods_en_name,bar_code,producer,product_address,export,is_customs,inspection,trade_way,
+         quality,brand_store,product_process,import_cert,sale_num,warehouse_number,goods_width,goods_height,goods_long,title,kjt_id
+		FROM goods
+	</select>
+	<select id="getInfoByOrder" parameterClass="java.lang.String"
+		resultClass="java.util.HashMap">
+		SELECT c.goods_no goods_no,c.kjt_id kjt_id,c.bar_code barcode,c.goods_name goods_name,c.goods_en_name goods_name_en,d.market_price goods_price,count(b.order_id) order_num,sum(b.order_num) goods_num,(SELECT group_concat(t.tax_number ORDER BY t.tax_level Separator '>') from taxrate t where FIND_IN_SET(t.tax_id, c.tax_attr)) goods_attr
+		from orderdetail b,goods c ,goodsattr d
+		where b.goods_id=c.goods_id and c.goods_id=d.goods_id
+		and FIND_IN_SET(b.order_id,#order_ids#)
+		group by c.goods_id;
+	</select>
+	<select id="getRandGoodsList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT g.goods_id,g.goods_name,list_img,ga.sale_price,ga.market_price
+	   FROM goods g 
+	   LEFT JOIN Commpara c ON g.lab=c.para_value 
+	   LEFT JOIN goodsattr ga ON g.goods_id = ga.goods_id
+	   where 1=1 
+	   and c.para_code='goods_lable' 
+	   AND c.para_code="goods_lable" 
+	   and para_key="每日新品" 
+	   and g.info_state='1' 
+	   and g.is_del='1' 
+	   and g.is_up="0"
+	   ORDER BY RAND()
+	   <isNotNull prepend="LIMIT" property="start">
+	       #start#,#limit#
+	   </isNotNull>
+	</select>
+</sqlMap>
+

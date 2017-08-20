@@ -1,0 +1,50 @@
+.wrap {
+	position: absolute;
+	left: 400px;
+	overflow: hidden;
+	height: 400px;
+	width: 480px;
+	background:#E2E9EF;
+	border:3px solid #cecece;
+}
+
+#rollBox {
+	overflow: hidden;
+	margin: 0 50px;
+}
+
+#rollList {
+	float: left;
+	overflow: hidden;
+	zoom: 1;
+	margin-right: -3000px;
+}  /* float,margin-rightΪ�˺������ */
+#rollList li {
+	float: left;
+	display: inline;
+	margin: 15px;
+}
+
+#rollList img {
+	display: block;
+	border: 1px solid #efefef;
+}
+
+.rollMenu {
+	position: absolute;
+	width: 35px;
+	font-size: 70px;
+	text-decoration: none;
+	color: #6B90DA;
+	text-align: center;
+}
+
+#rollLeft {
+	top: 20px;
+	left: 0;
+}
+
+#rollRight {
+	top: 20px;
+	right: 0;
+}

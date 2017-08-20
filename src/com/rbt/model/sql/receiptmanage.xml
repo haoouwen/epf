@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="receiptmanage">
+
+	<typeAlias alias="receiptmanage" type="com.rbt.model.Receiptmanage" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="receiptmanage">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,receipt_code,receipt_enable,in_date FROM receiptmanage WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="receiptmanage">
+		UPDATE receiptmanage SET trade_id=#trade_id#,cust_id=#cust_id#,receipt_code=#receipt_code#,receipt_enable=#receipt_enable# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="receiptmanage">
+		INSERT INTO receiptmanage (trade_id,cust_id,receipt_code,receipt_enable,in_date) VALUES (#trade_id#,#cust_id#,#receipt_code#,#receipt_enable#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM receiptmanage WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM receiptmanage rm
+		left join receipt r on rm.receipt_code = r.receipt_code
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_id"> 
+			     rm.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="receipt_code"> 
+			     rm.receipt_code=#receipt_code#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT rm.trade_id,rm.cust_id,rm.receipt_code,rm.receipt_enable,rm.in_date,r.receipt_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY rm.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

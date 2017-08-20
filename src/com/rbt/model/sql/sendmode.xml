@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sendmode">
+
+	<typeAlias alias="sendmode" type="com.rbt.model.Sendmode" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sendmode">
+		<![CDATA[ 
+    SELECT smode_id,smode_name,smode_desc,is_insured,rate,mix_insured,max_insured,
+    reach_pay,sort_no,en_name,print_mode,img_path,trade_id,sendlength FROM sendmode WHERE smode_id=$smode_id$
+    ]]>
+	</select>
+	
+	<select id="getByEnname" parameterClass="java.lang.String"
+		resultClass="sendmode">
+		<![CDATA[ 
+    SELECT smode_id,smode_name,smode_desc,is_insured,rate,mix_insured,max_insured,reach_pay,sort_no,en_name,print_mode,img_path,trade_id,sendlength 
+     FROM sendmode WHERE en_name=#en_name#
+    ]]>
+	</select>
+	
+
+	<update id="update" parameterClass="sendmode">
+		UPDATE sendmode SET smode_id=#smode_id#,smode_name=#smode_name#,smode_desc=#smode_desc#,is_insured=#is_insured#,
+		rate=#rate#,mix_insured=#mix_insured#,max_insured=#max_insured#,reach_pay=#reach_pay#,sort_no=#sort_no#,
+		en_name=#en_name#,print_mode=#print_mode#,img_path=#img_path#,trade_id=#trade_id#,sendlength=#sendlength#
+		 WHERE smode_id=$smode_id$
+	</update>
+
+	<insert id="insert" parameterClass="sendmode">
+		INSERT INTO sendmode (smode_id,smode_name,smode_desc,is_insured,rate,mix_insured,max_insured,reach_pay,sort_no,en_name,print_mode,img_path,trade_id,sendlength) 
+		VALUES (#smode_id#,#smode_name#,#smode_desc#,#is_insured#,#rate#,#mix_insured#,#max_insured#,#reach_pay#,#sort_no#,#en_name#,#print_mode#,#img_path#,#trade_id#,#sendlength#)
+	</insert>
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE sendmode SET sort_no=#sort_no# WHERE smode_id=$smode_id$
+	</update>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM sendmode WHERE smode_id in ($smode_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM sendmode 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="smode_name">
+				instr(smode_name,#smode_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="is_insured">
+				is_insured=#is_insured#
+			</isNotNull>
+			<isNotNull prepend="and" property="rate">
+				instr(rate,#rate#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="mix_insured">
+				instr(mix_insured,#mix_insured#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="max_insured">
+				instr(max_insured,#max_insured#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="reach_pay">
+				instr(reach_pay,#reach_pay#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="en_name">
+				instr(en_name,#en_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="en_name_s">
+				en_name not in ($en_name_s$)
+			</isNotNull>
+			<isNotNull prepend="and" property="sendlength_s">
+				instr(sendlength,#sendlength_s#)>0
+			</isNotNull>
+			
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT smode_id,smode_name,smode_desc,is_insured,rate,mix_insured,max_insured,reach_pay,sort_no,en_name,
+		print_mode,img_path,trade_id,sendlength
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

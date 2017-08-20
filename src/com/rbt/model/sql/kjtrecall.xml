@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="kjtrecall">
+
+	<typeAlias alias="kjtrecall" type="com.rbt.model.Kjtrecall" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="kjtrecall">
+		<![CDATA[ 
+    SELECT sosysno,order_id,tatal_amount,taxes,ship_free,merchantorderid,productamount,
+    taxamount,shippingamount,sostatus,kjtdate FROM kjtrecall WHERE sosysno=$sosysno$
+    ]]>
+	</select>
+	
+	<select id="getByOrderId" parameterClass="java.lang.String"
+		resultClass="kjtrecall">
+		<![CDATA[ 
+	    SELECT sosysno,order_id,tatal_amount,taxes,ship_free,merchantorderid,productamount,taxamount,
+	    shippingamount,sostatus,kjtdate FROM kjtrecall WHERE order_id=$order_id$
+	    ]]>
+	</select>
+
+	<update id="update" parameterClass="kjtrecall">
+		UPDATE kjtrecall SET sosysno=#sosysno#,order_id=#order_id#,tatal_amount=#tatal_amount#,taxes=#taxes#,ship_free=#ship_free#,merchantorderid=#merchantorderid#,productamount=#productamount#,taxamount=#taxamount#,shippingamount=#shippingamount#,sostatus=#sostatus# WHERE sosysno=$sosysno$
+	</update>
+	
+	<delete id="updatepur" parameterClass="java.util.HashMap">
+		update  kjtrecall set purchasing=#purchasing#  WHERE sosysno in($sosysno$)
+	</delete>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE kjtrecall SET 
+    	 <isNotNull  property="sosysno"> 
+		   sosysno=$sosysno$
+		 </isNotNull>
+		 <isNotNull  property="sostatus"> 
+		   sostatus!=#sostatus#
+		 </isNotNull>
+		    <isNotNull prepend="and" property="ypaydate">
+		       TO_DAYS(NOW()) - TO_DAYS(kjtdate) = 1
+		    </isNotNull>
+    	 WHERE sosysno=$sosysno$
+    </update>
+    
+	<update id="updateSate" parameterClass="kjtrecall">
+		UPDATE kjtrecall SET sosysno=$sosysno$ WHERE sosysno=$sosysno$
+	</update>
+
+	<insert id="insert" parameterClass="kjtrecall">
+		INSERT INTO kjtrecall (sosysno,order_id,tatal_amount,taxes,ship_free,merchantorderid,productamount,taxamount,shippingamount,sostatus,kjtdate,purchasing) VALUES (#sosysno#,#order_id#,#tatal_amount#,#taxes#,#ship_free#,#merchantorderid#,#productamount#,#taxamount#,#shippingamount#,#sostatus#,now(),#purchasing#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM kjtrecall WHERE sosysno in ($sosysno$)
+	</delete>
+
+    <delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM kjtrecall WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM kjtrecall 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sosysno">
+				sosysno=#sosysno#
+			</isNotNull>
+			<isNotNull prepend="and" property="sostatus">
+				sostatus=#sostatus#
+			</isNotNull>
+			<isNotNull prepend="and" property="excid">
+			   sosysno in ($excid$)
+			</isNotNull>
+			<isNotNull  prepend="and" property="no_sostatus"> 
+		   sostatus!=#no_sostatus#
+		 </isNotNull>
+		    <isNotNull prepend="and" property="ypaydate">
+		       TO_DAYS(NOW()) - TO_DAYS(kjtdate) = 1
+		    </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sosysno,order_id,tatal_amount,taxes,ship_free,merchantorderid,productamount,taxamount,shippingamount,sostatus,kjtdate,purchasing
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sosysno DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

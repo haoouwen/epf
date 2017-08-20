@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="malltemplate">
+
+	<typeAlias alias="malltemplate" type="com.rbt.model.Malltemplate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="malltemplate">
+		<![CDATA[ 
+    SELECT trade_id,template_name,template_code,template_path,template_image,author,in_date,user_id,is_enable FROM malltemplate WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="malltemplate">
+		UPDATE malltemplate SET trade_id=#trade_id#,template_name=#template_name#,template_code=#template_code#,template_path=#template_path#,template_image=#template_image#,author=#author#,in_date=now(),user_id=#user_id#,is_enable=#is_enable# WHERE trade_id=$trade_id$
+	</update>
+	
+	<update id="updateisenable">
+		UPDATE malltemplate SET is_enable=1
+	</update>
+
+
+	<insert id="insert" parameterClass="malltemplate">
+		INSERT INTO malltemplate (trade_id,template_name,template_code,template_path,template_image,author,in_date,user_id,is_enable) VALUES (#trade_id#,#template_name#,#template_code#,#template_path#,#template_image#,#author#,now(),#user_id#,#is_enable#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM malltemplate WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM malltemplate m1
+	         left join memberuser m2 on m1.user_id=m2.user_id
+	          
+		<dynamic prepend="WHERE">
+	        <isNotNull prepend="and" property="template_code"> 
+				  INSTR(template_code,#template_code#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="is_enable"> 
+				  is_enable=#is_enable#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,template_name,template_code,template_path,template_image,author,in_date,m1.user_id,is_enable,m2.user_name
+		<isParameterPresent>
+			<include refid="getCommon" />         
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

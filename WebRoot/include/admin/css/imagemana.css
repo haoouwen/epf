@@ -1,0 +1,76 @@
+.mb {
+	width: 220px;
+	float: left;
+	background: #ffffff;
+	margin: 13px 15px 15px 32px;
+	border: 1px solid #dddddd;
+	padding: 5px 0;
+}
+
+.mb .imgdiv {
+	width: 201px;
+	height: 201px;
+	background: #FFFFFF;
+	margin-left: 4px;
+}
+
+.txtarea .txbox {
+	float: left;
+	margin-top: 7px;
+}
+
+.txtarea a {
+	float: left;
+	margin: 5px 3px 0;
+}
+
+.txtarea span {
+	float: left;
+	margin-top: 5px;
+	margin-left: 20px;
+}
+
+.txtarea {
+	margin: 15px 0px 8px 8px;
+}
+
+.selTemplete {
+	border: 1px solid #DDDDDD;
+	float: left;
+	padding: 10px 0px 10px 20px;
+	background: #EFEFEF;
+	width: 98%;
+}
+
+.checkTemplete {
+	width: 98%;
+	border: 1px solid #DDDDDD;
+	float: left;
+	padding: 10px 0px 10px 20px;
+	background: #EFEFEF;
+	margin-bottom: 20px;
+}
+
+.butt {
+	margin-top: 5px;
+	margin-left: 12px;
+}
+
+.mb p {
+	margin-top: 5px;
+	margin-left: 12px;
+}
+
+.time {
+	color: #989898;
+	padding-left: 20px;
+}
+
+.templname {
+	font-weight: bold;
+	padding-left: 50px;
+}
+
+.templname1 {
+	padding-left: 25px;
+}

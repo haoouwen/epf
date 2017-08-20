@@ -1,0 +1,34 @@
+/*
+ * Package:com.rbt.servie.impl
+ * FileName: {CLASSNAME}Service.java 
+ */
+package com.rbt.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import com.rbt.dao.I{CLASSNAME}Dao;
+import com.rbt.model.{CLASSNAME};
+import com.rbt.service.I{CLASSNAME}Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+/**
+ * @function 功能 {FUNNAME}Service层业务接口实现
+ * @author 创建人 {AUTHOR}
+ * @date 创建日期 {DATE}
+ */
+@Service
+public class {CLASSNAME}Service extends GenericService<{CLASSNAME},String> implements I{CLASSNAME}Service {
+	
+	I{CLASSNAME}Dao {TABLENAME}Dao;
+
+	@Autowired
+	public {CLASSNAME}Service(I{CLASSNAME}Dao {TABLENAME}Dao) {
+		super({TABLENAME}Dao);
+		this.{TABLENAME}Dao = {TABLENAME}Dao;
+	}
+	
+}

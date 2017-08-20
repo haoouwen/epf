@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>{FUNNAME}列表</title>
+  </head>
+  <body>
+<@s.form action="/admin_{CLASSNAME}_list.action" method="post" id="indexForm">
+
+        <div class="postion">当前位置：1 > 2 > 3</div>
+        <div class="rtdcont">
+           <!--条件查询-->
+           <div class="rseacher">
+             <table cellpadding="0" cellspacing="0">
+               <tr>
+                  <td >标题:</td><td><@s.textfield name="title_s" cssClass="search_input"/></td>
+                 <td><input type="submit" class="rbut" value="查询"></td>
+                 <td><input type="button" onclick="searchShowDIV('searchDiv','300px','130px');" class="rbut" value="高级查询"></td>
+               </tr>
+             </table>
+          
+           </div>
+           <!--后台table-->
+           <div class="rtable">
+             <table width="100%" cellspacing="0" cellpadding="0" class="indexTab">
+               <tr>
+                 <th width="5%"><input type="checkbox" name="checkbox" id="checkall" onclick="selectAll('{TABLENAME}.{TABLEKEY}')"/></th>
+                 {fieldlist}
+                 	<th width="10%">[field_name]</th>
+			    {/fieldlist}
+                 <th  width="10%">操作</th>
+               </tr>
+			    <#list {TABLENAME}List as {TABLENAME}>
+				 <tr >
+			         <td><input type="checkbox" name="{TABLENAME}.{TABLEKEY}" value="${{TABLENAME}.{TABLEKEY}?if_exists}"/></td>
+			         {fieldlist}
+			         	<td align="center">${{TABLENAME}.[field_name]?if_exists}</td>
+				    {/fieldlist}  
+				    
+				    <td align="center"><a onclick="linkToInfo('/admin_{CLASSNAME}_view.action','{TABLENAME}.{TABLEKEY}=${{TABLENAME}.{TABLEKEY}?if_exists}');">
+					  <img src="/include/common/images/bj.gif" /></a></td>
+				    
+			       </tr>
+			    </#list>
+             </table>
+           </div>
+           <!--翻页-->
+           <div class="pages">
+             ${pageBar?if_exists}
+           </div>
+           <div class="clear"/>
+           <!--翻页-->
+           <div class="bsbut">
+             <input type="button" class="rbut" onclick="linkToInfo('/admin_{CLASSNAME}_add.action','');" value="添加{FUNNAME}">
+             <input type="button" class="rbut" onclick="updateBatchState('0','{TABLENAME}.{TABLEKEY}','/admin_{CLASSNAME}_updateStateB2C.action','推荐');" value="推荐">             
+			 <input type="button" class="rbut" onclick="updateBatchState('1','{TABLENAME}.{TABLEKEY}','/admin_{CLASSNAME}_updateStateB2C.action','取消推荐');" value="取消推荐">  
+             <input type="button" class="rbut"onclick="delInfo('{TABLENAME}.{TABLEKEY}','/admin_{CLASSNAME}_delete.action')" value="删除">
+           </div>
+        </div>
+		<!--表单框隐藏域存放-->
+		 <!-- <@s.hidden  name="xxx_s"/>-->
+	   <!--表单框隐藏域存放--> 
+</@s.form>
+<div  style="display:none;"  id="searchDiv"  class="searchDiv">
+<@s.form action="/admin_{CLASSNAME}_list.action"   method="post"  id="form_search_id">
+<!--dd-->
+	<table>
+	<tr>
+		<td class="searchDiv_td">标题:</td>
+		<td><@s.textfield name="title_s"/></td>
+	</tr>
+	
+    <tr>
+		<td align="center" colspan="2" style="border:0px;">
+		<input type="button" name="search" value="搜索" onclick="showSearchDiv('area_attr','cat_attr','search_area_attr','search_cat_attr','form_search_id');"/>&nbsp;
+		   <input type="button" name="close" value="关闭" onclick="closeSearchShowDIV('searchDiv')"/>
+		</td>
+	</tr>
+	</table>
+</@s.form>
+</div>
+
+  </body>
+</html>

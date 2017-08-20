@@ -1,0 +1,115 @@
+/*订单页面 */
+.oper_seo_div{
+	border:1px solid #D0D0D0;
+	width:99%;
+	background:#FFFFFF;
+	padding:8px;
+	margin-top: 10px;
+}
+
+.tabdiv{
+	width:100%;
+	border:1px solid #D0D0D0;
+}
+b{
+	font-size: 14px;
+}
+.main_cont{
+	width:90%;
+	background:#FFF;
+	padding-top:1px;
+	margin-top:3px;
+}	
+.main_content{
+	width: 100%;
+	background: #F5F5F5;
+	margin-left:0px;
+	padding:10px 16px 10px 10px;
+}
+.gtd{
+	background: #F8FAFC;
+	text-align: center;
+	font-size: 14px;
+}
+.ordertd{
+	background: #E2E8EB;
+	text-align: center;
+	font-size: 14px;
+	width: 20%;
+}
+.gth{
+	background: #E4EBEE;
+	text-align:center;
+	font-size: 14px;
+}
+.lasttd{
+	background: #F4FDF6;
+	text-align: center;
+	font-size: 14px;
+}
+.tooltd{
+	background: #F5F5F5;
+}
+
+/*table 切换*/
+.tableul{
+	height:25px;
+	background:#6E7780;
+}
+.tableul li{
+	float: left;
+	height:24px;
+	line-height:24px;
+	padding: 0 10px;
+	margin-top: 4px;
+	cursor: pointer;
+}
+.tableul .tbut{
+	height:24px;
+	border:none;
+}
+.nonetab{
+	color: white;
+}
+
+.span1{
+	height:60px;
+	background:url("/include/admin/images/order_tab.gif") no-repeat left;
+	width:60px;
+	padding:23px;
+	color: black;
+}
+
+.span2{
+	height:30px;
+	background:url("/include/admin/images/order_tab.gif") no-repeat right;
+	padding-right:30px;
+	padding:5px;
+	padding-right:0px;
+}
+a:link {
+	 text-decoration:none;
+} 
+.uldiv{
+	margin-left: -9px;
+}
+/*固定的操作框开始*/
+.fixbuttom{
+	width:99%;
+	margin-left:2px;
+	height:28px;
+	border:1px solid #D3D3D3;
+	text-align:center;
+	padding-top:6px;
+	background:#F8F8F8;
+	margin-top:10px;
+	}
+.fixbuttom a{
+	padding:0 5px 0 5px;
+	height:22px;
+	background:url(/include/admin/images/buttom.jpg) repeat-x;
+	color:#FFF;
+	font-weight:bold;
+	border:1px solid #54647a;
+	}
+

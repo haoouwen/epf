@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="article">
+
+	<typeAlias alias="article" type="com.rbt.model.Article" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="article">
+		<![CDATA[ 
+    SELECT article_id,title,content,cat_attr,art_source,art_author_,out_link,is_sticky,is_display,seo_title,seo_keyword,seo_descri,user_id,cust_id,in_date FROM article WHERE article_id=$article_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="article">
+		UPDATE article SET article_id=#article_id#,title=#title#,content=#content#,cat_attr=#cat_attr#,art_source=#art_source#,art_author_=#art_author_#,out_link=#out_link#,is_sticky=#is_sticky#,is_display=#is_display#,seo_title=#seo_title#,seo_keyword=#seo_keyword#,seo_descri=#seo_descri#,user_id=#user_id#,cust_id=#cust_id#,in_date=now()  WHERE article_id=$article_id$
+	</update>
+
+	<insert id="insert" parameterClass="article">
+		INSERT INTO article (article_id,title,content,cat_attr,art_source,art_author_,out_link,is_sticky,is_display,seo_title,seo_keyword,seo_descri,user_id,cust_id,in_date) VALUES (#article_id#,#title#,#content#,#cat_attr#,#art_source#,#art_author_#,#out_link#,#is_sticky#,#is_display#,#seo_title#,#seo_keyword#,#seo_descri#,#user_id#,#cust_id#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM article WHERE article_id in ($article_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM article 
+		left join memberuser u on article.user_id = u.user_id
+		<dynamic prepend="WHERE">
+	        <isNotNull prepend="and" property="art_author_"> 
+     		    INSTR(art_author_,#art_author_#) > 0
+			 </isNotNull>
+			 
+			 <isNotNull prepend="and" property="is_display">
+			 	is_display=#is_display#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_sticky">
+			 	is_sticky=#is_sticky#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="title"> 
+			     INSTR(title,#title#) >0
+			 </isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(cat_attr,#cat_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_attr_"> 
+			    cat_attr=#cat_attr_#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="article_name_all">
+				title=#article_name_all#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT article_id,title,content,cat_attr,art_source,art_author_,out_link,is_sticky,is_display,seo_title,seo_keyword,seo_descri,article.user_id,article.cust_id,in_date,u.user_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY is_sticky asc,in_date desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

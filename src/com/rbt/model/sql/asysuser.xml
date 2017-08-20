@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="asysuser">
+
+	<typeAlias alias="asysuser" type="com.rbt.model.Asysuser" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="asysuser">
+		<![CDATA[ 
+    SELECT user_id,user_name,nike_name,passwd,user_type,role_id,real_name,email,loginnum,logintime,loginip,state,org_id,grade,subjection,is_del,com_name,area_attr,level,
+    cost,spread,cust_num,cust_amount,store_name,store_img,store_opentime,bus_line,railway_line,parking_service,agent_type,address,cellphone,phone,detai_area_attr,store_servce FROM asysuser WHERE user_id=$user_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="asysuser">
+		UPDATE asysuser SET user_id=#user_id#,user_name=#user_name#,nike_name=#nike_name#,
+		<isNotNull prepend="" property="passwd"> 
+	     	passwd=#passwd#,
+	 	</isNotNull>
+		user_type=#user_type#,role_id=#role_id#,real_name=#real_name#,email=#email#,loginnum=#loginnum#,logintime=#logintime#,loginip=#loginip#,state=#state#,org_id=#org_id#,grade=#grade#,
+		subjection=#subjection#,is_del=#is_del#,com_name=#com_name#,area_attr=#area_attr#,level=#level#,cost=#cost#,spread=#spread#,cust_num=#cust_num#,
+		cust_amount=#cust_amount#,store_name=#store_name#,store_img=#store_img#,store_opentime=#store_opentime#,bus_line=#bus_line#,railway_line=#railway_line#,
+		parking_service=#parking_service#,agent_type=#agent_type#,address=#address#,cellphone=#cellphone#,phone=#phone#,detai_area_attr=#detai_area_attr#,store_servce=#store_servce#  WHERE user_id=$user_id$
+	
+	</update>
+
+    <update id="updatelaststate" parameterClass="asysuser">
+    	UPDATE asysuser SET  loginnum=loginnum+1,logintime=now(),loginip=#loginip#    	
+    	WHERE user_id=$user_id$
+	</update>
+	
+	<!-- 状态启用/禁用 -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE asysuser SET state=#state# WHERE user_id=$user_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE asysuser SET 
+    	 <isNotNull  property="user_id"> 
+		   user_id=$user_id$
+		 </isNotNull>
+    	 WHERE user_id=$user_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="asysuser">
+		UPDATE asysuser SET user_id=$user_id$ WHERE user_id=$user_id$
+	</update>
+
+	<insert id="insert" parameterClass="asysuser">
+		INSERT INTO asysuser (user_id,user_name,nike_name,passwd,user_type,role_id,real_name,email,loginnum,logintime,loginip,state,org_id,grade,subjection,is_del,com_name,area_attr,level,cost,spread,cust_num,cust_amount,store_name,store_img,store_opentime,bus_line,railway_line,parking_service,agent_type,address,cellphone,phone,detai_area_attr,store_servce) VALUES
+		 (#user_id#,#user_name#,#nike_name#,#passwd#,#user_type#,#role_id#,#real_name#,#email#,#loginnum#,#logintime#,#loginip#,#state#,#org_id#,#grade#,#subjection#,#is_del#,#com_name#,#area_attr#,#level#,#cost#,#spread#,#cust_num#,#cust_amount#,#store_name#,#store_img#,#store_opentime#,#bus_line#,#railway_line#,#parking_service#,#agent_type#,#address#,#cellphone#,#phone#,#detai_area_attr#,#store_servce#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM asysuser WHERE user_id in ($user_id$)and user_type='4'
+	</delete>
+
+	<sql id="getCommon">
+	   FROM asysuser s LEFT JOIN role r ON s.role_id=r.role_id 
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="user_name"> 
+			     INSTR(s.user_name,#user_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="login_name"> 
+			     s.user_name=#login_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="nike_name"> 
+			     INSTR(s.nike_name,#nike_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="passwd"> 
+			     s.passwd=#passwd#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="state"> 
+			     s.state=#state#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="role_id"> 
+			     s.role_id=#role_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="user_id"> 
+			     s.user_id=#user_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_ids"> 
+			     s.user_id in ($user_ids$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="sys_role_id"> 
+			     s.role_id=#sys_role_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_type"> 
+			     s.user_type=#user_type#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="area_attr"> 
+			     s.area_attr=#area_attr#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="org_id"> 
+			     s.org_id in ($org_id$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="not_user_id"> 
+			     s.user_id!=#not_user_id# and s.user_type!=3 
+			 </isNotNull>
+			 <isNotNull prepend="and" property="subjection"> 
+			     s.subjection=#subjection#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="subjection_in"> 
+			     s.subjection in ($subjection_in$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="is_del"> 
+			     s.is_del = #is_del#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="agent_type"> 
+			     s.agent_type in ($agent_type$)
+			 </isNotNull>
+			  <isNotNull prepend="or" property="supper"> 
+			     s.user_type = $supper$
+			 </isNotNull>
+			 <isNotNull prepend="and" property="email"> 
+			     s.email = #email#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cellphone"> 
+			     s.cellphone = #cellphone#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="store_name"> 
+			     s.store_name = #store_name#
+			 </isNotNull>
+		</dynamic>
+		
+ 	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT  s.user_id,user_name,nike_name,passwd,user_type,s.role_id,real_name,s.email,loginnum,logintime,loginip,state,org_id,grade,
+		(select user_name from asysuser where user_id = s.subjection) as subjection,
+		(SELECT IFNULL(SUM(tatal_amount),0) FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT 
+		JOIN memberuser mu ON m.cust_id=mu.cust_id WHERE go.order_state IN(7,8) AND LEFT(mu.membernum,6)=s.nike_name) stroe_amount,
+		is_del,com_name,area_attr,area_attr as area_code,level,cost,spread,cust_num,cust_amount,store_name,store_img,store_opentime,
+		bus_line,railway_line,parking_service,r.role_name,s.org_id,agent_type,address,cellphone,phone,
+		(select area_name from area where area_level='2' AND area_number = s.area_attr) as area_attr_name,detai_area_attr,store_servce
+
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		   order by s.user_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	
+	<sql id="getWebCommon">
+	   FROM asysuser
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="is_del"> 
+			     is_del = #is_del#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="agent_type"> 
+			       agent_type in ($agent_type$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="state"> 
+			     state =#state#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="area_attr"> 
+			     area_attr =#area_attr#
+			 </isNotNull>
+			<isNotNull prepend="and" property="store_servce"> 
+			     #store_servce# in(store_servce)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="store_servce_str"> 
+			     $store_servce_str$ 
+			 </isNotNull>
+		</dynamic>
+		
+ 	</sql>
+	
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT  user_id,user_name,nike_name,passwd,user_type,real_name,email,loginnum,logintime,
+		loginip,state,org_id,grade,is_del,com_name,area_attr,level,cost,spread,cust_num,cust_amount,store_name,store_img,
+		store_opentime,bus_line,railway_line,parking_service,agent_type,address,cellphone,phone,detai_area_attr,store_servce
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		   order by user_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

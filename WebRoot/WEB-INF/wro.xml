@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<groups xmlns="http://www.isdc.ro/wro"> 
+	
+	<!-- 以下为触屏版公共js和css，开发阶段放在最上面，上线前根据需要进行调整 -->
+	<group name="webapp_common">
+	    <css minimize="true">/malltemplate/jiutong/css/mbPublic.css</css>
+	    <js minimize="true">/malltemplate/jiutong/js/jquery-1.4.4.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/mbPublic.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/pinyin.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/common.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/malltop.js</js>
+	    <js minimize="true">/include/common/js/jquery.alert.js</js>
+        <js minimize="true">/include/common/js/jquery.jNotify.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/cart.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jqueryPopupLayer.js</js>
+        <js minimize="true">/include/common/js/common.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jquery.autocomplete.js</js>
+        <css minimize="true">/include/common/css/alert.css</css>
+	</group>
+	
+	<group name="webapp_index">
+	    <css minimize="true">/malltemplate/jiutong/css/mbPublic.css</css>
+	    <css minimize="true">/malltemplate/jiutong/css/mbIndex.css</css>
+	    <js minimize="true">/malltemplate/jiutong/js/jquery-1.4.4.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/mbPublic.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/mbIndex.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/pinyin.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jqueryMobileSlider.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/malltop.js</js>
+	    <js minimize="true">/include/common/js/jquery.alert.js</js>
+        <js minimize="true">/include/common/js/jquery.jNotify.js</js>
+        <js minimize="true">/include/common/js/common.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/common.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jquery.autocomplete.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/cart.js</js>
+        <css minimize="true">/include/common/css/alert.css</css>
+	</group>
+	<group name="webapp_common_publicjs">
+	    <js minimize="true">/malltemplate/jiutong/js/jquery-1.4.4.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/mbPublic.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/pinyin.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/common.js</js>
+	    <js minimize="true">/malltemplate/jiutong/js/malltop.js</js>
+	    <js minimize="true">/include/common/js/jquery.alert.js</js>
+        <js minimize="true">/include/common/js/jquery.jNotify.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/cart.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jqueryPopupLayer.js</js>
+        <js minimize="true">/malltemplate/jiutong/js/jquery.autocomplete.js</js>
+	</group>
+	<group name="webapp_common_publiccss">
+        <css minimize="true">/malltemplate/jiutong/css/jquery.autocomplete.css</css>
+	</group>
+	
+	
+	<!-- 以上为触屏版公共js和css，开发阶段放在最上面，上线前根据需要进行调整 -->
+	
+	<group name="index">
+        <js minimize="true">/include/common/js/jquery-1.4.4.min.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jt_indexshow.js</js>
+        <js minimize="true">/include/common/js/jquery.cookie.js</js>
+        <js minimize="true">/include/common/js/jquery.autocomplete.js</js>
+        <js minimize="true">/include/common/js/common.js</js>
+        <js minimize="true">/include/common/js/commonplugin.js</js>
+        <js minimize="true">/include/common/js/jquery.masonry.min.js</js>
+        <js minimize="true">/include/common/js/pinyin.js</js>
+        <js minimize="true">/include/common/js/jquery.jNotify.js</js>
+        <js minimize="true">/malltemplate/bmall/js/malltop.js</js> 
+        <js minimize="true">/malltemplate/bmall/js/floatDiv.js</js>
+		<js minimize="true">/malltemplate/bmall/js/moFocus.js</js>
+		<js minimize="true">/malltemplate/bmall/js/focus.js</js>
+		<js minimize="true">/malltemplate/bmall/js/claMenu.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jt_public.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jt_index.js</js>
+        <js minimize="true">/include/common/js/jquery.alert.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jqueryTab.js</js>
+        <js minimize="true">/malltemplate/bmall/js/carousel.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jqueryPopupLayer.js</js>
+        <css minimize="true">/malltemplate/bmall/css/jt_public.css</css>
+        <css minimize="true">/malltemplate/bmall/css/jt_index.css</css>
+        <css minimize="true">/malltemplate/bmall/css/jquery.autocomplete.css</css>
+        <css minimize="true">/include/common/css/alert.css</css>
+        <js minimize="true">/malltemplate/bmall/js/login.js</js>
+    </group>
+    <!-- 商城首页  -->
+    <group name="mallindex">
+    	<!-- JS -->
+    	<js minimize="true">/include/common/js/jquery-1.12.1.min.js</js>
+    	<js minimize="true">/include/common/js/common.js</js>
+    	<js minimize="true">/include/common/js/pinyin.js</js>
+    	<js minimize="true">/include/common/js/jquery.cookie.js</js>
+    	<js minimize="true">/include/common/js/jquery.autocomplete.js</js>
+    	<js minimize="true">/include/common/js/jquery-browser.js</js>
+    	<js minimize="true">/malltemplate/index/js/mall_top.js</js>
+ 		<js minimize="true">/malltemplate/index/js/mall_index.js</js>
+ 		<js minimize="true">/malltemplate/bmall/js/jqueryPopupLayer.js</js>
+ 		<js minimize="true">/malltemplate/bmall/js/login.js</js>
+ 		<!-- CSS -->
+        <css minimize="true">/malltemplate/bmall/css/jquery.autocomplete.css</css>
+        <css minimize="true">/malltemplate/index/css/mall_index.css</css>
+    </group>
+    <group name="mallpublic">
+        <js minimize="true">/include/common/js/jquery-1.12.1.min.js</js>
+        <js minimize="true">/include/common/js/jquery.cookie.js</js>
+        <js minimize="true">/include/common/js/jquery.autocomplete.js</js>
+        <js minimize="true">/include/common/js/common.js</js>
+        <js minimize="true">/include/common/js/commonplugin.js</js>
+        <js minimize="true">/include/common/js/jquery.masonry.min.js</js>
+        <js minimize="true">/include/common/js/pinyin.js</js>
+        <js minimize="true">/include/common/js/jquery.jNotify.js</js>
+        <js minimize="true">/include/common/js/jquery.alert.js</js>
+        <js minimize="true">/malltemplate/index/js/mall_top.js</js> 
+        <js minimize="true">/malltemplate/bmall/js/floatDiv.js</js>
+		<js minimize="true">/malltemplate/bmall/js/moFocus.js</js>
+		<js minimize="true">/malltemplate/bmall/js/focus.js</js>
+		<js minimize="true">/malltemplate/bmall/js/claMenu.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jqueryPopupLayer.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jqueryTab.js</js>
+        <js minimize="true">/malltemplate/bmall/js/carousel.js</js>
+        <css minimize="true">/malltemplate/bmall/css/jquery.autocomplete.css</css>
+        <css minimize="true">/include/common/css/alert.css</css>
+        <css minimize="true">/malltemplate/bmall/css/jt_public.css</css>
+        
+        <js minimize="true">/include/common/js/jquery-browser.js</js>
+        <js minimize="true">/malltemplate/index/js/mall_index.js</js>
+        <css minimize="true">/malltemplate/index/css/mall_public.css</css>
+    </group>
+    
+    <!-- 商品详细页 -->
+    <group name="goodsdetail">
+        <js minimize="true">/malltemplate/bmall/js/claMenu.js</js>
+        <js minimize="true">/malltemplate/bmall/js/classify.js</js>
+        <js minimize="true">/malltemplate/bmall/js/goods.js</js>
+        <js minimize="true">/malltemplate/bmall/js/cart.js</js>
+        <js minimize="true">/malltemplate/bmall/js/collect.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jqueryZoom.js</js> 
+        <js minimize="true">/malltemplate/bmall/js/jqueryFloat.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jqueryTabOnclick.js</js>
+		<js minimize="true">/malltemplate/bmall/js/focus.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jt_product.js</js>
+        <js minimize="true">/malltemplate/bmall/js/tablePlugin.js</js>
+        <js minimize="true">/include/common/js/commonplugin.js</js>
+        <js minimize="true">/include/common/js/timerJs.js</js>
+        <js minimize="true">/malltemplate/bmall/js/jquery.qrcode.min.js</js>                 
+        <css minimize="true">/malltemplate/bmall/css/jt_product.css</css>
+        
+        <js minimize="true">/include/common/js/jquery-browser.js</js>
+        <js minimize="true">/malltemplate/index/js/mall_index.js</js>
+        <css minimize="true">/malltemplate/index/css/mall_public.css</css>
+     </group>    
+    
+    <group name="hotSale">
+    	<js minimize="true">/malltemplate/bmall/js/hotSale.js</js>
+    	<js minimize="true">/malltemplate/bmall/js/focusm.js</js>
+    	<js minimize="true">/malltemplate/bmall/js/proclass.js</js>
+    	<js minimize="true">/include/admin/js/jquery.lazyload.js</js>
+    </group>
+    <group name="directSell">
+    	<js minimize="true">/malltemplate/bmall/js/directSell.js</js>
+    	<js minimize="true">/malltemplate/bmall/js/directDetail.js</js>
+    	<js minimize="true">/malltemplate/bmall/js/focusm.js</js>
+    	<js minimize="true">/malltemplate/bmall/js/proclass.js</js>
+    	<js minimize="true">/include/admin/js/jquery.lazyload.js</js>
+    	<css minimize="true">/malltemplate/bmall/css/directSell.css</css>
+    </group>
+   <group name="adminMode"> 
+    	<js minimize="true">/include/common/js/common.js</js>
+    	<js minimize="true">/include/common/js/commonplugin.js</js>
+    	<css minimize="true">/include/components/artDialog5.0/skins/blue.css</css>
+    	<css minimize="true">/include/common/css/colorbox.css</css>
+    	<css minimize="true">/include/admin/css/index.css</css>
+        <css minimize="true">/include/common/css/common.css</css>
+   </group>
+
+   <group name="bmallMode"> 
+    	<js minimize="true">/include/common/js/common.js</js>
+    	<js minimize="true">/include/common/js/commonplugin.js</js>
+    	<css minimize="true">/include/components/artDialog5.0/skins/blue.css</css>
+    	<css minimize="true">/include/common/css/colorbox.css</css>
+        <css minimize="true">/include/bmall/css/public.css</css>
+        <css minimize="true">/include/bmall/css/index.css</css>
+        <css minimize="true">/include/common/css/common.css</css>
+   </group>
+   <group name="admin_category_index">
+  		<js minimize="true">/include/admin/js/cat.js</js>
+    	<css minimize="true">/include/admin/css/category.css</css>
+   </group>
+   <group name="admin_category_update">
+  		<js minimize="true">/include/common/js/jquery.alert.js</js>
+  		<js minimize="true">/include/common/js/pinyin.js</js>
+    	<js minimize="true">/include/common/js/get-cat-area.js</js>
+   </group>
+   <group name="admin_category_insert">
+  		<js minimize="true">/include/common/js/pinyin.js</js>
+   </group>
+    <group name="admin_commpara_index">
+  		<js minimize="true">/include/admin/js/commpara.js</js>
+    	<css minimize="true">/include/admin/css/commpara.css</css>
+   </group>
+   <group name="admin_goods_autit">
+  		<js minimize="true">/include/admin/js/goods.js</js>
+  		<js minimize="true">/include/common/js/jqModal.js</js>
+    	<css minimize="true">/include/common/css/jqModal.css</css>
+    	<css minimize="true">/include/admin/css/goods.css</css>
+   </group>
+   <group name="admin_goods_index">
+   		<js minimize="true">/include/common/js/get-cat-area.js</js>
+  		<js minimize="true">/include/admin/js/goodsindex.js</js>
+   </group>
+   <group name="admin_goods_insert">
+  		<js minimize="true">/include/common/js/jquery.easydrag.handler.js</js>
+  		<js minimize="true">/include/common/js/jquery.alert.js</js>
+  		<js minimize="true">/include/common/js/jqModal.js</js>
+  		<js minimize="true">/include/common/js/tablePlugin.js</js>
+  		<js minimize="true">/include/admin/js/goods.js</js>
+  		<css minimize="true">/include/common/css/jqModal.css</css>
+  		<css minimize="true">/include/admin/css/goods.css</css>
+  		<css minimize="true">/include/common/css/alert.css</css>
+   </group>
+   <group name="admin_goods_selcat">
+  		 <js minimize="true">/include/admin/js/selcat.js</js>
+    	 <css minimize="true">/include/admin/css/selcat.css</css>
+   </group>
+   <group name="admin_goods_update">
+		 <js minimize="true">/include/common/js/jquery.easydrag.handler.js</js>
+		 <js minimize="true">/include/common/js/jquery.alert.js</js>
+		 <js minimize="true">/include/common/js/member_cat.js</js>
+		 <js minimize="true">/include/common/js/jqModal.js</js>
+		 <js minimize="true">/include/common/js/tablePlugin.js</js>
+		  <js minimize="true">/include/admin/js/goods.js</js>
+    	 <css minimize="true">/include/common/css/jqModal.css</css>
+    	 <css minimize="true">/include/admin/css/goods.css</css>
+    	 <css minimize="true">/include/common/css/alert.css</css>
+   </group>
+	<group name="bmall_login">
+		<js minimize="true">/include/common/js/jquery-1.4.4.min.js</js>
+		<js minimize="true">/include/common/js/jquery.cookie.js</js>
+		<js minimize="true">/include/common/js/jquery.autocomplete.js</js>
+		<js minimize="true">/include/common/js/pinyin.js</js>
+		<js minimize="true">/include/common/js/commonplugin.js</js>
+		<js minimize="true">/include/common/js/jquery.masonry.min.js</js>
+		<js minimize="true">/malltemplate/bmall/js/login.js</js>
+		<css minimize="true">/malltemplate/bmall/css/login.css</css>
+	    <css minimize="true">/malltemplate/bmall/css/jt_public.css</css>
+	    <css minimize="true">/malltemplate/bmall/css/jquery.autocomplete.css</css>
+	    <css minimize="true">/malltemplate/index/css/mall_public.css</css>
+	</group>
+	
+	<group name="bmall_pay">
+		<js minimize="true">/include/common/js/jquery-1.4.4.min.js</js>
+		<js minimize="true">/include/common/js/jquery.cookie.js</js>
+		<js minimize="true">/include/common/js/jquery.autocomplete.js</js>
+		<js minimize="true">/include/common/js/common.js</js>
+		<js minimize="true">/include/common/js/commonplugin.js</js>
+		<js minimize="true">/include/common/js/jquery.masonry.min.js</js>
+		<js minimize="true">/include/common/js/pinyin.js</js>
+		<js minimize="true">/malltemplate/bmall/js/malltop.js</js>
+		<js minimize="true">/malltemplate/bmall/js/floatDiv.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jt_public.js</js>
+		<js minimize="true">/include/common/js/jquery.jNotify.js</js>
+		<js minimize="true">/include/common/js/jquery.alert.js</js>
+		<css minimize="true">/malltemplate/bmall/css/jt_public.css</css>
+		<css minimize="true">/malltemplate/bmall/css/payProcess.css</css>
+		<js minimize="true">/malltemplate/bmall/js/payment.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jqueryPopupLayer.js</js>
+		<js minimize="true">/malltemplate/bmall/js/jqueryTab.js</js>
+		<js minimize="true">/malltemplate/bmall/js/payProcess.js</js>
+		<css minimize="true">/include/common/css/common.css</css>
+	</group>
+	
+	
+	
+	
+	
+</groups>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="associationkeywords">
+
+	<typeAlias alias="associationkeywords" type="com.rbt.model.Associationkeywords" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="associationkeywords">
+		<![CDATA[ 
+    SELECT ass_key_words_id,ass_key_words_title,cat_attr,ass_key_words_number,
+    ass_key_words_show,in_date,en_name,sort_no FROM associationkeywords WHERE ass_key_words_id=$ass_key_words_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="associationkeywords">
+		UPDATE associationkeywords SET ass_key_words_id=#ass_key_words_id#,ass_key_words_title=#ass_key_words_title#,
+		cat_attr=#cat_attr#,ass_key_words_number=#ass_key_words_number#,
+		ass_key_words_show=#ass_key_words_show#,en_name=#en_name#,sort_no=#sort_no# WHERE ass_key_words_id=$ass_key_words_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE associationkeywords SET 
+    	 <isNotNull  property="ass_key_words_show"> 
+		   ass_key_words_show=$ass_key_words_show$
+		 </isNotNull>
+    	 WHERE ass_key_words_id=$ass_key_words_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="associationkeywords">
+		UPDATE associationkeywords SET ass_key_words_show=$ass_key_words_show$ WHERE ass_key_words_id=$ass_key_words_id$
+	</update>
+    <!-- 批量更新是否显示isshow -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE associationkeywords SET ass_key_words_show=#ass_key_words_show# WHERE ass_key_words_id=$ass_key_words_id$
+	</update>
+    
+	<insert id="insert" parameterClass="associationkeywords">
+		INSERT INTO associationkeywords (ass_key_words_id,ass_key_words_title,cat_attr,
+		ass_key_words_number,ass_key_words_show,in_date,en_name,sort_no) VALUES (#ass_key_words_id#,#ass_key_words_title#,#cat_attr#,
+		#ass_key_words_number#,#ass_key_words_show#,now(),#en_name#,#sort_no#)
+	</insert>
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE associationkeywords SET sort_no=#sort_no# WHERE ass_key_words_id=$ass_key_words_id$
+	</update>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM associationkeywords WHERE ass_key_words_id in ($ass_key_words_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM associationkeywords  AS a 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ass_key_words_show">
+				ass_key_words_show=#ass_key_words_show#
+			</isNotNull>
+			<isNotNull prepend="and" property="ass_key_words_title">
+			 ass_key_words_title=#ass_key_words_title#
+			</isNotNull>
+			<isNotNull prepend="and" property="words_title">
+			  INSTR(ass_key_words_title,#words_title#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(cat_attr,#cat_attr#) >0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ass_key_words_id,ass_key_words_title,cat_attr,ass_key_words_number,ass_key_words_show,in_date,en_name,sort_no,
+		(SELECT COUNT(*) FROM goods AS g WHERE  INSTR(g.goods_name,ass_key_words_title) > 0 AND  INSTR(g.cat_attr,a.cat_attr) > 0 ) AS searchcount
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no DESC , ass_key_words_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

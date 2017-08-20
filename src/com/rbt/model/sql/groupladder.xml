@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="groupladder">
+
+	<typeAlias alias="groupladder" type="com.rbt.model.Groupladder" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="groupladder">
+		<![CDATA[ 
+    SELECT trade_id,group_id,lownum,price FROM groupladder WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	
+   <select id="getByGroupId" parameterClass="java.lang.String"
+		resultClass="groupladder">
+		<![CDATA[ 
+     SELECT trade_id,group_id,lownum,price FROM groupladder WHERE group_id=$group_id$
+    ]]>
+	</select>
+	
+	<update id="update" parameterClass="groupladder">
+		UPDATE groupladder SET trade_id=#trade_id#,group_id=#group_id#,lownum=#lownum#,price=#price# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="groupladder">
+		INSERT INTO groupladder (trade_id,group_id,lownum,price) VALUES (#trade_id#,#group_id#,#lownum#,#price#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM groupladder WHERE trade_id in ($trade_id$)
+	</delete>
+	<delete id="deleteByGroupId" parameterClass="java.lang.String">
+		delete from groupladder where group_id=$group_id$
+	</delete>
+
+	<sql id="getCommon">
+		FROM groupladder 
+		<dynamic prepend="WHERE">
+			  <isNotNull prepend="and" property="group_id">
+				 group_id=#group_id#
+			</isNotNull>
+			 <isNotNull prepend="and" property="lownum">
+				 lownum !=#lownum#
+			</isNotNull>
+			<isNotNull prepend="and" property="onlylownum">
+				 lownum = #onlylownum#
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,group_id,lownum,price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

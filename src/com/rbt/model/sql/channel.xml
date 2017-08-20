@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="channel">
+
+	<cacheModel id="channel-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="channel.update" />
+		<flushOnExecute statement="channel.insert" />
+		<flushOnExecute statement="channel.updateSort" />
+		<flushOnExecute statement="channel.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<typeAlias alias="channel" type="com.rbt.model.Channel" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="channel">
+		<![CDATA[ 
+    SELECT ch_id,ch_name,up_ch_id,ch_level,sort_no,
+    save_dir,file_name,temp_path,meta_keyword,meta_desc,remark,ch_title, module_type, article_temp, article_rule,sys_ch,is_webapp FROM channel WHERE ch_id=$ch_id$
+    ]]>
+	</select>
+	
+	<select id="getByType" parameterClass="java.lang.String"
+		resultClass="channel">
+		<![CDATA[ 
+    SELECT ch_id,ch_name,up_ch_id,ch_level,sort_no,
+    save_dir,file_name,temp_path,meta_keyword,meta_desc,remark,ch_title, module_type, article_temp, article_rule,sys_ch,is_webapp FROM channel WHERE module_type=#module_type#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="channel">
+		UPDATE channel SET ch_id=#ch_id#,ch_name=#ch_name#,up_ch_id=#up_ch_id#,ch_level=#ch_level#,
+		sort_no=#sort_no#,save_dir=#save_dir#,file_name=#file_name#,temp_path=#temp_path#,
+		meta_keyword=#meta_keyword#,meta_desc=#meta_desc#,remark=#remark# ,
+		ch_title=#ch_title#, module_type=#module_type#, article_temp=#article_temp#, article_rule=#article_rule#,is_webapp=#is_webapp#
+		WHERE ch_id=$ch_id$
+	</update>
+	
+	<update id="updateSort" parameterClass="java.util.HashMap">
+		UPDATE channel SET sort_no=#sort_no# WHERE ch_id=#ch_id#
+	</update>
+	
+	<insert id="insert" parameterClass="channel">
+		INSERT INTO channel (ch_id,ch_name,up_ch_id,ch_level,sort_no,save_dir,
+		file_name,temp_path,meta_keyword,meta_desc,remark,ch_title, module_type, article_temp, article_rule,is_webapp)
+		 VALUES (#ch_id#,#ch_name#,#up_ch_id#,#ch_level#,#sort_no#,#save_dir#,
+		 #file_name#,#temp_path#,#meta_keyword#,#meta_desc#,#remark#
+		 ,#ch_title#, #module_type#, #article_temp#, #article_rule#,#is_webapp#)
+	</insert>
+
+	<!-- sys_ch:是否为系统栏目 1：是 0：否 所以后台只能删除不是系统栏目的栏目-->
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM channel WHERE ch_id in ($ch_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM channel 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ch_name">
+				ch_name=#ch_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_ch_id">
+				up_ch_id=#up_ch_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ch_id">
+				ch_id in($ch_id$)
+			</isNotNull>
+			<isNotNull prepend="and" property="module_type">
+			  module_type !='0' and module_type !='' and module_type is not null
+			</isNotNull>
+			<isNotNull prepend="and" property="moduletype">
+			   module_type=#moduletype#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_webapp">
+			   is_webapp=#is_webapp#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="channel.channel-cache">
+		SELECT ch_id,ch_id as webapp_ch_id,ch_name,up_ch_id,ch_level,sort_no,save_dir,file_name,temp_path,
+		meta_keyword,meta_desc,remark,ch_title, module_type, article_temp, article_rule,sys_ch,is_webapp
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	<select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ch_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="channel.channel-cache">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

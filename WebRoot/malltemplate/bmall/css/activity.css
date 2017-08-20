@@ -1,0 +1,69 @@
+.activity_main{
+	width:100%;
+}
+.activity_title_001{
+	width:1024px;
+	height:507px;
+	background:url(/malltemplate/bmall/images/activity_title_001.png) no-repeat;
+	margin:0 auto;
+}
+.activity_title_101{
+	width:1024px;
+	height:875px;
+	background:url(/malltemplate/bmall/images/activity_title_101.jpg) no-repeat;
+	margin:0 auto;
+}
+.activity_goods_001{
+	width:1024px;
+	height:2891px; 
+	background-color:#ef083c;
+	margin:0 auto;
+	padding:0;
+}
+.activity_goods_101{
+	width:1024px;
+	height:1975px; 
+	background-color:#f53542;
+	margin:0 auto;
+	padding:0;
+}
+.activity_good_001{
+	width:800px;
+	height:311px;
+	margin:0 auto;
+}
+.activity_good_101{
+	width:778px;
+	height:229px;
+	margin:0 auto;
+}
+.activity_time{
+	width:800px;
+	height:47px;
+	line-height:47px;
+	text-align:center;
+	color:#ffffff;
+	font-size:18px;
+	font-weight:bold;
+	margin:0 auto;
+}
+.activity_num{
+	width:20px;
+	height:22px;
+	line-height:22px;
+	background-color:#ffffff;
+	padding:0 2px;
+	margin:0 1px;
+	color:#000000;
+	display:inline-block;
+}
+.activity_good_101 ul li{
+	padding:0 9px;
+	float:left;
+}
+.now_show,.now_time{
+	font-size:14px;
+	color:#000000;
+	font-weight:normal;
+	font-family: Microsoft YaHei;
+}

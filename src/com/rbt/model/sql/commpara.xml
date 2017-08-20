@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="commpara">
+	<typeAlias alias="commpara" type="com.rbt.model.Commpara" />
+	
+	<cacheModel id="commpara-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="commpara.update" />
+		<flushOnExecute statement="commpara.insert" />
+		<flushOnExecute statement="commpara.delete" />
+		<flushOnExecute statement="commpara.updateSort" />
+		<flushOnExecute statement="commpara.updateState" />
+		<property value="500" name="size" />
+	</cacheModel>
+	
+	
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="commpara">
+		<![CDATA[ 
+			SELECT 	para_id, para_code, para_name, para_key, para_value,sort_no,enabled,img_path FROM commpara WHERE para_id=$value$
+	    ]]>
+	</select>
+
+	<update id="update" parameterClass="commpara">
+		UPDATE commpara SET para_code=#para_code#,para_name=#para_name#,
+		para_key=#para_key#,para_value=#para_value#,sort_no=#sort_no#,enabled=#enabled#,img_path=#img_path# WHERE
+		para_id=$para_id$
+	</update>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE commpara SET sort_no=#sort_no# WHERE para_id=$para_id$
+	</update>
+	
+	<!-- 批量更新是否显示isshow -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE commpara SET enabled=#enabled# WHERE para_id=$para_id$
+	</update>
+
+	<insert id="insert" parameterClass="commpara">
+		INSERT INTO commpara (para_code,para_name,para_key,para_value,sort_no,enabled,img_path)
+		VALUES (#para_code#,#para_name#,#para_key#,#para_value#,#sort_no#,#enabled#,#img_path#)
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from commpara where para_id in ($value$)
+	</delete>
+	<sql id="getCommon">
+		from commpara
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="para_code">
+				para_code=#para_code#
+			</isNotNull>
+			<isNotNull prepend="and" property="para_name">
+				INSTR(para_name,#para_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="para_key">
+				INSTR(para_key,#para_key#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="para_value">
+				INSTR(para_value,#para_value#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="no_exists">
+				 !INSTR(para_value,#no_exists#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="no_para_value">
+				para_value not in(#no_para_value#)
+			</isNotNull>
+			<isNotNull prepend="and" property="enabled">
+				INSTR(enabled,#enabled#)>0
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="commpara.commpara-cache">
+		SELECT para_id, para_code, para_name, para_key, para_value,sort_no,enabled,img_path 
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	     order by para_code asc,sort_no asc 
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="commpara.commpara-cache">
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM commpara 
+		<dynamic prepend="WHERE">
+		     <isNotNull prepend="and" property="enabled">
+					INSTR(enabled,#enabled#)>0
+				</isNotNull>
+		    <isNotNull prepend="and" property="para_code">
+				INSTR(para_code,#para_code#)>0 
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT para_code , para_name ,COUNT(*) as info_num
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+		GROUP BY para_code ORDER BY para_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT COUNT(*) FROM commpara  
+			<dynamic prepend="WHERE">
+			     <isNotNull prepend="and" property="enabled">
+					INSTR(enabled,#enabled#)>0
+				</isNotNull>
+			    <isNotNull prepend="and" property="para_code">
+					INSTR(para_code,#para_code#)>0 
+				</isNotNull>
+			</dynamic>
+		GROUP BY para_code ORDER BY para_id DESC ) a
+	</select>
+		
+	<!-- 分组查询 结束 -->
+	
+	<select id="getGroupList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="commpara.commpara-cache">
+		SELECT para_id, para_code, para_name, para_key, para_value from commpara where enabled=0 group by para_code 
+	</select>
+	
+	<select id="getCommparaIndexList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select * from commpara
+		where para_id not in (select info_id FROM index_history where table_name='commpara')		
+	</select>
+	
+	<select id="getWebCommparaList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap" cacheModel="commpara.commpara-cache">
+		select para_id,para_key, para_value  from commpara	where 1=1
+		<isNotNull prepend="and" property="para_code">
+			para_code=#para_code#
+		</isNotNull>
+	</select>
+</sqlMap>
+

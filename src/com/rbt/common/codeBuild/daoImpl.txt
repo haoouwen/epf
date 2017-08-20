@@ -1,0 +1,27 @@
+/*
+ * Package:com.rbt.dao.impl
+ * FileName: {CLASSNAME}Dao.java 
+ */
+package com.rbt.dao.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.rbt.dao.I{CLASSNAME}Dao;
+import com.rbt.model.{CLASSNAME};
+
+/**
+ * @function 功能  {FUNNAME}dao层业务接口实现类
+ * @author 创建人 {AUTHOR}
+ * @date 创建日期 {DATE}
+ */
+@Repository
+public class {CLASSNAME}Dao extends GenericDao<{CLASSNAME},String> implements I{CLASSNAME}Dao {
+	
+	public {CLASSNAME}Dao() {
+		super({CLASSNAME}.class);
+	}
+	
+}

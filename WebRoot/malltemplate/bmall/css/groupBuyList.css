@@ -1,0 +1,185 @@
+/*商品分类*/
+.tgpclass{
+	width:1178px;
+	border:#fe700e solid 1px;
+	border-top:#fe700e solid 2px;
+}
+.tgpcont{
+	line-height:24px;
+	padding-top:10px;
+	padding-bottom:10px;
+	_padding-bottom:20px;
+}
+.tgpcont strong{
+	text-align:right;
+	float:left;
+	padding-left: 20px;
+	width:90px;
+}
+.tgpcont a{
+	color:#333333;
+	margin-right:25px;
+}
+.tgpcont a:hover{
+	color:#b20000;	
+}
+.tgpcont p{
+	width:1000px;
+	float:left;
+}
+/*商品排序*/
+.tgsort{
+	width:1178px;
+	height:38px;
+	line-height:38px;
+	background:#fef5e5;
+}
+.tgsort strong{
+	padding-left:70px;
+	font-weight:bold;
+}
+.tgsort b{
+	font-weight:100;
+	cursor:pointer;
+	padding:6px 12px;
+	border:#cccccc solid 1px;
+	margin-right:10px;
+	background:#fff;
+}
+.tgsort span{
+	padding-right:10px;
+}
+.tgsort .tgselmr{
+	border:#fe3f07 solid 1px;
+	color:#fe3f07;
+}
+.tgsort .tgnselxl{
+	padding-right:25px;
+	background:#fff url(../images/tgnselxs_03.gif) no-repeat 42px 8px;
+}
+.tgsort .tgselxl{
+	padding-right:25px;
+	background:#fff url(../images/tgselxs_03.gif) no-repeat 42px 8px;
+	color:#fe3f07;
+	border:#fe3f07 solid 1px;
+}
+.tgsort .tgnseljg{
+	padding-right:25px;
+	background:#fff url(../images/tgnseljg_03.gif) no-repeat 42px 8px;
+}
+.tgsort .tgseljg{
+	padding-right:25px;
+	background:#fff url(../images/tgseljg_03.gif) no-repeat 42px 8px;
+	color:#fe3f07;
+	border:#fe3f07 solid 1px;
+}
+/*团购列表*/
+.groupBuyList{
+	width:1196px;
+	margin:0 auto;
+}
+.groupBuyList ul{
+}
+.groupBuyList li{
+	width:251px;
+	border:#dfdfdf solid 1px;
+	padding:15px;
+	float:left;
+	margin:0 8px;
+	display:inline;
+	margin-top:15px;
+}
+.groupBuyList h2{
+	font-size:14px;
+	line-height:20px;
+}
+.groupBuyList a{
+	color:#333333;
+}
+.groupBuyList a:hover{
+	color:#b20000;	
+}
+.groupBuyList li div{
+	width:250px;
+	height:250px;
+	padding-top:10px;
+}
+.groupBuyList li div img{
+	width:250px;
+	height:250px;
+}
+.groupBuyList p{
+	width:250px;
+	height:25px;
+	line-height:25px;
+	background:#f2f2f2;
+}
+.groupBuyList span{
+	padding:0 5px;
+}
+.groupBuyList .yjprice{
+	text-decoration:line-through;
+}
+.groupBuyList .lookb{
+	width:250px;
+	height:48px;
+	background:url(../images/tglookback_03.gif) no-repeat;
+	position:relative;
+}
+.groupBuyList .lookb b{
+	font-size:24px;
+	color:#fff;
+	position:absolute;
+	top:12px;
+	left:10px;
+}
+.groupBuyList .lookb a{
+	position:absolute;
+	top:10px;
+	left:150px;
+}
+.groupBuyList .addborder{
+	border:#fe3c05 solid 1px;
+}
+/*前台分页样式*/
+.paging{
+    width: 970px;
+	color:#999999;
+	padding:10px 0;
+	text-align: center;
+}
+.paging a{
+	margin-right:6px;
+	border:#e5e5e5 solid 1px;
+	padding:4px 10px 4px 8px;
+}
+.paging a:hover{
+	text-decoration:none;
+	color:#2953a6;
+	border:#2953a6 solid 1px;
+}
+.paging>.selpage{
+	color:#FF6600;
+	font-weight:600;
+}
+.paging .pnpag{
+	padding:5px 10px;
+}
+.paging .numpag{
+	font-size:12px;
+	padding:5px 10px;
+}
+.paging .pagtext{
+	width:40px;
+	height:18px;
+	border:#cccccc solid 1px;
+	margin:0 5px;
+}
+.paging .pagbut{
+	width:46px;
+	height:27px;
+	background:url(../images/pagbut_07.gif) no-repeat;
+	border:none;
+	cursor:pointer;
+	margin:0px 10px -5px 10px;
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="link_group">
+
+	<typeAlias alias="link_group" type="com.rbt.model.Link_group" />
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="link_group">
+	<![CDATA[ 
+    SELECT id,name FROM link_group WHERE id=$VALUE$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="link_group">
+    	UPDATE link_group  SET name=#name# WHERE id=$id$
+	</update>
+	
+	<!--批量更新name字段 -->
+	<update id="updateName" parameterClass="java.util.HashMap">
+    	UPDATE link_group SET name=#name# WHERE id=$id$
+	</update>
+
+	<insert id="insert" parameterClass="link_group">
+		INSERT INTO link_group (name) 
+		VALUES (#name#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from link_group where id in ($value$)
+	</delete>
+	
+	<sql id="getCommon">
+	   FROM link_group
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="name"> 
+			     name=#name#
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+        SELECT id,name
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by id DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull>
+ 
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+ 	
+</sqlMap>

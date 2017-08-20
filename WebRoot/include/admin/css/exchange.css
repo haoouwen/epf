@@ -1,0 +1,63 @@
+.show_pic{
+  float:left;
+  padding-left:3px;  
+}
+
+.setimg{
+	  background:url(/includes/admin/images/setimg.gif) no-repeat 
+
+5px 1px;
+	  border:1px solid #e1e2e3;
+	  padding-left:26px;
+}
+
+.delimg{
+	  background:url(/includes/admin/images/delimg.gif) no-repeat 
+
+5px 1px;
+	  border:1px solid #e1e2e3;
+	  padding-left:26px;
+}
+.show_pic li{
+  float:left;
+  padding:0px;
+  margin:2px;
+  border:1px solid #e1e2e3;
+}
+
+.group img{
+	width:50px;
+	height:50px;
+	border:1px solid #e1e2e3;
+	padding:1px;
+}
+.showlistimgdiv{
+	border:1px solid #e1e2e3;
+	padding-bottom:5px;
+	float:left;
+}
+
+.uploadQueue{
+	 width:380px;
+	 border:0px solid #e1e2e3;
+	 position: absolute;
+	 left:-380px;
+	 background:#FFF;
+}
+
+.listImgDiv{
+   padding:6px 20px 2px 36px;
+   width:220px;
+   height:200px;
+}
+.listImgDiv img{
+   width:220px;
+   height:200px;
+   border:1px solid #e1e2e3;
+   padding:1px;
+}
+/* 图片展示样式开始*/
+.showimgstyle{
+	width:100px;
+	height:100px;
+}

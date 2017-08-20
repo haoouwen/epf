@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="selfspecvalue">
+
+	<typeAlias alias="selfspecvalue" type="com.rbt.model.Selfspecvalue" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="selfspecvalue">
+		<![CDATA[ 
+    SELECT serial_id,self_spec_value,self_spec_img,self_img,sort_no,spec_serial_id,self_size_id FROM selfspecvalue WHERE serial_id=$serial_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="selfspecvalue">
+		UPDATE selfspecvalue SET serial_id=#serial_id#,self_spec_value=#self_spec_value#,self_spec_img=#self_spec_img#,self_img=#self_img#,sort_no=#sort_no#,spec_serial_id=#spec_serial_id#,self_size_id=#self_size_id# WHERE serial_id=$serial_id$
+	</update>
+
+	<insert id="insert" parameterClass="selfspecvalue">
+		INSERT INTO selfspecvalue (serial_id,self_spec_value,self_spec_img,self_img,sort_no,spec_serial_id,self_size_id) VALUES (#serial_id#,#self_spec_value#,#self_spec_img#,#self_img#,#sort_no#,#spec_serial_id#,#self_size_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM selfspecvalue WHERE serial_id in ($serial_id$)
+	</delete>
+	
+	<delete id="deleteByspecSerialId" parameterClass="java.lang.String">
+		DELETE FROM selfspecvalue WHERE spec_serial_id in ($spec_serial_id$)
+	</delete>
+	
+
+	<sql id="getCommon">
+		FROM selfspecvalue ssv
+			left join selfspecname spn on ssv.spec_serial_id = spn.spec_serial_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="spec_serial_id">
+				ssv.spec_serial_id in ($spec_serial_id$)
+			</isNotNull>
+			<isNotNull prepend="and" property="self_size_id">
+				ssv.self_size_id in ($self_size_id$)
+			</isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ssv.serial_id,ssv.self_spec_value,ssv.self_spec_img,ssv.self_img,ssv.sort_no,ssv.spec_serial_id,
+			spn.spec_code,ssv.self_size_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull property="id_desc">
+			ORDER BY ssv.serial_id DESC
+		</isNotNull>
+		<isNotNull property="id_asc">
+			ORDER BY ssv.serial_id ASC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

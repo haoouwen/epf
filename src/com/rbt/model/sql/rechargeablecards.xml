@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="rechargeablecards">
+
+	<typeAlias alias="rechargeablecards" type="com.rbt.model.Rechargeablecards" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="rechargeablecards">
+		<![CDATA[ 
+    SELECT cardid,cardskey,cardsmoney,cardsdate,cardsstate,cardsuseddate FROM rechargeablecards WHERE cardid=$cardid$ limit 1
+    ]]>
+	</select>
+	
+	<select id="getCardkey" parameterClass="java.lang.String"
+		resultClass="rechargeablecards">
+		<![CDATA[ 
+    SELECT cardid,cardskey,cardsmoney,cardsdate,cardsstate,cardsuseddate FROM rechargeablecards WHERE cardskey=#cardskey#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="rechargeablecards">
+		UPDATE rechargeablecards SET cardid=#cardid#,cardskey=#cardskey#,cardsmoney=#cardsmoney#,cardsdate=#cardsdate#,cardsstate=#cardsstate#,cardsuseddate=now() WHERE cardskey=#cardskey#
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE rechargeablecards SET 
+    	 <isNotNull  property="cardid"> 
+		   cardid=$cardid$
+		 </isNotNull>
+    	 WHERE cardid=$cardid$
+    </update>
+    
+	<update id="updateSate" parameterClass="rechargeablecards">
+		UPDATE rechargeablecards SET cardid=$cardid$ WHERE cardid=$cardid$
+	</update>
+
+	<insert id="insert" parameterClass="rechargeablecards">
+		INSERT INTO rechargeablecards (cardid,cardskey,cardsmoney,cardsdate,cardsstate,cardsuseddate) VALUES (#cardid#,#cardskey#,#cardsmoney#,#cardsdate#,#cardsstate#,#cardsuseddate#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM rechargeablecards WHERE cardid in ($cardid$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM rechargeablecards 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cardid">
+				cardid=#cardid#
+			</isNotNull>
+			<isNotNull prepend="and"  property="cardskey"> 
+		   cardskey=$cardskey$
+		 </isNotNull>
+		 <isNotNull prepend="and"  property="exccardid"> 
+		   cardid in($exccardid$)
+		 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cardid,cardskey,cardsmoney,cardsdate,cardsstate,cardsuseddate
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY cardid DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pointsgoods">
+
+	<typeAlias alias="pointsgoods" type="com.rbt.model.Pointsgoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="pointsgoods">
+		<![CDATA[ 
+    SELECT trade_id,goods_id,buy_points,buy_sum,inter_image,info_state,description,cust_id,stock,in_date,user_id,cat_attr,sort_no,lab,list_img FROM pointsgoods WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="pointsgoods">
+		UPDATE pointsgoods SET trade_id=#trade_id#,goods_id=#goods_id#,buy_points=#buy_points#,buy_sum=#buy_sum#,inter_image=#inter_image#,info_state=#info_state#,description=#description#,cust_id=#cust_id#,stock=#stock#,user_id=#user_id#,cat_attr=#cat_attr#,sort_no=#sort_no#,lab=#lab#,list_img=#list_img# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="pointsgoods">
+		INSERT INTO pointsgoods (trade_id,goods_id,buy_points,buy_sum,inter_image,info_state,description,cust_id,stock,in_date,user_id,cat_attr,sort_no,lab,list_img) VALUES (#trade_id#,#goods_id#,#buy_points#,#buy_sum#,#inter_image#,#info_state#,#description#,#cust_id#,#stock#,now(),#user_id#,#cat_attr#,#sort_no#,#lab#,#list_img#)
+	</insert>
+<insert id="insertGetPk" parameterClass="pointsgoods">
+		INSERT INTO pointsgoods (trade_id,goods_id,buy_points,buy_sum,inter_image,info_state,description,cust_id,stock,in_date,user_id,cat_attr,sort_no,lab,list_img) VALUES (#trade_id#,#goods_id#,#buy_points#,#buy_sum#,#inter_image#,#info_state#,#description#,#cust_id#,#stock#,now(),#user_id#,#cat_attr#,#sort_no#,#lab#,#list_img#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE pointsgoods SET sort_no=#sort_no# WHERE trade_id=#trade_id#
+	</update>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM pointsgoods WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM pointsgoods p
+			left join goods g on p.goods_id = g.goods_id  and g.is_del='1'
+					left join member m on p.cust_id = m.cust_id
+						left join memberuser u on p.user_id= u.user_id
+		<dynamic prepend="WHERE">
+		   <isNotNull prepend="and" property="info_state_s"> 
+     		     p.info_state in ($info_state_s$)
+		   </isNotNull>
+		    <isNotNull prepend="and" property="goods_id"> 
+     		     p.goods_id = #goods_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_state"> 
+     		     p.info_state in ($info_state$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="goods_name">
+				instr(g.goods_name,#goods_name#)>0
+		   </isNotNull>
+		   <isNotNull prepend="and" property="cust_name"> 
+			   instr(m.cust_name,#cust_name#)>0
+		   </isNotNull>
+		   <isNotNull prepend="and" property="cust_id"> 
+			   p.cust_id=#cust_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="cat_attr"> 
+			    INSTR(p.cat_attr,#cat_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="lab"> 
+			    INSTR(p.lab,#lab#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT p.trade_id,p.goods_id,p.buy_points,p.buy_sum,p.inter_image,p.info_state,p.description,p.cust_id,p.list_img,
+		u.user_name,p.stock,g.goods_name,p.in_date,p.user_id,p.cat_attr,p.sort_no,p.lab,m.cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC ,p.in_date desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

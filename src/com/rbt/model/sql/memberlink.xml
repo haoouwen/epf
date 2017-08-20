@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberlink">
+
+	<typeAlias alias="memberlink" type="com.rbt.model.Memberlink" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberlink">
+		<![CDATA[ 
+    SELECT cert_id,cust_id,title,link_url,link_state,no_reason,in_date FROM memberlink WHERE cert_id=$cert_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberlink">
+		UPDATE memberlink SET title=#title#,link_url=#link_url#,
+		link_state=#link_state#,no_reason=#no_reason#,in_date=now() WHERE cert_id=$cert_id$
+	</update>
+
+    <update id="auditMemberlink" parameterClass="java.util.HashMap">
+		UPDATE memberlink SET link_state=#link_state#,no_reason=#no_reason#
+		WHERE cert_id=$cert_id$
+	</update>
+    
+	<insert id="insert" parameterClass="memberlink">
+		INSERT INTO memberlink (cust_id,title,link_url,link_state,no_reason,in_date)
+		 VALUES ($cust_id$,#title#,#link_url#,#link_state#,#no_reason#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberlink WHERE cert_id in ($cert_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberlink AS t1 left join member AS t2 on t1.cust_id=t2.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_id">
+				t1.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="title">
+				INSTR(t1.title,#title#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name">
+				t2.cust_name=#cust_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="link_url">
+				INSTR(t1.link_url,#link_url#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="link_state">
+				t1.link_state=#link_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="in_date">
+				DATE(t1.in_date)>=#in_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_date">
+				#end_date#>=DATE(t1.in_date)
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT t1.cert_id,t1.cust_id,title,t1.link_url,t1.link_state,t1.no_reason,t1.in_date,t2.cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY t1.cert_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<sql id="getGroup">
+		FROM memberlink ml LEFT JOIN memberuser mu  ON ml.cust_id= mu.cust_id 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="user_name">
+				INSTR(mu.user_name,#user_name#)>0 AND
+			</isNotNull>
+				mu.user_type="1"
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ml.cust_id,(SELECT user_name FROM memberuser mu WHERE mu.cust_id=ml.cust_id AND mu.user_type="1")
+ 		AS user_name, COUNT(*) AS info_num
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+		GROUP BY ml.cust_id ORDER BY ml.cert_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct FROM (SELECT COUNT(*) FROM memberlink ml LEFT 
+		JOIN memberuser mu  ON ml.cust_id= mu.cust_id 
+			<dynamic prepend="WHERE">
+			    <isNotNull prepend="and" property="user_name">
+					INSTR(mu.user_name,#user_name#)>0 AND
+				</isNotNull>
+					mu.user_type="1"
+			</dynamic>
+		GROUP BY ml.cust_id ORDER BY ml.cert_id DESC) a
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

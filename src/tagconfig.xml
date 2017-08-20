@@ -1,0 +1,371 @@
+<tagbody>
+<!-- 取出楼层列表信息-->
+	<tag id="floorinfolist">
+	  SELECT f_id,f_tag,f_name,cat_attr as f_cat_attr,f_admark,f_sort,f_state FROM floorinfo WHERE 1=1
+	   [f_state]
+	    	and f_state = '[f_state_value/]'
+	   [/f_state]
+	   ORDER BY f_sort ASC
+	</tag>	
+	<!-- 取出楼层列表信息-->
+	<tag id="floormarklist">
+	  SELECT fm_id ,fm_name,fm_remark,fm_sort,f_id as f_f_id,fm_type FROM floormark WHERE 1=1
+	   [fm_id]
+	    	and fm_id = '[fm_id_value/]'
+	   [/fm_id]
+	   [f_id]
+	    	and f_id = '[f_id_value/]'
+	   [/f_id]
+	   [fm_type]
+	    	and fm_type = '[fm_type_value/]'
+	   [/fm_type]
+	   ORDER BY fm_sort ASC
+	</tag>	
+	<!-- 取出楼层列表信息-->
+	<tag id="goodfloormarklist">
+	  SELECT gm_id,goods_id as gf_goods_id,fm_id as gf_fm_id,f_id as gf_f_id,gm_name,
+	  img_path as gf_img_path,gm_url,gm_type,cat_attr as gf_cat_attr,gm_sort,
+	  gm_position FROM goodfloormark WHERE 1=1
+	   [goods_id]
+	    	and goods_id = '[goods_id_value/]'
+	   [/goods_id]
+	    [fm_id]
+	    	and fm_id = '[fm_id_value/]'
+	   [/fm_id]
+	    [gm_type]
+	    	and gm_type = '[gm_type_value/]'
+	   [/gm_type]
+	    [cat_attr]
+	    	and cat_attr = '[cat_attr_value/]'
+	   [/cat_attr]
+	    [gm_position]
+	    	and gm_position = '[gm_position_value/]'
+	   [/gm_position]
+	   [f_id]
+	    	and f_id = '[f_id_value/]'
+	   [/f_id]
+	   ORDER BY gm_sort ASC
+	</tag>	
+	<!-- 友情链接列表-->
+	<tag id="linklist">
+		select link_name,url from link where is_display='0' 
+		[link_group]
+	    and link_group=[link_group_value/]
+	    [/link_group]
+		order by
+		sort_no asc
+	</tag>
+	
+	
+	<!-- 取出文章列表-->
+	<tag id="articlelist">
+	  SELECT article_id,title,content,cat_attr,art_source,art_author_,out_link,is_sticky,
+	  is_display,seo_title,seo_keyword,seo_descri,user_id,cust_id,in_date FROM article WHERE  
+	  is_display='0' and 
+	  [cat_attr]
+		INSTR(cat_attr,'[cat_attr_value/]')>0 
+	  [/cat_attr]
+	  order by in_date desc
+	</tag>
+	
+	<!-- 广告位列表-->
+	<tag id="advlist">
+		select (@curRow := @curRow + 1) AS row_no,adv_code,img_path,flash_url,adv_name,link_url,title,
+		img_path as adv_img_path,link_url as adv_link_url,title as adv_title,adv_name as adv_adv_name,
+		content,adv_desc,remark,bg_color from advinfo,(SELECT @curRow :=0) ROW_INDEX where adv_state='0' and 
+		[pos_id]
+			pos_id = '[pos_id_value/]' and 
+		[/pos_id]
+		TO_DAYS(NOW()) >= TO_DAYS(start_date) AND  TO_DAYS(end_date) >= TO_DAYS(NOW())
+		ORDER BY info_id ASC , adv_id ASC
+	</tag>
+	
+	<!-- 取出导航列表-->
+	<tag id="navlist">
+	  SELECT nav_id,nav_name,link_url,isopen,nav_code FROM nav WHERE isshow=0 
+	  [nav_post]
+	    and nav_post=[nav_post_value/]
+	  [/nav_post]
+	  order by sort_no asc
+	</tag>	
+	
+	<!-- 取出栏目列表信息-->
+	<tag id="channellist">
+	   SELECT save_dir,file_name,ch_name FROM channel WHERE 1=1
+	  [ch_id]
+	    and ch_id=[ch_id_value/]
+	  [/ch_id]	 
+	</tag>	
+	
+	<!-- 取出模块列表信息-->
+	
+	<!-- 取出参数列表信息-->
+	<tag id="commparalist">
+	   SELECT para_key,para_value,para_name FROM commpara WHERE 1=1
+	   [para_code]
+	    	and para_code = '[para_code_value/]'
+	   [/para_code]
+	   [para_key]
+	   		and	 para_key = [para_key_value/]
+	   [/para_key]
+	   [para_value]
+	   		and	 para_value = [para_value_value/]
+	   [/para_value]
+	   ORDER BY sort_no ASC
+	</tag>	
+	
+	
+	<!-- 取出关于我们信息-->
+	 <tag id="aboutuslist">
+	   SELECT * FROM aboutus where 1=1 and plat_type='b2c' 
+	   [ch_id]
+	    	and	 ch_id = [ch_id_value/]
+	   [/ch_id]
+	</tag>	
+	<!-- 取分类导航 用于取一级标签 -->
+	<tag id="catnavlist">
+		SELECT cn_id,sort_no,cat_attr,custom_name FROM catnav  where 1=1
+		order by sort_no asc
+	</tag>
+	
+	
+	<!-- 取分类信息，处嵌套标签时用于取一级标签 -->
+	<tag id="catlist">
+		SELECT cat_id,cat_name,en_name,LOWER(word_index) AS word_index,img_ico as first_img_ico,img_ico FROM category where 1=1
+		[cat_level]
+			and cat_level = '[cat_level_value/]'
+		[/cat_level]
+		[up_cat_ids]
+			and cat_id in ([up_cat_ids_value/])
+		[/up_cat_ids]
+		[up_cat_id]
+			and up_cat_id = '[up_cat_id_value/]' 
+		[/up_cat_id]
+		[cat_id]
+			and cat_id = '[cat_id_value/]' 
+		[/cat_id]
+		[mem_type]
+			and mem_type = '[mem_type_value/]'  
+		[/mem_type]
+		and is_display = '1' 
+		[module_type]
+			and module_type = '[module_type_value/]' 
+		[/module_type]
+		order by 
+		[cat_click]
+		  loc_num [cat_click_value/] ,
+		[/cat_click]
+		sort_no asc
+	</tag>
+	
+	
+	<!-- 取二级分类信息-->
+	<tag id="twocatlist">
+		SELECT cat_id AS two_cat_id,cat_id,cat_name AS two_cat_name,en_name AS two_en_name,
+		LOWER(word_index) AS two_word_index,img_ico as two_img_ico,cat_attribute as two_cat_attr FROM category where 1=1
+		[up_cat_id]
+			and up_cat_id = '[up_cat_id_value/]'
+		[/up_cat_id]
+		[mem_type]
+			and mem_type = '[mem_type_value/]' 
+		[/mem_type]
+		[two_cat_id]
+			and cat_id = '[two_cat_id_value/]'
+		[/two_cat_id]
+		and is_display = '1' order by 
+		[cat_click]
+		  loc_num [cat_click_value/] ,
+		[/cat_click]
+		sort_no asc
+	</tag>
+	
+	<!-- 取三级分类信息-->
+	<tag id="threecatlist">
+		SELECT three_cat.cat_id AS three_cat_id,three_cat.cat_name AS three_cat_name,
+		three_cat.cat_id,three_cat.en_name AS three_en_name,LOWER(three_cat.word_index) AS three_word_index 
+		,three_cat.img_ico as three_img_ico
+		FROM category three_cat
+			LEFT JOIN category two_cat ON two_cat.cat_id=three_cat.up_cat_id
+				LEFT JOIN category one_cat ON two_cat.up_cat_id=one_cat.cat_id
+		where 1=1
+		[up_cat_id]
+			and three_cat.up_cat_id = '[up_cat_id_value/]' 
+		[/up_cat_id]
+		[one_cat_id]
+			and one_cat.cat_id = '[one_cat_id_value/]' 
+		[/one_cat_id]
+		[mem_type]
+			and three_cat.mem_type = '[mem_type_value/]' 
+		[/mem_type]
+		and three_cat.is_display = '1' order by 
+		[cat_click]
+		  three_cat.cat_click [cat_click_value/] ,
+		[/cat_click]
+		three_cat.sort_no asc
+	</tag>
+	
+	<!-- 取出商品品牌列表信息-->
+	<tag id="goodsbrandlist">
+	   SELECT brand_id,brand_name,en_name,en_index,brand_site,logo,
+	   content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri
+	    FROM goodsbrand WHERE 1=1
+	  [goods_attr]
+	    and INSTR(goods_attr,'[goods_attr_value/]')>0 
+	  [/goods_attr]	 
+	  [is_recom]
+	    and is_recom=[is_recom_value/]
+	  [/is_recom]	
+	  [info_state]
+	    and info_state=[info_state_value/]
+	  [/info_state]	
+	  ORDER BY sort_no ASC
+	</tag>	
+	<!-- 随机取出商品品牌列表信息-->
+	<tag id="goodsbrandlistbyrand">
+	   SELECT brand_id,brand_name,en_name,en_index,brand_site,logo,
+	   content,goods_attr,sort_no,info_state,is_recom,seo_title,seo_keyword,seo_descri
+	    FROM goodsbrand WHERE 1=1
+	  [para]
+	    and [para_value/]=[para_value/]
+	  [/para]	 
+	  ORDER BY rand()
+	</tag>	
+	<!-- 瀑布流布局列表标签 -->
+	<tag id="waterfallList">
+        SELECT wf_code,template_content,in_date,user_id,width,height FROM waterfall where 1=1 	
+	    [wf_code] and wf_code='[wf_code_value/]' [/wf_code]
+        order by in_date desc
+	</tag>
+	
+	<!-- 取会员信息-->
+	<tag id="memberlist">
+		SELECT mem_type, member.cust_id,member.cust_id as info_id,cust_name,area_attr,main_product,logo_path,member.cust_desc,
+		logo_path as img_path,client_status ,member.in_date FROM member left join memberuser on memberuser.cust_id=member.cust_id 
+		left join levelinfo on member.cust_id=levelinfo.cust_id 
+		 where 1=1
+		[mem_type]
+		 and mem_type = '[mem_type_value/]' 
+		[/mem_type]
+		[is_recommend]
+		  and member.recommend = '[is_recommend_value/]' 
+		[/is_recommend]
+		[cat_attr]
+		 and   INSTR(member.cat_attr,'[cat_attr_value/]')>0 
+		[/cat_attr]
+		
+		[level_code]
+		 and level_code = '[level_code_value/]'
+		[/level_code]
+		and member.info_state = '1' order by
+		 [loc_num]
+		  loc_num [loc_num_value/] ,
+		 [/loc_num]
+		 [recommend]
+		 member.recommend DESC,
+		 [/recommend]
+		 member.in_date DESC
+	</tag>
+ 
+	<!-- 取关键字信息-->
+	<tag id="keywordlist">
+		SELECT key_name,module_type,num AS key_num,en_name FROM keyword where 1=1 and  is_show='0'
+    	[module_type]
+		  and	module_type = '[module_type_value/]'
+		[/module_type]
+		order by num desc
+	</tag>
+	
+	<!-- 商品信息获取 -->
+	<tag id="goodslist">
+	    SELECT goods_id,goods_name,goods_no,img_path,list_img,
+	    (SELECT market_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS market_price,
+	    (SELECT sale_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS sale_price,
+	    (SELECT cost_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS cost_price
+	    FROM goods gd 
+	    where 1=1 and info_state='1' and is_del='1' and is_up="0" and (active_state="0" or active_state="5")
+	    [lab]
+			and INSTR(lab,'[lab_value/]')>0
+		[/lab]
+		[cat_attr]
+	   		 and INSTR(cat_attr,'[cat_attr_value/]')>0 
+	    [/cat_attr]	
+	      [sort_order_sort]
+			 order by sort_order asc   
+		[/sort_order_sort]
+	    [saled_num_sort]
+			order by saled_num desc
+		[/saled_num_sort]
+	    [in_date_sort]
+			order by in_date desc
+		[/in_date_sort]
+	</tag>
+	<tag id="goodsindexList" >
+		SELECT goods_id as gl_goods_id,goods_name as gl_goods_name,goods_no as gl_goods_no,img_path as gl_img_path,list_img as gl_list_img,list_img,img_path,
+	    (SELECT market_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS market_price,
+	    (SELECT sale_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS sale_price,
+	    (SELECT cost_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS cost_price
+	    FROM goods gd
+	    where 1=1 and info_state='1' and is_del='1' and is_up="0"
+		[goods_id]
+		 and goods_id='[goods_id_value/]'
+		[/goods_id]	 
+	</tag>
+	
+	<!-- 取关键字信息-->
+	<tag id="goodsIndexTop3List">
+		SELECT goods_id as gl_goods_id,goods_name as gl_goods_name,goods_no as gl_goods_no,img_path as gl_img_path,list_img as gl_list_img,list_img,img_path,
+	    (SELECT market_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS market_price,
+	    (SELECT sale_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS sale_price,
+	    (SELECT cost_price FROM goodsattr gda WHERE gda.goods_id=gd.goods_id ORDER BY sale_price ASC LIMIT 0,1) AS cost_price
+	    FROM goods gd
+	    where 1=1 and info_state='1' and is_del='1' and is_up="0"
+	    
+		[cat_attr]
+		 and   INSTR(gd.cat_attr,'[cat_attr_value/]')>0 
+		[/cat_attr]	 
+		
+		ORDER BY gd.sale_num DESC 
+	</tag>
+	<!--系统参数设置提取-->
+	<tag id="sysbase">
+		SELECT var_value FROM sysconfig WHERE [var_name] var_name = '[var_name_value/]' and  [/var_name] 1=1
+	</tag>
+	<!-- 获取城市名称 -->
+	<tag id="cityAreaList">
+		SELECT area_id,area_name,en_name,up_area_id,area_level FROM area WHERE area_level='3' and is_city='1'
+		[firstname]
+			and LEFT(en_name,1)='[firstname_value/]'
+		[/firstname]
+	</tag>
+    <!-- 商品信息获取 -->
+	<tag id="goodsnavmarkslist">
+	   SELECT n_id,n.goods_id,n.tab_id,n.sort_no,g.goods_name,g.cat_attr,g.in_date,ga.sale_price,n.tab_number,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as min_sale_price,
+		(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  as goods_market_price
+		,g.is_up,g.is_del,g.info_state,g.list_img,g.img_path,g.sale_num
+	     FROM navigation n 
+	        LEFT JOIN goods g ON n.goods_id = g.goods_id
+	        LEFT JOIN goodsattr ga ON n.goods_id = ga.goods_id
+	    where 1=1 and info_state='1' and is_del='1' and is_up="0" 
+	    [tab_number]
+			and INSTR(tab_number,'[tab_number_value/]')>0
+		[/tab_number]
+		ORDER BY sort_no ASC, n_id DESC
+	</tag>
+	<!-- 每日新品、天天特卖、热门推荐  -->
+	<tag id="paramgoods">
+	  SELECT g.goods_id,g.goods_name,list_img,ga.sale_price,ga.market_price
+	   FROM goods g 
+	   LEFT JOIN commpara c ON g.lab=c.para_value 
+	   LEFT JOIN goodsattr ga ON g.goods_id = ga.goods_id
+	   where 1=1 and c.para_code='goods_lable' AND c.para_code="goods_lable" 
+	   and g.info_state='1' and g.is_del='1' and g.is_up="0"
+	   [param_name]
+	   		and para_key="[param_name_value/]" 
+	   [/param_name]
+	   [rand_tag]
+	   		and [rand_tag_value/]=[rand_tag_value/]
+	   [/rand_tag]
+	   ORDER BY rand()
+	</tag>
+</tagbody>

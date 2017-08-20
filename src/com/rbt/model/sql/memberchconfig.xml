@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberchconfig">
+
+	<typeAlias alias="memberchconfig" type="com.rbt.model.Memberchconfig" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberchconfig">
+		<![CDATA[ 
+    SELECT ch_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num FROM memberchconfig WHERE ch_id=$ch_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberchconfig">
+		UPDATE memberchconfig SET ch_id=#ch_id#,ch_name=#ch_name#,ch_code=#ch_code#,ch_type=#ch_type#,is_dis=#is_dis#,sort_no=#sort_no#,ch_num=#ch_num# WHERE ch_id=$ch_id$
+	</update>
+	
+	<!-- 批量更新是否显示isshow -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE memberchconfig SET is_dis=#is_dis# WHERE ch_id=$ch_id$
+	</update>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE memberchconfig SET sort_no=#sort_no# WHERE ch_id=$ch_id$
+	</update>
+
+	<insert id="insert" parameterClass="memberchconfig">
+		INSERT INTO memberchconfig (ch_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num) VALUES (#ch_id#,#ch_name#,#ch_code#,#ch_type#,#is_dis#,#sort_no#,#ch_num#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberchconfig WHERE ch_id in ($ch_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberchconfig 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ch_name"> 
+			     instr(ch_name,#ch_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ch_code"> 
+			     instr(ch_code,#ch_code#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_dis"> 
+			     is_dis=#is_dis#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ch_type"> 
+			     ch_type=#ch_type#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ch_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY ch_type,sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

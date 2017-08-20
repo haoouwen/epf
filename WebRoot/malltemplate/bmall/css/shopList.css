@@ -1,0 +1,54 @@
+.shopList{
+	width:1180px;
+	margin:0 auto;
+}
+.shopList li{
+	width:218px;
+	height:280px;
+	border:#dddddd solid 1px;
+	float:left;
+	display:inline;
+	margin:15px 8px 0 8px;
+}
+.shopList li div{
+	width:218px;
+	height:75px;
+	background:#f7f5f5;
+	text-align:center;
+	padding:15px 0;
+	line-height:36px;
+	border-bottom:#dddddd solid 1px;
+}
+.shopList .shopTab{
+	margin:8px 0;
+	line-height:18px;
+}
+.shopTab tr{
+	vertical-align:top;
+}
+.shopTab th{
+	padding:8px 0px 6px 10px;
+	text-align:left;
+	font-weight:400;
+} 
+.shopTab td{
+	padding:6px 0px;
+}
+.shopList li p{
+	border-top:#cccccc dashed 1px;
+	padding:15px 0px;
+	text-align:center;
+} 
+.hint{
+	width:600px;
+	background:#f7f5f5;
+	margin:0 auto;
+	border:#dddddd solid 1px;
+	margin-top:15px;
+	text-align:center;
+	padding:50px 0;
+}
+.hint b{
+	padding-left:10px;
+	font-size:14px;
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pagetip">
+
+	<typeAlias alias="pagetip" type="com.rbt.model.Pagetip" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="pagetip">
+		<![CDATA[ 
+    SELECT page_code,page_content,remark,state FROM pagetip WHERE page_code=#page_code#
+    ]]>
+	</select>
+	
+	<select id="getAll" parameterClass="java.lang.String" resultClass="java.util.HashMap">
+    	select page_code,page_content,remark,state from pagetip
+	</select>
+
+	<update id="update" parameterClass="pagetip">
+		UPDATE pagetip SET page_code=#page_code#,page_content=#page_content#,remark=#remark#,state=#state# WHERE page_code=#page_code#
+	</update>
+
+	<insert id="insert" parameterClass="pagetip">
+		INSERT INTO pagetip (page_code,page_content,remark,state) VALUES (#page_code#,#page_content#,#remark#,#state#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM pagetip WHERE page_code in (#page_code#)
+	</delete>
+
+	<sql id="getCommon">
+		FROM pagetip 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT page_code,page_content,remark,state
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY page_code DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

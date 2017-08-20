@@ -1,0 +1,97 @@
+/*
+ FileName: buyer.css
+ */
+ /*我是买家首页*/
+ 
+ /*买家信息*/
+
+.buyinfo{
+	width:818px;
+	padding:10px 0;
+	border:#96c5f5 solid 1px;
+	background:#dfecf8;
+}
+.lbuyerpic{
+	width:110px;
+	height:110px;
+	margin-left:10px;
+	float:left;
+	display:inline;
+}
+ .toux{
+ 	display:inline-block;
+	line-height:26px;
+ 	margin-left:30px;
+}
+.rbuyerinfo{
+	width:670px;
+	float:right;
+}
+.rbuyerinfo p{
+	padding-bottom:15px;
+}
+.buyername{
+	font-size:16px;
+	font-weight:bold;
+	padding-right:10px;
+	color:#005aa0;
+}
+.buySafety span{
+	display:inline-block;
+	padding-left:6px;
+	margin-left:10px;
+}
+.buySafety a{
+	padding:0 5px;
+}
+.buySafety a:hover{
+	color:#005aa0;
+}
+.buyercont{
+	width:600px;
+	border:#96c5f5 solid 1px;
+	background:#FFF;
+	padding:5px 0px;
+	float:left;
+	line-height:24px;
+}
+.buyercont .lbcp{
+	width:280px;
+	float:left;
+	border-left:#96c5f5 solid 1px;
+	padding:0px;
+	padding-left:10px;
+}
+.lbcp a{
+    padding-right:10px;
+}
+.lbcp a:hover{
+	color:#005aa0;
+	text-decoration:underline;
+}
+.buyercont .nlbcp{
+	border-left:none;
+}
+.lbcp span{
+	color:#005aa0;
+}
+/*买家的table*/
+.buyertabf{
+	width:818px;
+	border:#c9c8c8 solid 1px;
+	border-top:none;
+}
+.buyertabf th{
+	height:32px;
+	line-height:32px;
+	background:url(/include/bmall/images/rtitle.gif) repeat-x;
+	border-bottom:#c9c8c8 solid 1px;
+}
+.buyertabf td{
+	text-align:center;
+	padding:15px 0;
+	border-bottom:#eeeeee solid 1px;
+}
+.bmagtop{
+	margin-top:10px;
+} 

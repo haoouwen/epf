@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="index_history">
+
+	<typeAlias alias="index_history" type="com.rbt.model.Index_history" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="index_history">
+		<![CDATA[ 
+    SELECT table_name,info_id FROM index_history WHERE info_id=$info_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="index_history">
+		UPDATE index_history SET table_name=#table_name#,info_id=#info_id# WHERE info_id=$info_id$
+	</update>
+	
+	
+	<insert id="insert" parameterClass="java.util.HashMap">
+		INSERT INTO index_history (table_name,info_id) VALUES (#table_name#,#info_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.util.HashMap">
+		DELETE FROM index_history WHERE info_id in ($info_id$) and table_name=#tableName#
+	</delete>
+
+	<sql id="getCommon">
+		FROM index_history 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="table_name">
+				table_name=#table_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_id">
+				info_id=#info_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

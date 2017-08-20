@@ -1,0 +1,219 @@
+a {blr:expression(this.onFocus=this.blur());cursor:pointer;}
+a:focus{outline:0;} /*去除Firefox中的链接虚线框*/
+
+/*分页样式开始*/
+
+.sy{
+	width:40px;
+	height:22px;
+	color: #336699;
+}
+.up{
+	width:56px;
+	height:22px;
+	color: #336699;
+}
+.upno{
+	width:56px;
+	height:22px;
+	color: #336699;
+}
+.nextno{
+	width:56px;
+	height:22px;
+	color: #336699;
+}
+.next{
+	width:56px;
+	height:22px;
+	color: #336699;
+}
+.listbottom{
+	height:27px;
+	width:100%;
+	line-height:22px;
+	text-align:right;
+}
+.listbottom a{
+	text-decoration:none;
+	color:#000;
+	cursor:pointer;	
+}
+
+.listbottom_button{
+	height:50px;
+	width:100%;
+	line-height:50px;
+	background:url(/include/common/images/bottom.gif) repeat-x;
+	text-align:left;
+}
+.listbottom_button a{
+	text-decoration:none;
+	color:#000;
+	cursor:pointer;	
+}
+
+
+/*分页样式结束*/
+
+/*提交页面错误提示样式开始*/
+.errorSpan{
+	color:red;
+	height:22px;
+	display:inline-block;
+	line-height:22px;
+	background:url(/include/common/images/mood.jpg) no-repeat 10px center;
+	padding:0 30px 0 30px;
+}
+
+/* 系统信息提示框*/
+.decorate{
+  font-size:18px;width:200px;color:#FE7E03;font-weight:bold;text-align:center;
+}
+.count_down{
+  font-size:14px;width:200px;color:#474747;text-align:center;margin-top:10px;
+}
+.decorateaduit{
+  font-size:15px;width:450px;color:#FE7E03;
+}
+
+/*相邻的select标签的距离样式*/
+.select{margin-right:10px;}
+
+/*后台状态样式*/
+.redcolor{
+   color:#FF0000;
+}
+.bluecolor{
+   color:#0000FF;
+}
+.greencolor{
+   color:#1E7D24;
+}
+.orangecolor{
+   color:#FF8000;
+}
+#showcimg{
+	padding:3px;
+}
+#showcimg img{
+	float:left;
+	margin-left:3px;
+	border:1px solid #e1e2e3;
+}
+
+.imgcenter{
+  width:183px;
+  height:181px;
+  float:left;
+  margin:6px;
+}
+
+/* 图片居中样式开始 */
+.divMiddle{
+	 display:table-cell !important;	
+	 display:block;	
+	 position:static !important;	
+	 position:relative;	
+	 overflow:hidden;	
+	 border:1px solid #e1e2e3;	
+	 vertical-align:middle;	
+	 text-align:center;
+	}	
+.AMiddle{
+    display:table-cell !important;
+    display:block;
+	margin:0;
+	position:static !important;
+	position:absolute;
+	top:50%;
+	left:50%;	
+	margin-left:auto;
+	margin-right:auto;
+}
+.ImgMiddle{
+	position:static !important;
+    position:relative;
+    top:auto !important;
+    top:-50%;
+    left:auto !important;
+    left:-50%;  
+	}
+/* 图片居中样式结束 */
+
+/* jquery alert插件提示样式开始 */
+#jSuccess {
+	position: absolute;
+	background: #E6EFC2 url('/include/admin/images/success.png') no-repeat 15px center;
+	color: #264409;
+	border: 1px solid #C6D880;
+	font-weight: bold;
+	padding: 10px;
+	padding-left: 50px;
+	margin: 15px;
+	z-index: 9999;
+}
+
+#jNotify {
+	position: absolute;
+	background: #d8e6fc url('/include/admin/images/info.png') no-repeat 15px center;
+	color: #35517c;
+	border: 1px solid #a7c3f0;
+	font-weight: bold;
+	padding: 10px;
+	padding-left: 50px;
+	margin: 15px;
+	z-index: 9999;
+}
+/* jquery alert插件提示样式结束 */
+
+
+/* jquery后台帮助按钮提示开始*/
+.showtip{
+	border:1px solid #6699CC;
+	color:#444444;
+	font-size:13px;
+	background:#ECF4FA;
+	width:auto;
+	padding:5px;
+}
+/* jquery后台帮助按钮提示结束*/
+
+/* 图片展示样式开始*/
+.showimgstyle{
+	width:100px;
+	height:100px;
+}
+/* 图片展示样式结束*/
+
+/* autofck自动保存样式开始*/
+.autofck{
+	margin:3px 0px 0px 0px;
+	padding:8px 5px 0px 0px;
+	height:40px;
+	border:1px solid #CED5E0;
+	text-align:right;
+	background:#F0F3F6;
+}
+/* autofck自动保存样式结束*/
+
+
+/* jquery后台帮助按钮提示结束*/
+/* 高级搜索弹出框的样式开始*/
+.searchDiv{
+    padding:6px;
+}
+.searchDiv td{
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.searchDiv_td{
+  padding-left: 1px;
+  color: #808080;
+  font-weight: bold;
+  text-align: right;
+}
+
+/* 高级搜索弹出框的样式结束*/
+
+

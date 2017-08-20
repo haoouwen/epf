@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsspread">
+
+	<typeAlias alias="goodsspread" type="com.rbt.model.Goodsspread" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodsspread">
+		<![CDATA[ 
+    SELECT trade_id,spread_position,goods_id,spread_starttime,spread_endtime,in_date,cat_attr,area_attr,spread_img,slogan,discounts FROM goodsspread WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodsspread">
+		UPDATE goodsspread SET trade_id=#trade_id#,spread_position=#spread_position#,goods_id=#goods_id#,spread_starttime=#spread_starttime#,spread_endtime=#spread_endtime#,in_date=now(),cat_attr=#cat_attr#,area_attr=#area_attr#,spread_img=#spread_img#,slogan=#slogan#,discounts=#discounts# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodsspread">
+		INSERT INTO goodsspread (trade_id,spread_position,goods_id,spread_starttime,spread_endtime,in_date,cat_attr,area_attr,spread_img,slogan,discounts) VALUES (#trade_id#,#spread_position#,#goods_id#,#spread_starttime#,#spread_endtime#,now(),#cat_attr#,#area_attr#,#spread_img#,#slogan#,#discounts#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsspread WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodsspread gs
+			left join goods g on gs.goods_id = g.goods_id
+				left join goodsattr ga on gs.goods_id = ga.goods_id
+					left join commpara c on gs.spread_position = c.para_value and c.para_code='spread_position'
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="area_attr"> 
+			     INSTR(gs.area_attr,#area_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(gs.cat_attr,#cat_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="spread_position"> 
+			     gs.spread_position=#spread_position#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="in_time">
+				TO_DAYS(spread_endtime)>=TO_DAYS(NOW()) AND TO_DAYS(NOW())>=TO_DAYS(spread_starttime)
+				AND g.is_up='0'AND g.is_del='1'
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DISTINCT(gs.trade_id),gs.spread_position,gs.goods_id,gs.spread_starttime,gs.spread_endtime,gs.in_date,gs.cat_attr,gs.area_attr,
+			g.goods_name,g.list_img,c.para_key,ga.market_price,ga.sale_price,gs.spread_img,gs.slogan,gs.discounts
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

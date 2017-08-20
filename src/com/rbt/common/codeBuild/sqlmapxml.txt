@@ -1,0 +1,1 @@
+	<sqlMap resource="com/rbt/model/sql/{TABLENAME}.xml" />

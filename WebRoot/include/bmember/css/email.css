@@ -1,0 +1,161 @@
+.email{
+	width:780px;
+	padding:14px;
+}
+.email2{
+  width:700px;
+}
+.writeTab{
+}
+.writeTab th{
+	width:80px;
+	text-align:right;
+	font-weight:400;
+	padding:10px 0px;
+}
+.writeTab th span{
+	padding:0 5px;
+	color:#d81d20;
+}
+.writeTab td{
+	padding:10px 0px;
+}
+.writeTab td span{
+	padding:0 10px 0 0;
+}
+.writeTab td  .aisText{
+	width:300px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+}
+.writeTab td p{
+	padding:10px 0 0;
+}
+/*收件箱*/
+.inboxTab{
+}
+.inboxTab .addtr{
+	background:#fbfbfb;
+}
+.inboxTab th{
+	height:36px;
+	background:#f4f4f4;
+	border-bottom:#e6e6e6 solid 1px;
+	font-weight:400;
+	text-align:left;
+	padding:0 10px;
+}
+.inboxTab td{
+	padding:10px;
+	border-bottom:#e6e6e6 solid 1px;
+	cursor:pointer;
+}
+/*收件箱内容*/
+.inboxDTab th{
+	height:110px;
+	background:#f2f9eb;
+	font-weight:400;
+	text-align:left;
+	padding:10px 15px;
+	line-height:28px;
+	border-top:#bfd6af solid 1px;
+	border-bottom:#bfd6af solid 1px;
+}
+.inboxDTab th b{
+	font-size:14px;
+	color:#5bb129;
+}
+.inboxDTab td{
+	padding:15px 10px;
+}
+.inboxDTab td p{
+	text-indent:2em;
+	line-height:24px;
+	padding:5px 0;
+}
+.inboxDTab .butTd{
+	background:#f2f9eb;
+	padding:10px;
+	border-bottom:#bfd6af solid 1px;
+}
+/*增加收货地址*/
+.address{
+	width:780px;
+	padding:14px;	
+}
+.addrTab{
+	border:#f1f1f1 solid 2px;
+	margin-top:10px;
+}
+.addrTab th{
+	font-weight:400;
+	padding:10px 0px;
+	border-left:#f1f1f1 solid 1px;
+	border-right:#f1f1f1 solid 1px;
+	border-bottom:#f1f1f1 solid 1px;
+}
+.addrTab td{
+	padding:10px;
+	border-bottom:#f1f1f1 solid 1px;
+}
+.addrTab p{
+	padding-left:40px;
+}
+.address .addrbut{
+	width:98px;
+	height:26px;
+	background:url(../images/addrbut.gif) no-repeat;
+	border:none;
+	cursor:pointer;
+}
+/**/
+.addAtab{
+	border:#f1f1f1 solid 1px;
+	margin-top:10px;
+	display:none;
+	background:#fbfbfb;
+}
+.addAtab th{
+	font-weight:400;
+	text-align:right;
+	padding:8px 0;
+	border:none;
+}
+.addAtab th span{
+	padding:0px 5px;
+	color:#d81d20;
+}
+.addAtab td{
+	padding:8px;
+	border:none;
+	text-align:left;
+}
+.addAtab td .aifText{
+	width:150px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+.addAtab td  .aisText{
+	width:300px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+.addAtab td .qhtext{
+	width:35px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+.writeTab .cktd span{
+  padding:0;
+}

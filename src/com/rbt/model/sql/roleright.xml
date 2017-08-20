@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="roleright">
+
+	<typeAlias alias="roleright" type="com.rbt.model.Roleright" />
+
+	<cacheModel id="roleright-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="roleright.update" />
+		<flushOnExecute statement="roleright.insert" />
+		<flushOnExecute statement="roleright.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="roleright">
+		<![CDATA[ 
+    select right_id,right_name,syscode,menu_attr,url,remark,prompt from role_right where right_id=$value$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="roleright">
+		UPDATE role_right SET
+		right_name=#right_name#,syscode=#syscode#,menu_attr=#menu_attr#,prompt=#prompt#,
+		url=#url#,remark=#remark# WHERE right_id=$right_id$
+	</update>
+
+	<insert id="insert" parameterClass="roleright">
+		INSERT INTO role_right
+		(right_id,right_name,syscode,menu_attr,url,remark,prompt,in_date) VALUES
+		(#right_id#,#right_name#,#syscode#,#menu_attr#,#url#,#remark#,#prompt#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from role_right where right_id in ($right_id$)
+	</delete>
+
+	<sql id="getCommon">
+		from role_right as t1 INNER JOIN sysmenu as t2 ON
+		t1.menu_attr=t2.menu_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="right_name">
+				INSTR(t1.right_name,#right_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="menu_name">
+				INSTR(t2.menu_name,#menu_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="syscode">
+				t1.syscode=#syscode#
+			</isNotNull>
+			<isNotNull prepend="and" property="menu_attr">
+				t1.menu_attr IN ( SELECT t2.menu_id FROM sysmenu WHERE
+				INSTR(t2.menu_name,#menu_attr#) >0 )
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="roleright.roleright-cache">
+		select
+		t1.right_id,t1.right_name,t1.syscode,t1.menu_attr,t1.url,t1.remark,t2.menu_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		order by t2.menu_name DESC ,t1.syscode ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" cacheModel="roleright.roleright-cache">
+		select count(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+	<select id="getMenuList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select right_id,right_name,syscode,menu_attr,url,remark from
+		role_right where menu_attr=#menu_id#
+	</select>
+
+	<select id="getLogsList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select right_id,right_name,syscode,menu_attr,url,remark,prompt
+		from role_right where url=#url#
+	</select>
+
+
+</sqlMap>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="salegoods">
+
+	<typeAlias alias="salegoods" type="com.rbt.model.Salegoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="salegoods">
+		<![CDATA[ 
+    SELECT sale_id,sale_name,content,info_state,priority,is_recome,start_time,
+    end_time,member_level,term,coupon_state,coupon_plan,term_state,
+    platform,need_money,in_date,limit_time,sale_name_list FROM salegoods WHERE sale_id=$sale_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="salegoods">
+		UPDATE salegoods SET sale_id=#sale_id#,sale_name=#sale_name#,
+		content=#content#,info_state=#info_state#,priority=#priority#,
+		is_recome=#is_recome#,start_time=#start_time#,end_time=#end_time#,
+		member_level=#member_level#,term=#term#,coupon_state=#coupon_state#,
+		coupon_plan=#coupon_plan#,term_state=#term_state#,platform=#platform#,
+		need_money=#need_money#,in_date=now(),limit_time=#limit_time#,sale_name_list=#sale_name_list# WHERE sale_id=$sale_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE salegoods SET 
+    	 <isNotNull  property="sale_id"> 
+		   sale_id=$sale_id$
+		 </isNotNull>
+    	 WHERE sale_id=$sale_id$
+    </update>
+    
+	<update id="updateState" parameterClass="java.util.HashMap">
+		UPDATE salegoods SET 
+    	 <isNotNull  property="info_state"> 
+		  info_state=#info_state# 
+		 </isNotNull>		
+    	 <isNotNull  property="is_recome"> 
+		   is_recome=#is_recome#
+		 </isNotNull>			 
+		WHERE sale_id=$sale_id$
+	</update>
+
+	<insert id="insert" parameterClass="salegoods">
+		INSERT INTO salegoods (sale_id,sale_name,content,info_state,priority,is_recome,
+		start_time,end_time,member_level,term,coupon_state,coupon_plan,
+		term_state,platform,need_money,in_date,limit_time,sale_name_list) VALUES (#sale_id#,#sale_name#,
+		#content#,#info_state#,#priority#,#is_recome#,#start_time#,#end_time#,
+		#member_level#,#term#,#coupon_state#,#coupon_plan#,#term_state#,#platform#,#need_money#,now(),#limit_time#,#sale_name_list#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM salegoods WHERE sale_id in ($sale_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM salegoods 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sale_name">
+				INSTR(sale_name,#sale_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_recome">
+				is_recome=#is_recome#
+			</isNotNull>
+			<isNotNull prepend="and" property="term_state">
+				term_state=#term_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="coupon_state">
+				coupon_state in ($coupon_state$)
+			</isNotNull>						
+			<isNotNull prepend="and" property="start_time">
+				 DATE(start_time)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time">
+				#end_time#>=DATE(end_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="member_level">
+				INSTR(member_level,#member_level#) >0 or member_level in ($member_level$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="member_levels">
+				INSTR(member_level,#member_levels#) >0 
+			</isNotNull>
+			<isNotNull prepend="and" property="platform">
+				INSTR(platform,#platform#) >0 or platform in ($platform$)
+			</isNotNull>
+			<isNotNull prepend="and" property="platforms">
+				INSTR(platform,#platforms#) >0 
+			</isNotNull>			
+			<isNotNull prepend="and" property="time">
+				DATE_FORMAT(NOW(),'%y-%m-%d')>=DATE(start_time) and DATE(end_time) >= DATE_FORMAT(NOW(),'%y-%m-%d')
+ 			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sale_id,sale_name,content,info_state,priority,is_recome,start_time,end_time,member_level,term,
+		coupon_state,coupon_plan,term_state,platform,need_money,in_date,limit_time,sale_name_list
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull property="priority">
+		   ORDER BY priority ASC, in_date DESC
+		</isNotNull>
+		<isNotNull property="default">
+		   ORDER BY sale_id DESC
+		</isNotNull>		
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

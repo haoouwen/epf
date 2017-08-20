@@ -1,0 +1,1421 @@
+<!--  
+	table中的属性：id:表名
+	field中的属性：name：字段名
+	type：字段类型 （string为字符串,  int为整数,       email为电子邮件,       tel为固定电话,    mobile为移动电话,
+	double为浮点型,   chinese为中文,  idcard为18位身份证格式,  ip为IP格式,      time为时间格式,
+	alpha为字母,     repeat为重复字符  alphas 为数字、字母、下划线,              rmb人民币类型 ,url为域名, post为邮政编码
+	alphasfirst由字母开头和数字、字母、下划线组成 ,alphaslimt 数字、字母、下划线组成6-32位 ）
+	length：字段限制长度,长度为text表示为10000
+	required：是否必填，true为必填
+	cnname：中文名，方便提示所用
+	method：特殊验证方法method="update"
+-->
+<validatebody>
+	<!-- 分类表 LJQ -->
+	<table id="category">
+		<field name="cat_name" type="string" length="50" required="true" cnname="分类名称" />
+		<field name="en_name" type="string" length="50" required="true" cnname="英文名称" />
+		<field name="word_index" type="string" length="1" required="true" cnname="字母索引" />
+		<field name="cat_level" type="string" length="1" required="true" cnname="分类等级" />
+		<field name="module_type" type="string" length="10" required="false" cnname="所属模块" />
+		<field name="is_display" type="string" length="1" required="true" cnname="是否显示" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+		<field name="member_add" type="string" length="1" required="true" cnname="是否允许会员发布" />
+		<field name="seotitle" type="string" length="100" required="false" cnname="SEO标题" />
+		<field name="seokeyword" type="string" length="100" required="false" cnname="SEO关键字" />
+		<field name="seodesc" type="string" length="200" required="false" cnname="SEO描述" />
+		<field name="mem_type" type="string" length="1" required="false" cnname="会员类型" />
+		<field name="cat_click" type="string" length="200" required="false" cnname="点击量" />
+		<field name="tariff" type="string" length="10" required="false" cnname="税率" />
+	</table>
+	
+	<!-- 分类属性表 LJQ -->	
+	<table id="categoryattr">
+		<field name="attr_name" type="string" length="50" required="true" cnname="属性名称" />
+		<field name="cat_attr" type="string" length="200" required="false" cnname="所属分类" />
+		<field name="attr_type" type="string" length="1" required="true" cnname="属性类型" />
+		<field name="default_val" type="string" length="600" required="false" cnname="默认值" />
+		<field name="is_must" type="string" length="1" required="true" cnname="是否必填" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+	</table>
+	
+	<!-- 企业实名认证表 LJQ -->	
+	<table id="certification">
+		<field name="info_state" type="string" length="1" required="false" cnname="审核状态" />
+		<field name="reason" type="string" length="100" required="false" cnname="拒绝理由" />
+		<field name="cust_name" type="string" length="50" required="true" cnname="公司名称" />
+		<field name="area_attr" type="string" length="100" required="true" cnname="地区" />
+		<field name="address" type="string" length="100" required="true" cnname="公司注册地址" />
+		<field name="corporate" type="string" length="10" required="true" cnname="法定代表人" />
+		<field name="cust_type" type="string" length="1" required="true" cnname="企业类型" />
+		<field name="reg_money" type="string" length="20" required="true" cnname="注册资本" />
+		<field name="currency" type="string" length="1" required="true" cnname="币种" />
+		<field name="o_start_date" type="time" length="100" required="true" cnname="经营期限开始时间" />
+		<field name="o_end_date" type="time" length="100" required="true" cnname="经营期限结束时间" />
+		<field name="class_attr" type="string" length="100" required="true" cnname="经营范围" />
+		<field name="reg_date" type="time" length="10000" required="true" cnname="注册时间" />
+		<field name="is_inspect" type="string" length="1" required="true" cnname="是否年检" />
+		<field name="ins_record" type="string" length="30" required="false" cnname="年检记录" />
+		<field name="reg_auth" type="string" length="20" required="true" cnname="登记机关" />
+		<field name="license_path" type="string" length="100" required="true" cnname="营业执照复印件" />
+		<field name="app_name" type="string" length="10" required="true" cnname="申请人姓名" />
+		<field name="app_depart" type="string" length="10" required="true" cnname="申请人部门" />
+		<field name="app_career" type="string" length="10" required="true" cnname="申请人职位" />
+		<field name="app_contact" type="string" length="20" required="true" cnname="联系人手机" />
+		<field name="auth_path" type="string" length="100" required="true" cnname="授权证明复印件" />
+	</table>
+
+
+	<!--积分规则表 LJQ -->	
+	<table id="interrule">
+		<field name="rule_code" type="string" length="50" required="true" cnname="积分规则编码" />
+		<field name="rule_name" type="string" length="30" required="true" cnname="积分规则名称" />
+		<field name="internum" type="int" length="11" required="true" cnname="积分数值" />
+	</table>
+	
+	<!--系统日志表 LJQ -->	
+	<table id="logs">
+		<field name="cust_id" type="int" length="9" required="true" cnname="会员标识" />
+		<field name="content" type="string" length="10000" required="true" cnname="操作内容" />
+		<field name="ip" type="string" length="20" required="true" cnname="会员操作的IP" />
+		<field name="user_name" type="string" length="20" required="true" cnname="操作人名称" />
+		<field name="user_id" type="int" length="9" required="true" cnname="操作人标识" />
+	</table>
+	
+	<!--部门管理表 LJQ -->	
+	<table id="organize">
+		<field name="org_name" type="string" length="20" required="true" cnname="部门名称" />
+		<field name="up_org_id" type="string" length="10" required="true" cnname="上一级部门ID" />
+		<field name="org_level" type="int" length="11" required="true" cnname="部门等级" />
+		<field name="sys_org" type="string" length="1" required="true" cnname="部门类型" />
+		<field name="area_attr" type="string" length="500" required="false" cnname="所属地区" />
+		<field name="contact" type="string" length="10" required="true" cnname="联系人" />
+		<field name="phone" type="string" length="20" required="true" cnname="电话" />
+		<field name="cellphone" type="mobile" length="20" required="false" cnname="手机" />
+		<field name="skype" type="string" length="60" required="false" cnname="skype" />
+		<field name="qq" type="string" length="20" required="false" cnname="qq" />
+		<field name="msn" type="string" length="60" required="false" cnname="msn" />
+		<field name="email" type="email" length="60" required="false" cnname="email" />
+		<field name="fax" type="string" length="20" required="false" cnname="传真" />
+		<field name="address" type="string" length="100" required="false" cnname="联系地址" />
+	</table>
+
+	
+	<!--角色信息表 LJQ -->
+	<table id="role">  
+		<field name="cust_id" type="int" length="11" required="true" cnname="会员标识" />
+		<field name="role_name" type="string" length="20" required="true" cnname="角色名称" />
+		<field name="menu_right" type="string" length="10000" required="true" cnname="菜单权限" />
+		<field name="oper_right" type="string" length="10000" required="false" cnname="操作权限" />
+		<field name="remark" type="string" length="200" required="false" cnname="备注" />
+	</table>
+	
+	<!--操作权限表 LJQ -->
+	<table id="roleright">
+		<field name="right_name" type="string" length="20" required="true" cnname="权限名称" />
+		<field name="syscode" type="string" length="3" required="true" cnname="所属类型" />
+		<field name="menu_attr" type="string" length="100" required="true" cnname="所属菜单" />
+		<field name="url" type="string" length="100" required="true" cnname="权限地址" />
+		<field name="remark" type="string" length="200" required="false" cnname="备注" />
+		<field name="prompt" type="string" length="120" required="false" cnname="操作提示信息" />
+	</table>
+	
+
+	<!--审核历史记录表LJQ -->
+	<table id="audithistory">
+		<field name="info_id" type="int" length="9" required="true" cnname="信息标识" />
+		<field name="module_type" type="string" length="10" required="true" cnname="所属模快" />
+		<field name="user_id" type="int" length="9" required="true" cnname="审核人标识" />
+		<field name="user_name" type="string" length="20" required="true" cnname="审核人用户名" />
+		<field name="info_state" type="string" length="1" required="true" cnname="审核状态" />
+		<field name="no_reason" type="string" length="100" required="true" cnname="拒绝理由" />
+		<field name="cust_id" type="int" length="9" required="false" cnname="客户标识" />
+	</table>
+	
+	<!--系统模块参数表LJQ -->
+	<table id="sysmodule">
+		<field name="module_type" type="string" length="10" required="true" cnname="模块类型" />
+		<field name="module_name" type="string" length="20" required="true" cnname="模块名称" />
+		<field name="table_name" type="string" length="10" required="true" cnname="模块表名" />
+		<field name="install_dir" type="string" length="10" required="false" cnname="安装目录" />
+		<field name="link_menu" type="string" length="300" required="false" cnname="关联菜单" />
+		<field name="link_table" type="string" length="100" required="false" cnname="关联表" />
+		<field name="link_file" type="string" length="600" required="false" cnname="关联文件" />
+		<field name="is_mem" type="string" length="1" required="true" cnname="是否属于会员" />
+		<field name="sort_no" type="int" length="10000" required="true" cnname="排序" />
+	</table>
+
+<!-- LJQ结束 -->
+
+
+	<!--地区表 HXK-->
+	<table id="area">
+		<field name="area_name" type="string" length="20" required="true" cnname="地区名称" />
+		<field name="en_name" type="string" length="50" required="true" cnname="英文名称" />
+		<field name="area_have" type="string" length="5" required="true" cnname="划分区域" />
+		<field name="up_area_id" type="string" length="10" required="true" cnname="上级地区ID" />
+		<field name="area_level" type="int" length="1" required="true" cnname="地区级别" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="地区排序" />
+		<field name="area_number" type="string" length="3" required="true" cnname="地区区号" />
+	</table>
+	<!--禁止IP表 HXK-->
+	<table id="banip">
+		<field name="ip" type="string" length="60" required="true" cnname="ip地址" />
+	</table>
+	<!--网站栏目表 HXK-->
+	<table id="channel">
+		<field name="ch_name" type="string" length="20" required="true" cnname="栏目名称" />
+		<field name="up_ch_id" type="int" length="11" required="true" cnname="上级栏目" />
+		<field name="ch_level" type="int" length="11" required="true" cnname="栏目级别" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+		<field name="save_dir" type="string" length="100" required="true" cnname="文件保存目录" />
+		<field name="file_name" type="string" length="50" required="true" cnname="文件默认名" />
+		<field name="temp_path" type="string" length="100" required="false" cnname="页面模板" />
+		<field name="meta_keyword" type="string" length="200" required="false" cnname="meta关键字" />
+		<field name="meta_desc" type="string" length="200" required="false" cnname="meta描述" />
+		<field name="remark" type="string" length="100" required="false" cnname="备注" />
+		<field name="ch_title" type="string" length="100" required="false" cnname="栏目标题" />
+		<field name="module_type" type="string" length="10" required="false" cnname="所属模块" />
+		<field name="article_temp" type="string" length="100" required="false" cnname="详细页模板" />
+		<field name="article_rule" type="string" length="50" required="false" cnname="详细页命名规则" />
+	</table>
+	<!--参数表 HXK-->
+	<table id="commpara">
+		<field name="para_code" type="string" length="20" required="true" cnname="参数编码" />
+		<field name="para_name" type="string" length="20" required="true" cnname="参数名称" />
+		<field name="para_key" type="string" length="20" required="true" cnname="参数键" />
+		<field name="para_value" type="string" length="200" required="true" cnname="参数值" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+	</table>
+
+	
+
+<!-- QJY开始 -->
+    <!-- 广告表 QJY-->
+	<table id="advinfo">
+		<field name="adv_name" type="string" length="100" required="true" cnname="广告名称" />
+		<field name="adv_desc" type="string" length="200" required="false" cnname="广告介绍" />
+		<field name="keyword" type="string" length="100" required="false" cnname="关键字" />
+		<field name="cat_attr" type="string" length="100" required="false" cnname="分类标识串" />
+		<field name="adv_code" type="string" length="10000" required="false" cnname="广告代码" />
+		<field name="img_path" type="string" length="100" required="false" cnname="图片地址" />
+		<field name="flash_url" type="string" length="100" required="false" cnname="flash地址" />
+		<field name="link_url" type="string" length="100" required="false" cnname="链接地址" />
+		<field name="title" type="string" length="100" required="false" cnname="显示标题" />
+		<field name="content" type="string" length="200" required="false" cnname="显示描述" />
+		<field name="start_date" type="string" length="10000" required="true" cnname="开始时间" />
+		<field name="end_date" type="string" length="10000" required="true" cnname="结束时间" />
+		<field name="remark" type="string" length="200" required="false" cnname="备注" />
+		<field name="adv_state" type="string" length="1" required="true" cnname="广告状态" />
+		<field name="iscount" type="string" length="1" required="true" cnname="点击统计" />
+		<field name="addnum" type="int" length="11" required="false" cnname="点击次数" />
+	</table>
+	<!-- 广告位表 QJY-->
+	<table id="advpos">
+		<field name="pos_name" type="string" length="50" required="true" cnname="广告位名称" />
+		<field name="pos_desc" type="string" length="200" required="false" cnname="广告位介绍" />
+		<field name="pos_type" type="string" length="1" required="true" cnname="广告位类型" />
+		<field name="p_width" type="int" length="11" required="false" cnname="宽" />
+		<field name="p_height" type="int" length="11" required="false" cnname="高" />
+		<field name="module_type" type="string" length="10" required="false" cnname="所属模块" />
+		<field name="price" type="int" length="11" required="true" cnname="价格" />
+		<field name="default_code" type="string" length="200" required="false" cnname="无广告代码" />
+		<field name="isshow" type="string" length="1" required="true" cnname="前台是否显示" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+		<field name="img_path" type="string" length="100" required="false" cnname="示意图" />
+	</table>
+	
+	<!-- 敏感字表 QJY-->
+	<table id="filterword">
+		<field name="name" type="string" length="20" required="false" cnname="关键字名称" />
+		<field name="rep_name" type="string" length="20" required="true" cnname="替换字" />
+	</table>
+
+
+	<!-- 系统参数配置表 QJY-->
+	<table id="sysconfig">
+		<field name="var_name" type="alphas" length="20" required="true" cnname="变量名称" />
+		<field name="var_value" type="string" length="800" required="true" cnname="变量值" />
+		<field name="var_desc" type="string" length="300" required="true" cnname="变量说明" />
+		<field name="var_type" type="string" length="1" required="true" cnname="变量类型" />
+	</table>
+	<!-- 系统管理员 QJY-->
+	<table id="sysuser">
+		<field name="user_name" type="alphas" length="20" required="true" cnname="用户登录名" />
+		<field name="nike_name" type="string" length="10" required="false" cnname="用户笔名" />
+		<field name="passwd" type="alphaslimt" length="32" required="false" cnname="用户密码" />
+		<field name="user_type" type="string" length="1" required="true" cnname="用户类型" />
+		<field name="role_id" type="int" length="11" required="true" cnname="用户角色" />
+		<field name="org_id" type="string" length="100" required="false" cnname="所属部门" />
+		<field name="real_name" type="string" length="10" required="false" cnname="真实姓名" />
+		<field name="email" type="email" length="50" required="true" cnname="电子邮箱" />
+		<field name="loginnum" type="string" length="11" required="false" cnname="登陆次数" />
+		<field name="state" type="string" length="1" required="false" cnname="状态" />
+	</table>
+	<!-- 系统菜单 QJY-->
+	<table id="sysmenu">
+		<field name="menu_name" type="string" length="20" required="true" cnname="菜单名称" />
+		<field name="syscode" type="string" length="3" required="true" cnname="所属后台" />
+		<field name="up_menu_id" type="string" length="10" required="false" cnname="上级菜单标识" />
+		<field name="menu_level" type="string" length="1" required="false" cnname="菜单级别" />
+		<field name="sort_no" type="int" length="11" required="false" cnname="排序" />
+		<field name="enabled" type="string" length="1" required="true" cnname="有效性" />
+		<field name="url" type="string" length="100" required="false" cnname="地址" />
+		<field name="target" type="string" length="10" required="false" cnname="跳转类型" />
+	</table>
+<!-- QJY结束 -->
+
+
+<!-- CYC开始 -->
+
+ <!-- 关于我们 CYC-->
+	<table id="aboutus">
+		<field name="title" type="string" length="20" required="true" cnname="标题" />
+		<field name="content" type="string" length="10000" required="true" cnname="内容" />
+	</table>
+	<!-- 收货地址表 CYC -->
+	<table id="buyeraddr">
+		<field name="cust_id" type="int" length="9" required="false" cnname="客户标识" />
+		<field name="consignee" type="string" length="20" required="true" cnname="收货人姓名" />
+		<field name="address" type="string" length="100" required="true" cnname="地址" />
+		<field name="post_code" type="post" length="10" required="false" cnname="邮政编码" />
+		<field name="phone" type="tel" length="20" required="false" cnname="固定电话" />
+		<field name="cell_phone" type="mobile" length="20" required="false" cnname="手机号码" />
+		<field name="user_id" type="string" length="20" required="false" cnname="操作人" />
+		<field name="in_date" type="datetime" length="10000" required="false" cnname="操作日期" />
+		<field name="addr_id" type="int" length="9" required="false" cnname="流水号" />
+		<field name="area_attr" type="string" length="100" required="true" cnname="省/市区串" />
+		<field name="sel_address" type="string" length="1" required="true" cnname="是否为默认地址" />
+		
+	</table>
+
+
+	
+	<!-- 邮件模板  CYC -->
+	<table id="emailtemplate">
+		<field name="temp_name" type="string" length="50" required="true" cnname="模板名称" />
+		<field name="temp_con" type="string" length="10000" required="true" cnname="模板内容" />
+		<field name="tag_desc" type="string" length="300" required="false" cnname="标签解释" />
+		<field name="temp_code" type="string" length="50" required="false" cnname="模板编码" />
+	</table>
+	
+	<!-- 会员资金异动表 CYC-->
+	<table id="fundhistory">
+		<field name="fund_in" type="rmb" length="11" required="true" cnname="收入" />
+		<field name="fund_out" type="rmb" length="11" required="true" cnname="支出" />
+		<field name="balance" type="rmb" length="11" required="true" cnname="余额" />
+		<field name="reason" type="string" length="600" required="false" cnname="事由" />
+		<field name="remark" type="string" length="100" required="false" cnname="备注" />
+	</table>
+	
+	<!-- 会员资金充值表 CYC -->
+	<table id="fundrecharge">
+		<field name="fund_num" type="rmb" length="11" required="true" cnname="金额" />
+		<field name="payplat" type="string" length="10" required="false" cnname="支付平台" />
+		<field name="remark" type="string" length="100" required="false" cnname="备注" />
+	</table>
+	
+	<!-- 会员资金提现 CYC -->
+	<table id="fundtocash">
+		<field name="account" type="string" length="50" required="false" cnname="收款账号" />
+		<field name="account_name" type="string" length="10" required="false" cnname="账号姓名" />
+		<field name="remark" type="string" length="100" required="true" cnname="备注" />
+		<field name="branch" type="string" length="100" required="false" cnname="开户网点" />
+	</table>
+	
+	<!-- 会员积分异动 CYC -->
+	<table id="interhistory">
+		<field name="inter_in" type="int" length="9" required="true" cnname="增加" />
+		<field name="inter_out" type="int" length="9" required="true" cnname="减少" />
+		<field name="thisinter" type="int" length="9" required="true" cnname="余下积分数" />
+		<field name="reason" type="string" length="100" required="false" cnname="事由" />
+		<field name="remark" type="string" length="100" required="false" cnname="备注" />
+	</table>
+	
+	<!-- 关键字 CYC -->
+	<table id="keyword">
+		<field name="key_name" type="string" length="20" required="true" cnname="关键字名称" />
+		<field name="num" type="int" length="11" required="true" cnname="关键字搜索频率" />
+	</table>
+	
+	<!-- 友情链接 CYC -->
+	<table id="link">
+		<field name="link_name" type="string" length="20" required="true" cnname="链接名称" />
+		<field name="link_group" type="int" length="11" required="false" cnname="链接组别" />
+		<field name="url" type="url" length="100" required="true" cnname="链接地址" />
+		<field name="sort_no" type="int" length="11" required="false" cnname="排序" />
+		<field name="is_display" type="string" length="1" required="false" cnname="是否显示" />
+		<field name="img_path" type="string" length="100" required="false" cnname="链接图片" />
+	</table>
+	
+	<!-- 友情链接分组 CYC -->
+	<table id="linkgroup">
+		<field name="name" type="string" length="20" required="false" cnname="分组名称" />
+	</table>	
+	
+	<!-- 会员友情链接 CYC -->
+	<table id="memberlink">
+		<field name="title" type="string" length="20" required="true" cnname="链接名称" />
+		<field name="link_url" type="string" length="100" required="false" cnname="链接地址" />
+	</table>
+	
+
+	<!-- 会员企业站栏目配置 CYC -->
+	<table id="memberchconfig">
+		<field name="ch_name" type="string" length="20" required="true" cnname="栏目名称" />
+		<field name="ch_code" type="string" length="20" required="true" cnname="栏目编码" />
+		<field name="ch_type" type="string" length="1" required="true" cnname="栏目类型" />
+		<field name="is_dis" type="string" length="1" required="true" cnname="是否显示" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+		<field name="ch_num" type="int" length="11" required="false" cnname="数量" />
+	</table>
+
+	
+	<!-- 会员资金@ CYC -->
+	<table id="memberfund">
+		<field name="fund_num" type="string" length="32" required="true" cnname="总金额" />
+		<field name="use_num" type="string" length="32" required="true" cnname="可用金额" />
+		<field name="freeze_num" type="string" length="32" required="true" cnname="冻结金额" />
+		<field name="pay_passwd" type="string" length="32" required="false" cnname="支付密码" />
+	</table>
+	
+	<!-- 会员积分@ CYC -->
+	<table id="memberinter">
+		<field name="fund_num" type="int" length="9" required="true" cnname="积分总数" />
+	</table>
+	
+	<!-- 导航链接 CYC -->
+	<table id="nav">
+		<field name="nav_name" type="string" length="20" required="true" cnname="导航名" />
+		<field name="isshow" type="string" length="1" required="true" cnname="是否显示" />
+		<field name="sort_no" type="int" length="11" required="true" cnname="排序" />
+		<field name="isopen" type="string" length="10" required="true" cnname="是否新打开页面" />
+		<field name="link_url" type="string" length="100" required="true" cnname="链接地址" />
+		<field name="nav_post" type="string" length="1" required="true" cnname="导航位置" />
+		<field name="nav_code" type="string" length="20" required="false" cnname="导航编码" />
+	</table>
+	<!--订单历史记录  CYC  -->
+	<table id="orderhistory">
+		<field name="action_name" type="string" length="20" required="true" cnname="动作名称" />
+	</table>
+	<!-- 订单  CYC -->
+	<table id="orderinfo">
+		<field name="cust_name" type="string" length="100" required="false" cnname="收获人姓名" />
+		<field name="address" type="string" length="200" required="false" cnname="地址" />
+		<field name="post_code" type="string" length="50" required="false" cnname="邮政编码" />
+		<field name="phone" type="tel" length="50" required="false" cnname="固定电话" />
+		<field name="cell_phone" type="mobile" length="50" required="false" cnname="手机号码" />
+		<field name="price" type="rmb" length="11" required="false" cnname="单价" />
+		<field name="goods_num" type="int" length="11" required="false" cnname="商品数量" />
+		<field name="carriage_fee" type="rmb" length="11" required="false" cnname="商品运费" />
+		<field name="goods_fee" type="rmb" length="11" required="false" cnname="商品总费用" />
+		<field name="total_fee" type="rmb" length="11" required="false" cnname="总共支付" />
+		<field name="order_state" type="string" length="1" required="false" cnname="订单状态" />
+		<field name="remark" type="string" length="500" required="false" cnname="给卖家留言" />
+	</table>
+	
+	<!-- 支付平台 CYC -->
+	<table id="payment">
+		<field name="pay_code" type="string" length="50" required="true" cnname="支付方式编码" />
+		<field name="pay_name" type="string" length="50" required="true" cnname="支付方式名称" />
+		<field name="pay_desc" type="string" length="10000" required="false" cnname="支付方式描述" />
+		<field name="seller_name" type="string" length="100" required="false" cnname="账号名" />
+		<field name="pay_account" type="string" length="100" required="true" cnname="商户帐号" />
+		<field name="passwd" type="string" length="100" required="true" cnname="商户密钥" />
+		<field name="hand_fare" type="int" length="11" required="false" cnname="支付手续费" />
+		<field name="enabled" type="string" length="1" required="true" cnname="是否启用" />
+		<field name="pay_logo" type="string" length="60" required="false" cnname="付款方式图标" />
+	</table>
+
+<table id="goodsbrand">
+<field name="brand_name" type="string" length="100" required="true" cnname="品牌名称"  />
+<field name="brand_site" type="string" length="100" required="false" cnname="品牌网址"  />
+<field name="logo" type="string" length="100" required="false" cnname="品牌logo"  />
+<field name="content" type="string" length="10000" required="false" cnname="详细说明"  />
+<field name="goods_attr" type="string" length="500" required="false" cnname="商品分类串关联"  />
+<field name="sort_no" type="int" length="11" required="true" cnname="排序"  />
+<field name="info_state" type="string" length="1" required="false" cnname="状态"  />
+</table>
+
+<table id="servicetrade">
+<field name="industry_name" type="string" length="60" required="true" cnname="服务行业名称"  />
+<field name="industry_descri" type="string" length="10000" required="true" cnname="行业描述"  />
+<field name="describe_avg" type="double" length="5" required="true" cnname="行业最高分"  />
+<field name="service_avg" type="double" length="5" required="true" cnname="行业最低分"  />
+<field name="industry_avg" type="double" length="5" required="true" cnname="行业评均分"  />
+<field name="commission" type="double" length="5" required="true" cnname="行业佣金"  />
+<field name="sort" type="int" length="11" required="true" cnname="排序"  />
+</table>
+<table id="malltemplate">
+<field name="trade_id" type="int" length="11" required="flase" cnname="流水号"  />
+<field name="template_name" type="string" length="30" required="true" cnname="模板名称"  />
+<field name="template_code" type="string" length="20" required="true" cnname="模板代码"  />
+<field name="template_path" type="string" length="60" required="flase" cnname="模板路径"  />
+<field name="template_image" type="string" length="60" required="true" cnname="模板封面图"  />
+<field name="author" type="string" length="20" required="true" cnname="作者"  />
+<field name="in_date" type="datetime" length="10000" required="flase" cnname="上传时间"  />
+<field name="user_id" type="string" length="20" required="true" cnname="操作人"  />
+<field name="is_enable" type="string" length="1" required="flase" cnname="是否启用"  />
+</table>
+
+<table id="imagemana">
+<field name="serial_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="img_path" type="string" length="100" required="true" cnname="图片路径"  />
+<field name="note" type="varbinary" length="100" required="false" cnname="备注"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="上传图片时间"  />
+</table>
+
+<table id="seoset">
+<field name="seo_code" type="string" length="20" required="true" cnname="seo_code"  />
+<field name="seo_title" type="string" length="100" required="false" cnname="seo_title"  />
+<field name="seo_keyword" type="string" length="150" required="false" cnname="seo_keyword"  />
+<field name="seo_decri" type="string" length="150" required="false" cnname="seo_decri"  />
+</table>
+<table id="member">
+<field name="cust_id" type="int" length="9" required="flase" cnname="会员标识"  />
+<field name="cust_name" type="string" length="100" required="true" cnname="会员名称"  />
+<field name="logo_path" type="string" length="100" required="flase" cnname="会员logo"  />
+<field name="mem_type" type="string" length="1" required="true" cnname="会员类型"  />
+<field name="sell_level" type="string" length="20" required="false" cnname="卖家级别"  />
+<field name="buy_level" type="string" length="20" required="true" cnname="买家级别"  />
+<field name="info_state" type="string" length="1" required="true" cnname="会员状态"  />
+<field name="is_active" type="string" length="1" required="false" cnname="是否激活"  />
+<field name="in_date" type="datetime" length="10000" required="flase" cnname="会员注册日期"  />
+</table>
+
+<table id="memberuser">
+<field name="user_id" type="int" length="9" required="false" cnname="用户标识"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="user_type" type="string" length="1" required="true" cnname="用户类型"  />
+<field name="user_name" type="string" length="20" required="false" cnname="用户名"  />
+<field name="passwd" type="string" length="32" required="false" cnname="密码"  />
+<field name="role_code" type="string" length="200" required="false" cnname="角色代码"  />
+<field name="email" type="email" length="60" required="false" cnname="email"  />
+<field name="real_name" type="string" length="10" required="false" cnname="真实姓名"  />
+<field name="sex" type="string" length="1" required="true" cnname="性别"  />
+<field name="cellphone" type="mobile" length="20" required="false" cnname="手机"  />
+<field name="phone" type="tel" length="20" required="false" cnname="电话"  />
+<field name="qq" type="string" length="20" required="false" cnname="qq"  />
+<field name="msn" type="string" length="60" required="false" cnname="msn"  />
+<field name="skype" type="string" length="60" required="false" cnname="skype"  />
+<field name="pass_strength" type="string" length="1" required="false" cnname="密码强度"  />
+<field name="login_time" type="datetime" length="10000" required="false" cnname="上次登录的时间"  />
+<field name="is_check_mobile" type="string" length="1" required="false" cnname="是否已手机验证"  />
+<field name="is_check_email" type="string" length="1" required="false" cnname="是否已邮箱验证"  />
+</table>
+<table id="commutemplate">
+<field name="temp_id" type="int" length="11" required="true" cnname="模板标识"  />
+<field name="temp_name" type="string" length="50" required="true" cnname="模板名称"  />
+<field name="temp_con" type="string" length="10000" required="false" cnname="买家模板内容"  />
+<field name="temp_conTwo" type="string" length="10000" required="false" cnname="卖家模板内容"  />
+<field name="tag_desc" type="string" length="300" required="false" cnname="标签解释"  />
+<field name="temp_code" type="string" length="50" required="false" cnname="模板代码"  />
+<field name="sys_temp" type="string" length="1" required="false" cnname="是否为系统模板"  />
+<field name="temp_type" type="string" length="1" required="false" cnname="模板类型"  />
+</table>
+<table id="shopconfig">
+<field name="shop_id" type="int" length="11" required="false" cnname="店铺标识"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="shop_name" type="string" length="50" required="true" cnname="店铺名称"  />
+<field name="shop_logo" type="string" length="100" required="false" cnname="店铺logo"  />
+<field name="header_img" type="string" length="100" required="false" cnname="自定义横幅"  />
+<field name="back_img" type="string" length="100" required="false" cnname="自定义背景图片"  />
+<field name="back_color" type="string" length="10" required="false" cnname="自定义背景色"  />
+<field name="shop_site" type="string" length="100" required="false" cnname="商家官网"  />
+<field name="shop_intro" type="string" length="10000" required="false" cnname="店铺简介"  />
+<field name="busi_range" type="string" length="100" required="false" cnname="经营范围"  />
+<field name="busi_mode" type="string" length="1" required="true" cnname="经营模式"  />
+<field name="phone" type="tel" length="20" required="false" cnname="固定电话"  />
+<field name="area_attr" type="string" length="60" required="true" cnname="商家地区"  />
+<field name="address" type="string" length="200" required="false" cnname="具体地址"  />
+<field name="contant_man" type="string" length="10" required="false" cnname="联系人"  />
+<field name="email" type="email" length="60" required="false" cnname="email"  />
+<field name="qq" type="string" length="20" required="false" cnname="QQ"  />
+<field name="msn" type="string" length="20" required="false" cnname="msn"  />
+<field name="alliwang" type="string" length="50" required="false" cnname="淘宝旺旺"  />
+<field name="mobile" type="mobile" length="20" required="false" cnname="手机"  />
+<field name="info_state" type="string" length="1" required="false" cnname="审核状态"  />
+<field name="is_colse" type="string" length="1" required="false" cnname="是否暂时关闭网站"  />
+<field name="user_id" type="string" length="20" required="false" cnname="操作人"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="创店时间"  />
+<field name="template_code" type="string" length="30" required="false" cnname="模板代码"  />
+</table>
+
+<table id="malllevelset">
+<field name="level_code" type="string" length="20" required="true" cnname="级别代码"  />
+<field name="level_name" type="string" length="30" required="true" cnname="级别名称"  />
+<field name="inter_lower" type="string" length="11" required="true" cnname="成长值下限"  />
+<field name="inter_height" type="string" length="11" required="true" cnname="成长值上限"  />
+<field name="mem_type" type="string" length="1" required="true" cnname="区别卖家买家"  />
+<field name="img_url" type="string" length="100" required="false" cnname="级别图标"  />
+<field name="discount" type="string" length="6" required="true" cnname="折扣率"  />
+<field name="menu_right" type="string" length="10000" required="false" cnname="级别菜单权限"  />
+<field name="oper_right" type="string" length="10000" required="false" cnname="级别操作权限"  />
+<field name="note" type="string" length="200" required="false" cnname="备注"  />
+</table>
+<table id="sellerscore">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="get_cust_id" type="int" length="9" required="true" cnname="被打分会员标识"  />
+<field name="user_id" type="int" length="9" required="true" cnname="打分人"  />
+<field name="self_cust_id" type="int" length="9" required="true" cnname="打分会员标识"  />
+<field name="desc_score" type="int" length="11" required="true" cnname="描述相符打分"  />
+<field name="service_score" type="int" length="11" required="true" cnname="服务态度打分"  />
+<field name="delivery_score" type="int" length="11" required="true" cnname="发货速度打分"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="打分时间"  />
+</table>
+<table id="membercat">
+<field name="cat_id" type="string" length="10" required="true" cnname="分类标识"  />
+<field name="cust_id" type="int" length="9" required="true" cnname="会员标识"  />
+<field name="cat_name" type="string" length="100" required="true" cnname="分类名称"  />
+<field name="cat_type" type="string" length="1" required="true" cnname="分类类型"  />
+<field name="sort_no" type="int" length="11" required="true" cnname="分类排序"  />
+<field name="parent_cat_id" type="string" length="10" required="true" cnname="上一级分类ID" />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+</table>
+
+<table id="specname">
+<field name="spec_code" type="string" length="10" required="false" cnname="规格编码"  />
+<field name="sname" type="string" length="20" required="true" cnname="规格名称"  />
+<field name="snote" type="string" length="60" required="false" cnname="规格备注"  />
+<field name="salias" type="string" length="20" required="false" cnname="规格别名"  />
+<field name="show_type" type="string" length="1" required="false" cnname="显示类型"  />
+<field name="show_method" type="string" length="1" required="false" cnname="显示方式"  />
+<field name="cat_attr" type="string"  length="2000" required="false" cnname="所属类目"  />
+</table>
+<table id="specvalue">
+<field name="sv_code" type="string" length="10" required="true" cnname="sv_code"  />
+<field name="sv_name" type="string" length="20" required="false" cnname="sv_name"  />
+<field name="sv_img_path" type="string" length="60" required="false" cnname="sv_img_path"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="sort_no"  />
+<field name="spec_code" type="string" length="10" required="false" cnname="spec_code"  />
+</table>
+
+<table id="goodseval">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="打分的商品ID"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="评分会员标识"  />
+<field name="user_id" type="int" length="9" required="false" cnname="评分人"  />
+<field name="g_eval" type="int" length="11" required="false" cnname="商品等级"  />
+<field name="g_comment" type="string" length="200" required="false" cnname="商品评价内容"  />
+<field name="is_two" type="string" length="1" required="false" cnname="是否已修改评价"  />
+<field name="eval_date" type="datetime" length="10000" required="false" cnname="评价时间"  />
+<field name="explan_cust_id" type="int" length="9" required="false" cnname="解释会员标识"  />
+<field name="explan_man" type="int" length="9" required="false" cnname="解释人"  />
+<field name="explan_content" type="string" length="600" required="false" cnname="解释内容"  />
+<field name="explan_date" type="datetime" length="10000" required="false" cnname="解释时间"  />
+<field name="is_enable" type="string" length="1" required="false" cnname="是否有用"  />
+</table>
+
+<table id="emailhistory">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="get_email" type="string" length="10000" required="true" cnname="收件人邮箱"  />
+<field name="title" type="string" length="100" required="true" cnname="邮件标题"  />
+<field name="send_email" type="email" length="60" required="true" cnname="发件人邮箱"  />
+<field name="send_name" type="string" length="60" required="false" cnname="发件人名称"  />
+<field name="content" type="string" length="10000" required="true" cnname="邮件正文"  />
+<field name="temp_id" type="string" length="60" required="false" cnname="所属模板"  />
+<field name="send_date" type="datetime" length="10000" required="false" cnname="发送时间"  />
+<field name="user_id" type="string" length="20" required="false" cnname="操作人"  />
+</table>
+<table id="smshistory">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="cellphones" type="string" length="10000" required="true" cnname="手机号码"  />
+<field name="celltitle" type="string" length="100" required="true" cnname="短信标题"  />
+<field name="cellnum" type="mobile" length="20" required="true" cnname="发送人手机号码"  />
+<field name="cellname" type="string" length="60" required="false" cnname="发送人名称"  />
+<field name="content" type="string" length="10000" required="true" cnname="短信正文"  />
+<field name="cell_code" type="string" length="60" required="false" cnname="手机模板代码"  />
+<field name="send_date" type="datetime" length="10000" required="falsse" cnname="发送时间"  />
+<field name="user_id" type="int" length="9" required="false" cnname="操作人"  />
+</table>
+<table id="membercat">
+<field name="cat_id" type="string" length="10" required="true" cnname="分类标识"  />
+<field name="cust_id" type="int" length="9" required="true" cnname="会员标识"  />
+<field name="cat_name" type="string" length="100" required="true" cnname="分类名称"  />
+<field name="cat_type" type="string" length="1" required="true" cnname="分类类型"  />
+<field name="sort_no" type="int" length="11" required="true" cnname="分类排序"  />
+<field name="parent_cat_id" type="string" length="10" required="true" cnname="上一级分类ID" />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+</table>
+
+<table id="collect">
+<field name="coll_id" type="int" length="9" required="false" cnname="收藏标识"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="商品标识"  />
+<field name="title" type="string" length="100" required="true" cnname="收藏标题"  />
+<field name="link_url" type="string" length="100" required="true" cnname="收藏链接"  />
+<field name="remark" type="string" length="100" required="false" cnname="备注"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+</table>
+<table id="membertemplate">
+<field name="temp_id" type="int" length="11" required="false" cnname="模板标识"  />
+<field name="temp_img" type="string" length="100" required="false" cnname="模板图片"  />
+<field name="temp_code" type="string" length="20" required="true" cnname="模板编码"  />
+<field name="temp_name" type="string" length="20" required="true" cnname="模板名称"  />
+<field name="author" type="string" length="20" required="true" cnname="作者"  />
+<field name="price" type="rmb" length="10000" required="true" cnname="价格"  />
+<field name="mem_level" type="string" length="100" required="true" cnname="所属会员级别"  />
+<field name="file_pos" type="string" length="100" required="false" cnname="文件位置"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="排序"  />
+<field name="temp_loc" type="string" length="20" required="true" cnname="模板文件夹名称"  />
+</table>
+<table id="paragroup">
+<field name="para_group_id" type="string" length="10" required="false" cnname="流水号"  />
+<field name="para_name" type="string" length="20" required="false" cnname="参数组名"  />
+<field name="cat_attr" type="string" length="800" required="true" cnname="商品分类"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="排序"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="新增时间"  />
+</table>
+<table id="express">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="spread_name" type="string" length="100" required="true" cnname="推广名称"  />
+<field name="image_path" type="string" length="100" required="false" cnname="推广图片"  />
+<field name="spread_link" type="string" length="200" required="true" cnname="推广链接"  />
+<field name="click_charges" type="rmb" length="10000" required="true" cnname="点击费用"  />
+<field name="info_state" type="string" length="1" required="false" cnname="审核状态"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="use_id" type="string" length="20" required="false" cnname="用户标识"  />
+<field name="application_time" type="datetime" length="10000" required="false" cnname="申请时间"  />
+<field name="put_price" type="rmb" length="10000" required="true" cnname="投放价格"  />
+<field name="put_starttime" type="datetime" length="10000" required="true" cnname="投放开始时间"  />
+<field name="put_endtime" type="datetime" length="10000" required="true" cnname="投放结束时间"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="商品标识"  />
+<field name="is_enable" type="string" length="1" required="true" cnname="投放状态"  />
+<field name="last_price" type="rmb" length="10000" required="false" cnname="剩余资金"  />
+
+</table>
+<table id="expresshistory">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="express_id" type="int" length="9" required="false" cnname="推广ID"  />
+<field name="click_ip" type="string" length="200" required="false" cnname="点击IP"  />
+<field name="click_time" type="datetime" length="10000" required="false" cnname="点击时间"  />
+<field name="click_num" type="int" length="9" required="false" cnname="点击量"  />
+<field name="show_num" type="int" length="9" required="false" cnname="展现量"  />
+</table>
+
+<table id="expressfundrun">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="fundtype" type="string" length="1" required="false" cnname="资金类型"  />
+<field name="income" type="decimal" length="18" required="false" cnname="收入"  />
+<field name="pay" type="decimal" length="18" required="false" cnname="支出"  />
+<field name="balance" type="decimal" length="18" required="false" cnname="余额"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员名称"  />
+<field name="pay_code" type="string" length="50" required="false" cnname="支付方式编码"  />
+<field name="deal_time" type="datetime" length="10000" required="false" cnname="交易日期"  />
+</table>
+<table id="expressfund">
+<field name="cust_id" type="int" length="9" required="false" cnname="会员名称"  />
+<field name="summoney" type="rmb" length="1000" required="false" cnname="金额"  />
+</table>
+<table id="paravalue">
+<field name="para_id" type="string" length="10" required="true" cnname="流水号"  />
+<field name="para_group_id" type="string" length="10" required="false" cnname="参数组ID"  />
+<field name="para_name" type="string" length="20" required="true" cnname="参数名称"  />
+<field name="value" type="string" length="20" required="false" cnname="参数值"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="排序"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="新增时间"  />
+</table>
+<table id="rate">
+<field name="rate_id" type="string" length="20" required="false" cnname="流水号"  />
+<field name="rate_name" type="string" length="20" required="true" cnname="汇率名称"  />
+<field name="rate_unit" type="string" length="20" required="true" cnname="单位"  />
+<field name="rate_mark" type="string" length="5" required="true" cnname="符号"  />
+<field name="rate_img" type="string" length="60" required="true" cnname="图片"  />
+<field name="enables" type="string" length="1" required="true" cnname="是否启用"  />
+<field name="exchangerate" type="rmb" length="11" required="true" cnname="汇率"  />
+<field name="endefault" type="string" length="1" required="false" cnname="是否为默认"  />
+</table>
+<table id="memrole">
+<field name="memrole_id" type="int" length="11" required="false" cnname="流水号"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="memrole_name" type="string" length="20" required="false" cnname="角色名称"  />
+<field name="oper_right" type="string" length="10000" required="false" cnname="操作权限权限"  />
+<field name="memmenu_right" type="string" length="10000" required="false" cnname="菜单权限"  />
+<field name="remark" type="string" length="100" required="false" cnname="备注"  />
+</table>
+<table id="pagetip">
+<field name="page_code" type="string" length="10" required="false" cnname="页面代码"  />
+<field name="remark" type="string" length="100" required="false" cnname="备注"  />
+</table>
+<table id="receipt">
+<field name="receipt_code" type="string" length="10" required="false" cnname="模板代码"  />
+<field name="receipt_name" type="string" length="30" required="false" cnname="模板名称"  />
+<field name="receipt_content" type="string" length="10000" required="false" cnname="模板内容"  />
+</table>
+<table id="receiptmanage">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="receipt_code" type="string" length="10" required="false" cnname="单据类型"  />
+<field name="receipt_content" type="string" length="10000" required="false" cnname="单据模板内容"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+</table>
+<table id="sendbox">
+<field name="send_id" type="int" length="9" required="false" cnname="发件箱标识"  />
+<field name="send_cust_id" type="int" length="9" required="false" cnname="发件人会员标识"  />
+<field name="title" type="string" length="100" required="true" cnname="主题"  />
+<field name="content" type="string" length="10000" required="true" cnname="内容"  />
+<field name="is_send_del" type="int" length="9" required="false" cnname="是否删除"  />
+</table>
+<table id="receivebox">
+<field name="receive_id" type="int" length="9" required="false" cnname="收件箱标识"  />
+<field name="send_id" type="int" length="9" required="true" cnname="发件箱标识"  />
+<field name="get_cust_id" type="int" length="9" required="true" cnname="收件人会员标识"  />
+<field name="is_read" type="string" length="1" required="false" cnname="是否已读"  />
+<field name="is_get_del" type="int" length="9" required="false" cnname="是否删除"  />
+<field name="sort_no" type="int" length="9" required="false" cnname="排序"  />
+</table>
+<table id="goodsorder">
+<field name="order_id" type="string" length="17" required="true" cnname="order_id"  />
+<field name="buy_cust_id" type="int" length="9" required="true" cnname="buy_cust_id"  />
+<field name="sell_cust_id" type="int" length="9" required="true" cnname="sell_cust_id"  />
+<field name="consignee" type="string" length="20" required="true" cnname="consignee"  />
+<field name="area_attr" type="string" length="100" required="true" cnname="area_attr"  />
+<field name="buy_address" type="string" length="200" required="false" cnname="buy_address"  />
+<field name="zip_code" type="int" length="11" required="false" cnname="zip_code"  />
+<field name="telephone" type="string" length="20" required="false" cnname="telephone"  />
+<field name="mobile" type="int" length="11" required="false" cnname="mobile"  />
+<field name="goods_amount" type="decimal" length="10,2" required="true" cnname="goods_amount"  />
+<field name="comm_free" type="decimal" length="10,2" required="false" cnname="comm_free"  />
+<field name="ship_free" type="decimal" length="10,2" required="true" cnname="ship_free"  />
+<field name="insured" type="decimal" length="10,2" required="false" cnname="insured"  />
+<field name="why_price" type="decimal" length="10,2" required="false" cnname="why_price"  />
+<field name="tatal_amount" type="decimal" length="10,2" required="true" cnname="tatal_amount"  />
+<field name="pay_id" type="int" length="11" required="true" cnname="pay_id"  />
+<field name="send_mode" type="int" length="11" required="true" cnname="send_mode"  />
+<field name="order_state" type="string" length="1" required="true" cnname="order_state"  />
+<field name="order_time" type="datetime" length="10000" required="true" cnname="order_time"  />
+<field name="pay_time" type="datetime" length="10000" required="false" cnname="pay_time"  />
+<field name="send_time" type="datetime" length="10000" required="false" cnname="send_time"  />
+<field name="sure_time" type="datetime" length="10000" required="false" cnname="sure_time"  />
+<field name="mem_remark" type="string" length="300" required="false" cnname="mem_remark"  />
+<field name="send_num" type="string" length="30" required="false" cnname="send_num"  />
+</table>
+
+
+<table id="goodsattr">
+<field name="goods_item" type="string" length="30" required="true" cnname="goods_item"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="goods_id"  />
+<field name="specstr" type="string" length="100" required="false" cnname="specstr"  />
+<field name="market_price" type="decimal" length="10,2" required="false" cnname="market_price"  />
+<field name="sale_price" type="decimal" length="10,2" required="false" cnname="sale_price"  />
+<field name="cost_price" type="decimal" length="10,2" required="false" cnname="cost_price"  />
+<field name="stock" type="int" length="11" required="false" cnname="stock"  />
+<field name="up_goods" type="string" length="1" required="false" cnname="up_goods"  />
+<field name="sale_num" type="int" length="11" required="false" cnname="sale_num"  />
+</table>
+<table id="goodsattr">
+<field name="goods_item" type="string" length="30" required="true" cnname="goods_item"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="goods_id"  />
+<field name="specstr" type="string" length="100" required="false" cnname="specstr"  />
+<field name="market_price" type="decimal" length="10,2" required="false" cnname="market_price"  />
+<field name="sale_price" type="decimal" length="10,2" required="false" cnname="sale_price"  />
+<field name="cost_price" type="decimal" length="10,2" required="false" cnname="cost_price"  />
+<field name="stock" type="int" length="11" required="false" cnname="stock"  />
+<field name="up_goods" type="string" length="1" required="false" cnname="up_goods"  />
+<field name="sale_num" type="int" length="11" required="false" cnname="sale_num"  />
+</table>
+<table id="selfspecname">
+<field name="spec_serial_id" type="int" length="9" required="true" cnname="spec_serial_id"  />
+<field name="spec_code" type="string" length="20" required="false" cnname="spec_code"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="sort_no"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="goods_id"  />
+</table>
+<table id="selfspecvalue">
+<field name="serial_id" type="int" length="9" required="true" cnname="serial_id"  />
+<field name="self_spec_value" type="string" length="60" required="false" cnname="self_spec_value"  />
+<field name="self_spec_img" type="string" length="60" required="false" cnname="self_spec_img"  />
+<field name="self_img" type="string" length="10000" required="false" cnname="self_img"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="sort_no"  />
+<field name="spec_serial_id" type="int" length="9" required="false" cnname="spec_serial_id"  />
+</table>
+<table id="article">
+<field name="article_id" type="int" length="11" required="false" cnname="文章标识"  />
+<field name="title" type="string" length="60" required="true" cnname="文章标题"  />
+<field name="content" type="string" length="100000" required="true" cnname="文章内容"  />
+<field name="cat_attr" type="string" length="60" required="true" cnname="所属分类"  />
+<field name="art_source" type="string" length="100" required="false" cnname="文章来源"  />
+<field name="art_author_" type="string" length="10" required="false" cnname="文章作者"  />
+<field name="out_link" type="string" length="100" required="false" cnname="引用外部链接"  />
+<field name="is_sticky" type="string" length="1" required="true" cnname="是否置顶"  />
+<field name="is_display" type="string" length="1" required="true" cnname="是否显示"  />
+<field name="seo_title" type="string" length="100" required="false" cnname="SEO标题"  />
+<field name="seo_keyword" type="string" length="100" required="false" cnname="SEO关键字"  />
+<field name="seo_descri" type="string" length="200" required="false" cnname="SEO描述"  />
+<field name="user_id" type="int" length="9" required="false" cnname="发布人"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="发布时间"  />
+</table>
+<table id="aftersales">
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="content" type="string" length="10000" required="false" cnname="维护内容"  />
+</table>
+
+<table id="memprotect">
+<field name="id" type="int" length="9" required="true" cnname="流水号"  />
+<field name="cust_id" type="int" length="9" required="true" cnname="会员标识"  />
+<field name="question" type="string" length="20" required="true" cnname="密保问题"  />
+<field name="answer" type="string" length="20" required="true" cnname="密保答案"  />
+</table>
+<table id="printstyle">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="template_code" type="string" length="20" required="true" cnname="模板代码"  />
+<field name="template_name" type="string" length="30" required="true" cnname="模板名称"  />
+<field name="label_explan" type="string" length="500" required="false" cnname="标签解释"  />
+</table>
+<table id="printstyletem">
+<field name="trade_id" type="int" length="9" required="true" cnname="trade_id"  />
+<field name="template_code" type="string" length="20" required="false" cnname="template_code"  />
+<field name="template_name" type="string" length="30" required="false" cnname="template_name"  />
+<field name="label_explan" type="string" length="500" required="false" cnname="label_explan"  />
+<field name="print_content" type="string" length="10000" required="false" cnname="print_content"  />
+</table>
+<table id="ordertrans">
+<field name="trans_id" type="int" length="9" required="true" cnname="trans_id"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="cust_id"  />
+<field name="order_id" type="string" length="17" required="false" cnname="order_id"  />
+<field name="order_state" type="string" length="1" required="false" cnname="order_state"  />
+<field name="user_id" type="int" length="9" required="false" cnname="user_id"  />
+<field name="trans_time" type="datetime" length="10000" required="false" cnname="trans_time"  />
+<field name="reason" type="string" length="300" required="false" cnname="reason"  />
+</table>
+<table id="consultation">
+<field name="trade_id" type="int" length="9" required="true" cnname="咨询流水号"  />
+<field name="goods_id" type="int" length="9" required="true" cnname="商品标识"  />
+<field name="c_type" type="string" length="1" required="true" cnname="咨询类型"  />
+<field name="mem_id" type="int" length="9" required="true" cnname="咨询人"  />
+<field name="c_content" type="string" length="600" required="true" cnname="咨询内容"  />
+<field name="contact" type="string" length="20" required="false" cnname="联系方式"  />
+<field name="mem_ip" type="string" length="20" required="false" cnname="咨询人ip"  />
+<field name="c_date" type="datetime" length="10000" required="true" cnname="咨询时间"  />
+<field name="is_display" type="string" length="1" required="true" cnname="是否显示"  />
+<field name="re_men_id" type="int" length="9" required="true" cnname="回复人"  />
+</table>
+<table id="consulting">
+<field name="re_id" type="int" length="9" required="true" cnname="回复流水号"  />
+<field name="trade_id" type="int" length="9" required="true" cnname="咨询流水号"  />
+<field name="user_id" type="int" length="9" required="true" cnname="操作人"  />
+<field name="re_content" type="string" length="600" required="true" cnname="回复内容"  />
+<field name="re_date" type="datetime" length="10000" required="true" cnname="回复时间"  />
+<field name="is_display" type="string" length="1" required="true" cnname="是否显示"  />
+</table>
+
+<table id="recycle">
+<field name="recycle_id" type="int" length="9" required="false" cnname="回收标识"  />
+<field name="box_type" type="string" length="1" required="false" cnname="垃圾类型"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="info_id" type="int" length="9" required="false" cnname="信息标识"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="操作时间"  />
+</table>
+<table id="extendattr">
+<field name="ex_attr_id" type="string" length="10" required="false" cnname="ex_attr_id"  />
+<field name="attr_name" type="string" length="20" required="false" cnname="attr_name"  />
+<field name="option_type" type="string" length="60" required="false" cnname="option_type"  />
+<field name="default_value" type="string" length="100" required="false" cnname="default_value"  />
+<field name="is_display" type="string" length="1" required="false" cnname="is_display"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="sort_no"  />
+<field name="cat_attr" type="string" length="800" required="false" cnname="商品分类1"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="in_date"  />
+</table>
+<table id="goodsspread">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="spread_position" type="string" length="2" required="true" cnname="推广位置"  />
+<field name="spread_starttime" type="datetime" length="10000" required="true" cnname="推广开始时间"  />
+<field name="spread_endtime" type="datetime" length="10000" required="true" cnname="推广结束时间"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+<field name="cat_attr" type="string" length="100" required="false" cnname="所属分类"  />
+<field name="area_attr" type="string" length="100" required="false" cnname="所属地区"  />
+<field name="spread_img" type="string" length="100" required="true" cnname="推广图片"  />
+<field name="slogan" type="string" length="100" required="true" cnname="推广口号"  />
+</table>
+
+<table id="combo">
+<field name="goods_str" type="string" length="100" required="true" cnname="相关商品"  />
+<field name="combo_img" type="string" length="10000" required="true" cnname="套餐商品图片"  />
+<field name="info_state" type="string" length="1" required="false" cnname="状态"  />
+<field name="cust_id" type="string" length="3" required="false" cnname="会员标识"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="发布时间"  />
+<field name="cat_attr" type="string" length="100" required="true" cnname="所属分类"  />
+</table>
+
+<table id="pointsgoods">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="buy_points" type="int" length="9" required="false" cnname="购买积分"  />
+<field name="buy_sum" type="double" length="10000" required="false" cnname="购买金额"  />
+<field name="inter_image" type="string" length="600" required="false" cnname="积分图片"  />
+<field name="info_state" type="string" length="1" required="false" cnname="审核状态"  />
+<field name="description" type="string" length="1000" required="false" cnname="积分商品描述"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="发布人cust_id"  />
+<field name="stock" type="int" length="9" required="false" cnname="库存"  />
+<field name="cat_attr" type="string" length="100" required="true" cnname="所属分类"  />
+</table>
+<table id="groupgoods">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="group_title" type="string" length="200" required="true" cnname="团购标题"  />
+<field name="cat_attr" type="string" length="100" required="true" cnname="所属分类"  />
+<field name="group_type" type="string" length="1" required="false" cnname="团购类型"  />
+<field name="start_date" type="datetime" length="10000" required="true" cnname="开始日期"  />
+<field name="end_date" type="datetime" length="10000" required="true" cnname="结束日期"  />
+<field name="img_path" type="string" length="600" required="true" cnname="团购图片"  />
+<field name="group_desc" type="string" length="10000" required="true" cnname="详细描述"  />
+<field name="sort_no" type="int" length="9" required="flase" cnname="排序"  />
+<field name="info_state" type="string" length="1" required="false" cnname="审核状态"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="发布时间"  />
+<field name="user_id" type="int" length="9" required="false" cnname="发布人"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="bond" type="double" length="15" required="false" cnname="保证金"  />
+<field name="cust_maxbuy" type="double" length="15" required="false" cnname="同一会员购买上限"  />
+</table>
+
+<table id="spikegoods">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="spike_title" type="string" length="200" required="true" cnname="秒杀标题"  />
+<field name="cat_attr" type="string" length="100" required="true" cnname="所属分类"  />
+<field name="price" type="double" length="10000" required="true" cnname="价格"  />
+<field name="start_date" type="datetime" length="10000" required="true" cnname="开始时间"  />
+<field name="end_date" type="datetime" length="10000" required="true" cnname="结束时间"  />
+<field name="img_path" type="string" length="10000" required="true" cnname="秒杀图片"  />
+<field name="spike_desc" type="string" length="10000" required="true" cnname="秒杀描述"  />
+<field name="sort_no" type="int" length="9" required="true" cnname="排序"  />
+<field name="info_state" type="string" length="1" required="true" cnname="审核状态"  />
+<field name="user_id" type="int" length="9" required="false" cnname="发布人"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="发布日期"  />
+</table>
+
+<table id="refundapp">
+<field name="buy_cust_id" type="int" length="9" required="true" cnname="buy_cust_id"  />
+<field name="buy_user_id" type="int" length="9" required="true" cnname="buy_user_id"  />
+<field name="order_id" type="string" length="17" required="true" cnname="order_id"  />
+<field name="buy_type" type="string" length="2" required="false" cnname="buy_type"  />
+<field name="buy_reason" type="string" length="200" required="true" cnname="buy_reason"  />
+<field name="buy_date" type="datetime" length="10000" required="true" cnname="buy_date"  />
+<field name="seller_cust_id" type="string" length="10" required="false" cnname="seller_cust_id"  />
+<field name="seller_user_id" type="string" length="10" required="false" cnname="seller_user_id"  />
+<field name="seller_state" type="string" length="1" required="false" cnname="seller_state"  />
+<field name="seller_date" type="string" length="20" required="false" cnname="seller_date"  />
+<field name="refund_state" type="string" length="1" required="false" cnname="refund_state"  />
+<field name="info_state" type="string" length="1" required="true" cnname="info_state"  />
+</table>
+
+<table id="shiptemplate">
+<field name="ship_name" type="string" length="60" required="true" cnname="模板名称"  />
+<field name="start_area" type="string" length="60" required="true" cnname="发货地址"  />
+<field name="valuation_mode" type="string" length="1" required="true" cnname="计价方式"  />
+<field name="smode_attr" type="string" length="200" required="true" cnname="运送方式"  />
+<field name="cust_id" type="int" length="9" required="true" cnname="会员标识"  />
+</table>
+
+<table id="groupladder">
+<field name="trade_id" type="int" length="9" required="true" cnname="流水号"  />
+<field name="group_id" type="int" length="9" required="false" cnname="团购ID"  />
+<field name="lownum" type="int" length="9" required="false" cnname="下限数量"  />
+<field name="price" type="double" length="10000" required="false" cnname="价格"  />
+</table>
+
+<table id="collect">
+<field name="coll_id" type="int" length="9" required="false" cnname="收藏标识"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="商品标识"  />
+<field name="title" type="string" length="100" required="true" cnname="收藏标题"  />
+<field name="link_url" type="string" length="100" required="true" cnname="收藏链接"  />
+<field name="remark" type="string" length="100" required="false" cnname="备注"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="添加时间"  />
+</table>
+<table id="cartgoods">
+<field name="trade_id" type="int" length="9" required="true" cnname="trade_id"  />
+<field name="buy_num" type="int" length="9" required="false" cnname="buy_num"  />
+<field name="cust_id" type="int" length="9" required="false" cnname="cust_id"  />
+<field name="cookie_id" type="string" length="32" required="false" cnname="cookie_id"  />
+<field name="shop_name" type="string" length="20" required="false" cnname="shop_name"  />
+<field name="shop_qq" type="int" length="9" required="false" cnname="shop_qq"  />
+<field name="user_name" type="string" length="20" required="true" cnname="user_name"  />
+<field name="goods_id" type="int" length="9" required="false" cnname="goods_id"  />
+<field name="img_path" type="string" length="100" required="false" cnname="img_path"  />
+<field name="goods_name" type="string" length="100" required="false" cnname="goods_name"  />
+<field name="spec_name" type="string" length="100" required="false" cnname="spec_name"  />
+<field name="spec_id" type="string" length="100" required="false" cnname="spec_id"  />
+<field name="integral" type="decimal" length="10,2" required="false" cnname="integral"  />
+<field name="privilege_way" type="string" length="20" required="false" cnname="privilege_way"  />
+<field name="is_virtual" type="string" length="1" required="true" cnname="is_virtual"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="in_date"  />
+</table>
+
+<table id="pushlogistics">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="number" type="string" length="20" required="false" cnname="运单号"  />
+<field name="com" type="string" length="20" required="false" cnname="物流公司"  />
+<field name="status" type="string" length="15" required="false" cnname="轮循状态"  />
+<field name="time" type="datetime" length="10000" required="false" cnname="时间"  />
+<field name="content" type="string" length="600" required="false" cnname="内容"  />
+<field name="is_ship" type="string" length="1" required="false" cnname="是否发货"  />
+<field name="is_send" type="string" length="1" required="false" cnname="是否派件"  />
+<field name="is_sign" type="string" length="1" required="false" cnname="是否签收"  />
+</table>
+<table id="capitalmanagement">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="pass_men" type="string" length="20" required="false" cnname="通过人"  />
+<field name="password" type="string" length="50" required="false" cnname="通过密码"  />
+<field name="question" type="string" length="50" required="false" cnname="找回密码问题"  />
+<field name="answer" type="string" length="50" required="false" cnname="找回密码答案"  />
+</table>
+<table id="directorderdetail">
+<field name="trade_id" type="int" length="9" required="true" cnname="流水号"  />
+<field name="order_id" type="string" length="17" required="true" cnname="订单号"  />
+<field name="goods_id" type="int" length="9" required="true" cnname="商品标识"  />
+<field name="goods_price" type="double" length="10000" required="false" cnname="销售价"  />
+<field name="order_num" type="int" length="11" required="false" cnname="预定人数"  />
+<field name="goods_attr" type="string" length="300" required="false" cnname="商品属性"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="下单时间"  />
+<field name="endpay_time" type="datetime" length="10000" required="false" cnname="应付尾款时间"  />
+<field name="pay_state" type="string" length="1" required="false" cnname="付款状态"  />
+</table>
+<table id="directsell">
+<field name="trade_id" type="int" length="9" required="false" cnname="流水号"  />
+<field name="info_state" type="string" length="1" required="false" cnname="审核状态"  />
+<field name="saledesc" type="string" length="10000" required="true" cnname="预售描述"  />
+<field name="cat_attr" type="string" length="100" required="true" cnname="预售分类"  />
+<field name="start_time" type="datetime" length="10000" required="true" cnname="预售开始时间"  />
+<field name="end_time" type="datetime" length="10000" required="true" cnname="预售结束时间"  />
+<field name="sort" type="int" length="9" required="true" cnname="排序"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="操作时间"  />
+<field name="sale_title" type="string" length="36" required="true" cnname="预售标题"/>
+<field name="cust_id" type="int" length="9" required="false" cnname="会员标识" />
+<field name="user_id" type="int" length="9" required="false" cnname="操作人"  />
+<field name="img_path" type="string" length="1000" required="true" cnname="预售图片"  />
+<field name="deliver_time" type="datetime" length="10000" required="true" cnname="预计发货时间"  />
+<field name="tail_time" type="datetime" length="10000" required="true" cnname="开始支付尾款时间"  />
+<field name="max_buy" type="string" length="20" required="true" cnname="预定数量"  />
+</table>
+<table id="directladder">
+<field name="trade_id" type="int" length="9" required="true" cnname="流水号"  />
+<field name="direct_id" type="int" length="9" required="false" cnname="预售ID"  />
+<field name="lownum" type="int" length="9" required="false" cnname="数量下限"  />
+<field name="price" type="double" length="10000" required="false" cnname="价格"  />
+</table>
+<!-- 瀑布流模板 XBY -->
+<table id="template">
+<field name="template_name" type="string" length="50" required="true" cnname="模板名称"  />
+</table>
+<table id="membercredit">
+<field name="credit_id" type="int" length="11" required="true" cnname="credit_id"  />
+<field name="cust_id" type="string" length="20" required="false" cnname="cust_id"  />
+<field name="user_id" type="string" length="20" required="false" cnname="user_id"  />
+<field name="buy_num" type="int" length="11" required="false" cnname="buy_num"  />
+<field name="sell_num" type="int" length="11" required="false" cnname="sell_num"  />
+</table>
+<table id="sendshipmode">
+<field name="smode_name" type="string" length="30" required="false" cnname="模板名称"  />
+<field name="smode_desc" type="string" length="200" required="false" cnname="描述"  />
+<field name="is_insured" type="string" length="1" required="true" cnname="是否保价"  />
+<field name="rate" type="float" length="10000" required="false" cnname="保价费率"  />
+<field name="reach_pay" type="string" length="1" required="true" cnname="是否支持货到付款"  />
+<field name="sort_no" type="int" length="11" required="true" cnname="排序"  />
+<field name="smode_id" type="string" length="10" required="true" cnname="主键"  />
+<field name="en_name" type="string" length="100" required="true" cnname="快递公司代码"  />
+<field name="print_mode" type="string" length="10000" required="false" cnname="print_mode"  />
+<field name="img_path" type="string" length="500" required="false" cnname="图片"  />
+</table>
+<!-- 发货方式 -->
+<table id="sendmode">
+<field name="smode_name" type="string" length="30" required="true" cnname="发货方式名称"  />
+<field name="en_name" type="string" length="100" required="true" cnname="快递公司代码"  />
+<field name="sendlength" type="string" length="20" required="true" cnname="运单号长度"  />
+</table>
+<!-- 发票打印 -->
+<table id="invoice">
+<field name="invoice_name" type="string" length="20" required="true" cnname="发票名称"  />
+<field name="print_param" type="string" length="200" required="false" cnname="打印项"  />
+<field name="show_content" type="string" length="10000" required="false" cnname="打印内容"  />
+</table>
+<table id="trygoods">
+<field name="try_id" type="int" length="11" required="false" cnname="try_id"  />
+<field name="goods_id" type="int" length="11" required="true" cnname="商品名称"  />
+<field name="weibo_id" type="string" length="500" required="false" cnname="微博ID号"  />
+<field name="trynum" type="int" length="11" required="true" cnname="试用数量"  />
+<field name="starttime" type="datetime" length="10000" required="true" cnname="申请试用开始时间"  />
+<field name="endtime" type="datetime" length="10000" required="true" cnname="申请试用结束时间"  />
+<field name="wbcontent" type="string" length="1000" required="false" cnname="转发内容"  />
+<field name="in_date" type="datetime" length="10000" required="false" cnname="发布日期"  />
+<field name="info_state" type="string" length="1" required="false" cnname="状态"  />
+<field name="click_num" type="int" length="11" required="false" cnname="点击量"  />
+<field name="sort_no" type="int" length="11" required="false" cnname="排序"  />
+</table>
+<table id="sysfund">
+<field name="fund_num" type="decimal" length="20,2" required="false" cnname="fund_num"  />
+<field name="use_num" type="decimal" length="20,2" required="false" cnname="use_num"  />
+<field name="freeze_num" type="decimal" length="20,2" required="false" cnname="freeze_num"  />
+</table>
+<!-- 晒单 -->
+<table id="goodsshare">
+<field name="trade_id" type="int" length="11 unsigned" required="true" cnname="唯一标识"  />
+<field name="goods_id" type="int" length="11" required="false" cnname="商品ID"  />
+<field name="goods_name" type="string" length="50" required="false" cnname="商品名称"  />
+<field name="goods_mian_pic" type="string" length="50" required="false" cnname="商品主图"  />
+<field name="cust_id" type="int" length="11" required="false" cnname="会员ID"  />
+<field name="user_id" type="int" length="11" required="false" cnname="用户ID"  />
+<field name="title" type="string" length="50" required="false" cnname="晒单标题"  />
+<field name="share_content" type="string" length="200" required="false" cnname="晒单内容"  />
+<field name="share_pic" type="string" length="50" required="false" cnname="晒单图片"  />
+</table>
+<!-- 前台搜索过滤规则 -->
+<table id="searchfilter">
+<field name="search_in_word" type="string" length="50" required="false" cnname="搜索关键字"  />
+<field name="search_rep_word" type="string" length="50" required="false" cnname="搜索替换关键字"  />
+</table>
+<table id="associationkeywords">
+<field name="ass_key_words_title" type="string" length="500" required="true" cnname="联想关键词"  />
+<field name="cat_attr" type="string" length="500" required="false" cnname="分类"  />
+</table>
+
+
+<!-- 门店 -->
+<table id="asysuser">
+<field name="nike_name" type="string" length="10" required="false" cnname="nike_name"/>
+<field name="user_type" type="string" length="1" required="false" cnname="user_type"/>
+<field name="role_id" type="int" length="11" required="false" cnname="role_id"/>
+<field name="loginnum" type="int" length="11" required="false" cnname="loginnum"  />
+<field name="logintime" type="datetime" length="10000" required="false" cnname="logintime"/>
+<field name="loginip" type="string" length="20" required="false" cnname="loginip"/>
+<field name="state" type="string" length="1" required="false" cnname="state"/>
+<field name="org_id" type="string" length="100" required="false" cnname="org_id"/>
+<field name="grade" type="string" length="2" required="false" cnname="grade"/>
+<field name="subjection" type="int" length="11" required="false" cnname="subjection"/>
+<field name="is_del" type="string" length="1" required="false" cnname="is_del"/>
+<field name="com_name" type="string" length="50" required="false" cnname="com_name"/>
+<field name="area_attr" type="string" length="100" required="false" cnname="area_attr"/>
+<field name="level" type="string" length="20" required="false" cnname="level"/>
+<field name="cost" type="string" length="20" required="false" cnname="cost"/>
+<field name="spread" type="string" length="20" required="false" cnname="spread"/>
+<field name="cust_num" type="int" length="11" required="false" cnname="cust_num"/>
+<field name="cust_amount" type="string" length="20" required="false" cnname="cust_amount"/>
+<field name="obligate_1" type="string" length="20" required="false" cnname="obligate_1"/>
+<field name="obligate_2" type="string" length="20" required="false" cnname="obligate_2"/>
+<field name="obligate_3" type="string" length="20" required="false" cnname="obligate_3"/>
+<field name="obligate_4" type="string" length="20" required="false" cnname="obligate_4"/>
+<field name="obligate_5" type="string" length="20" required="false" cnname="obligate_5"/>
+<field name="agent_type" type="string" length="1" required="false" cnname="agent_type"/>
+<field name="user_name" type="string" length="20" required="false" cnname="用户名" />
+<field name="passwd" type="string" length="32" required="false" cnname="密码"/>
+<field name="real_name" type="string" length="50" required="false" cnname="联系人"/>
+<field name="email" type="string" length="50" required="false" cnname="邮箱"/>
+<field name="cellphone" type="int" length="20" required="false" conname="手机"/>
+<field name="detai_area_attr" type="string" length="100" required="false" conname="所在地区"/>
+<field name="address" type="string" length="100" required="false" conname="详细地址"/>
+<field name="store_name" type="string" length="100" required="false" conname="门店名称"/>
+<field name="store_img" type="string" length="100" required="false" conname="门店图片"/>
+<field name="store_servce" type="string" length="100" required="false" conname="门店服务"/>
+</table>
+
+
+<table id="depot">
+<field name="depot_name" type="string" length="50" required="false" cnname="仓库名称"  />
+<field name="depot_add" type="string" length="200" required="false" cnname="仓库地址"  />
+<field name="depot_mail" type="string" length="200" required="false" cnname="联系邮件"  />
+<field name="contact" type="string" length="50" required="false" cnname="联系人"  />
+<field name="phone" type="int" length="20" required="false" cnname="联系电话"  />
+</table>
+<!-- 楼层管理 -->
+<table id="floorinfo">
+<field name="f_tag" type="string" length="10" required="false" cnname="楼标"/>
+<field name="f_name" type="string" length="20" required="false" cnname="楼名"/>
+<field name="cat_attr" type="string" length="200" required="false" cnname="所属分类"/>
+<field name="f_admark" type="string" length="20" required="false" cnname="广告标签"/>
+<field name="f_sort" type="string" length="10" required="false" cnname="排序"/>
+<field name="f_state" type="string" length="10" required="false" cnname="是否显示"/>
+<field name="in_date" type="string" length="20" required="false" cnname="时间"/>
+<field name="is_sys" type="string" length="10" required="false" cnname="是否系统内置"/>
+</table>
+<!-- 楼层标签 -->
+<table id="floormark">
+<field name="fm_name" type="string" length="100" required="false" cnname="楼层标签名称"/>
+<field name="fm_remark" type="string" length="100" required="false" cnname="楼层标签备注"/>
+<field name="fm_sort" type="int" length="10" required="false" cnname="楼层排序" />
+<field name="fm_type" type="string" length="4" required="false" cnname="楼层标签类型"/>
+</table>
+<table id="goodfloormark">
+<field name="gm_id" type="int" length="11" required="true" cnname="gm_id"  />
+<field name="goods_id" type="string" length="20" required="false" cnname="goods_id"  />
+<field name="fm_id" type="string" length="20" required="false" cnname="fm_id"  />
+<field name="f_id" type="string" length="20" required="false" cnname="f_id"  />
+<field name="gm_name" type="string" length="200" required="false" cnname="gm_name"  />
+<field name="img_path" type="string" length="500" required="false" cnname="img_path"  />
+<field name="gm_url" type="string" length="500" required="false" cnname="gm_url"  />
+<field name="gm_type" type="string" length="10" required="false" cnname="gm_type"  />
+<field name="cat_attr" type="string" length="100" required="false" cnname="cat_attr"  />
+<field name="gm_sort" type="string" length="10" required="false" cnname="gm_sort"  />
+</table>
+
+<!-- 导航标签 -->
+<table id="navtab">
+<field name="tab_name" type="string" length="50" required="false" cnname="导航标签名"/>
+<field name="tab_remark" type="string" length="200" required="false" cnname="导航标签备注"/>
+<field name="sort_no" type="int" length="10" required="false" cnname="排序"/>
+<field name="tab_url" type="string" length="100" required="false" cnname="随机数"/>
+<field name="start" type="string" length="10" required="false" cnname="是否启用"/>
+<field name="touch" type="string" length="10" required="false" conname="Pc端\触屏版"/>
+</table>
+<table id="navigation">
+<field name="n_id" type="int" length="11" required="true" cnname="n_id"  />
+<field name="goods_id" type="int" length="11" required="false" cnname="goods_id"  />
+<field name="tab_id" type="int" length="11" required="false" cnname="tab_id"  />
+<field name="sort_no" type="int" length="10" required="false" cnname="sort_no"  />
+<field name="in_date" type="string" length="100" required="false" cnname="in_date"  />
+</table>
+<!-- 导航分类 -->
+<table id="catnav">
+<field name="custom_name" type="string" length="200" required="true" cnname="分类别名"  />
+<field name="sort_no" type="string" length="20" required="false" cnname="排序"  />
+<field name="cat_attr" type="string" length="10000" required="false" cnname="组合分类"  />
+</table>
+<!-- 进出口税率 -->
+<table id="taxrate">
+<field name="up_tax_id" type="string" length="10" required="false" cnname="上级id"/>
+<field name="tax_name" type="string" length="100" required="false" cnname="品名级规格"/>
+<field name="tax_number" type="string" length="20" required="false" cnname="税率号号"/>
+<field name="tax_en_name" type="string" length="300" required="false" cnname="英文名称"/>
+<field name="sort_no" type="int" length="10" required="false" cnname="排序"/>
+</table>
+<!-- 国际物流 -->
+<table id="internationaltariff">
+<field name="ief_price" type="string" length="20" required="false" cnname="国际物流单价"/>
+<field name="ief_cubic" type="string" length="20" required="false" cnname="立方数"/>
+<field name="ief_overweight" type="string" length="20" required="false" cnname="超重重量"/>
+<field name="ief_overweight_price" type="string" length="20" required="false" cnname="超重运费单价"/>
+<field name="ief_name" type="string" length="100" required="false" cnname="国际物流名称"/>
+</table>
+<table id="orderinvoice">
+<field name="invoice_id" type="int" length="11" required="true" cnname="invoice_id"  />
+<field name="look_up" type="string" length="200" required="false" cnname="look_up"  />
+<field name="p_content" type="string" length="50" required="false" cnname="p_content"  />
+<field name="invoice_type" type="string" length="1" required="false" cnname="invoice_type"  />
+<field name="company_name" type="string" length="200" required="false" cnname="company_name"  />
+<field name="identifier" type="string" length="200" required="false" cnname="identifier"  />
+<field name="re_address" type="string" length="300" required="false" cnname="re_address"  />
+<field name="re_phone" type="string" length="20" required="false" cnname="re_phone"  />
+<field name="bank_name" type="string" length="20" required="false" cnname="bank_name"  />
+<field name="bank_id" type="string" length="20" required="false" cnname="bank_id"  />
+<field name="z_content" type="string" length="50" required="false" cnname="z_content"  />
+<field name="ticket_name" type="string" length="50" required="false" cnname="ticket_name"  />
+<field name="ticket_cell" type="string" length="11" required="false" cnname="ticket_cell"  />
+<field name="area_attr" type="string" length="100" required="false" cnname="area_attr"  />
+<field name="address" type="string" length="300" required="false" cnname="address"  />
+<field name="cust_id" type="string" length="20" required="false" cnname="cust_id"  />
+<field name="user_id" type="string" length="20" required="false" cnname="user_id"  />
+</table>
+<table id="coupon">
+<field name="coupon_name" type="string" length="50" required="true" cnname="名称"  />
+<field name="coupon_no" type="string" length="20" required="true" cnname="号码"  />
+<field name="content" type="string" length="500" required="true" cnname="规则描述"  />
+<field name="start_time" type="string" length="200" required="true" cnname="开始时间"  />
+<field name="end_time" type="string" length="200" required="true" cnname="结束时间"  />
+<field name="member_level" type="string" length="200" required="true" cnname="会员级别"  />
+<field name="need_state" type="string" length="10" required="true" cnname="优惠条件"  />
+<field name="coupon_state" type="string" length="100" required="true" cnname="优惠方案"  />
+<field name="coupon_num" type="string" length="10" required="true" cnname="发布数量"  />
+</table>
+<table id="salegoods">
+<field name="sale_name" type="string" length="200" required="true" cnname="规则名称"  />
+<field name="sale_name_list" type="string" length="100" required="true" cnname="列表名称"  />
+<field name="content" type="string" length="500" required="true" cnname="规则描述"  />
+<field name="start_time" type="string" length="100" required="true" cnname="开始时间"  />
+<field name="end_time" type="string" length="100" required="true" cnname="结束时间"  />
+<field name="member_level" type="string" length="100" required="true" cnname="会员级别"  />
+<field name="coupon_state" type="string" length="10" required="true" cnname="优惠方案"  />
+<field name="term_state" type="string" length="10" required="true" cnname="优惠条件"  />
+<field name="platform" type="string" length="10" required="true" cnname="生效平台"  />
+</table>
+<table id="redpacket">
+<field name="red_name" type="string" length="100" required="true" cnname="名称"  />
+<field name="red_no" type="string" length="20" required="true" cnname="号码"  />
+<field name="content" type="string" length="50" required="true" cnname="描述"  />
+<field name="money" type="string" length="10" required="true" cnname="金额"  />
+<field name="start_time" type="string" length="100" required="true" cnname="开始时间"  />
+<field name="end_time" type="string" length="100" required="true" cnname="结束时间"  />
+<field name="member_level" type="string" length="100" required="true" cnname="会员级别"  />
+<field name="red_num" type="string" length="10" required="true" cnname="发布数量"  />
+</table>
+<table id="saleorder">
+<field name="sale_name" type="string" length="200" required="true" cnname="规则名称"  />
+<field name="content" type="string" length="500" required="true" cnname="规则描述"  />
+<field name="start_time" type="string" length="100" required="true" cnname="开始时间"  />
+<field name="end_time" type="string" length="100" required="true" cnname="结束时间"  />
+<field name="member_level" type="string" length="100" required="true" cnname="会员级别"  />
+<field name="coupon_state" type="string" length="10" required="true" cnname="优惠方案"  />
+<field name="term_state" type="string" length="10" required="true" cnname="优惠条件"  />
+<field name="platform" type="string" length="10" required="true" cnname="生效平台"  />
+</table>
+<table id="storeintro">
+<field name="sto_name" type="string" length="200" required="true" cnname="门店服务介绍名称"  />
+<field name="img_path" type="string" length="500" required="false" cnname="门店服务介绍图片"  />
+</table>
+<!-- 赠品 ZMS -->
+<table id="freegoods">
+<field name="fg_name" type="string" length="200" required="true" cnname="赠品名称"/>
+<field name="img_path" type="string" length="500" required="false" cnname="赠品图片"/>
+<field name="fg_number" type="int" length="20" required="true" cnname="赠品数量"/>
+<field name="fg_price" type="string" length="20" required="false" cnname="赠品价格"/>
+</table>
+
+<!-- 充值卡CYC -->
+<table id="rechargeablecard">
+<field name="cardname" type="string" length="20" required="true" cnname="充值卡名称"/>
+<field name="cardmoney" type="string" length="20" required="true" cnname="充值卡金额"/>
+<field name="cardnum" type="string" length="20" required="true" cnname="充值卡数量"/>
+<field name="carddate" type="string" length="30" required="true" cnname="有效日期"/>
+</table>
+</validatebody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

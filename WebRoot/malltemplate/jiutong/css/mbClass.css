@@ -1,0 +1,60 @@
+/*分类*/
+.botDiv{
+	margin-top:0px;
+}
+.classDiv{
+	padding-left:80px;
+	position:relative;
+}
+.leftCDiv{/*左边*/
+	width:80px;
+	height:100px;
+	position:absolute;
+	left:0px;
+	top:0px;
+	background:#ededed;
+	font-size:14px;
+	text-align:center;
+	overflow:auto;
+}
+.leftCDiv li img{
+	width:20px;
+	height:20px;
+}
+.leftCDiv li{
+	border-bottom:#e1e1e1 solid 1px;
+	line-height:18px;
+	padding:10px 0;
+	cursor:pointer;
+}
+.leftCDiv  .selli{
+	background:#fff;
+}
+.rightCDiv{/*右边*/
+	background:#fff;
+	overflow:auto;
+	border-bottom:#f8f8f8 solid 2px;
+	display:none;
+}
+.rightCDiv .clsph2{
+	height:36px;
+	background:#f8f8f8;
+	line-height:36px;
+	border-bottom:#ebebeb solid 1px;
+	padding:0 10px;
+}
+.rightCDiv .clsph2 span{
+	width:8px;
+	height:8px;
+	background:#e4b632;
+	display:inline-block;
+	border-radius:50%;
+	margin-right:4px;
+}
+.rightCDiv .clsp{
+	padding:10px;
+}
+.rightCDiv .clsp a{
+	display:inline-block;
+	margin:6px 15px;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="specvalue">
+
+	<typeAlias alias="specvalue" type="com.rbt.model.Specvalue" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="specvalue">
+		<![CDATA[ 
+    SELECT sv_code,sv_name,sv_img_path,sort_no,spec_code FROM specvalue WHERE spec_code=$sv_code$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="specvalue">
+		UPDATE specvalue SET sv_code=#sv_code#,sv_name=#sv_name#,sv_img_path=#sv_img_path#,sort_no=#sort_no#,spec_code=#spec_code# WHERE sv_code=$sv_code$
+	</update>
+
+	<insert id="insert" parameterClass="specvalue">
+		INSERT INTO specvalue (sv_code,sv_name,sv_img_path,sort_no,spec_code) VALUES (#sv_code#,#sv_name#,#sv_img_path#,#sort_no#,#spec_code#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM specvalue WHERE spec_code in ($spec_code$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM specvalue 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="spec_code"> 
+     		    spec_code=#spec_code#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sv_code,sv_name,sv_img_path,sort_no,spec_code
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,sv_name DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,105 @@
+/*右侧*/
+.frightside{
+	width:800px;
+	float:right;
+}
+/*订单*/
+.orderNum{
+	height:42px;
+	line-height:42px;
+	background:#f7f7f7;
+	border-top:#c9c8c8 solid 1px;
+}
+.orderNum span{
+	padding:0 15px;
+}
+/*物流动态*/
+.logistics{
+	height:34px;
+	line-height:34px;
+	background:#f0f6fe;
+	border-top:#c9c8c8 solid 1px;
+}
+.logistics span{
+	padding:0 15px;
+}
+.bred{
+	color:#cd0000;
+}
+.logDynamic{
+	width:1130px;
+	margin-top:10px;
+}
+.logDynamic h2{
+	width:1130px;
+	height:28px;
+	background:url(../images/logDytitle_03.gif) repeat-x;
+}
+.logDynamic h2 span{
+	width:83px;
+	height:28px;
+	line-height:28px;
+	background:url(../images/logDyh2_03.gif) no-repeat;
+	display:inline-block;
+	font-size:12px;
+	font-weight:100;
+	text-align:center;
+}
+.logDycon{
+	width:1100px;
+	border:#cccbcb solid 1px;
+	border-top:none;
+	padding:15px;
+}
+.logDycon span{
+	width:160px;
+	display:inline-block;
+	padding-left:10px;
+}
+.logDycon p{
+	line-height:32px;
+}
+.logDycon .clickp{
+	background:#f7f7f7;
+}
+.prompt{
+	width:500px;
+	height:22px;
+	margin-top:10px;
+	background:#fffee9;
+	border:#ecd39b solid 1px;
+}
+.prompt h2{
+	font-weight:100;
+	font-size:12px;
+	line-height:22px;
+	background:url(../images/deng_11.gif) no-repeat 5px center;
+	padding-left:25px;
+}
+/*订单信息*/
+.logDynamic td{
+	padding:15px 0;
+	border-bottom:#c9c8c8 solid 1px;
+}
+.logDynamic td a{
+	color:#2652a5;
+}
+.logDynamic td a:hover{
+	color:#cc0000;
+}
+.logDynamic td img{
+	width:50px;
+	height:50px;
+	padding-left:20px;
+	padding-right:15px;
+}
+.batch{
+	border:#cce2fe solid 1px;
+	margin-top:20px;
+	background:#f0f6fe;
+	line-height:28px;
+	padding:5px 0;
+}
+.batch p{
+	padding-left:15px;
+}

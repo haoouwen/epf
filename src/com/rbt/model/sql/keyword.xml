@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="keyword">
+
+	<typeAlias alias="keyword" type="com.rbt.model.Keyword" />
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="keyword">
+	<![CDATA[ 
+        SELECT key_id,key_name,module_type,num,is_show,in_date,m_ip FROM keyword WHERE key_id=$VALUE$
+    ]]>
+	</select>
+   
+<!-- 批量更新是否显示f_state -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE keyword SET is_show=#is_show# WHERE key_id=$key_id$
+	</update>
+
+	<update id="update" parameterClass="keyword">
+    	UPDATE keyword SET key_name=#key_name#,module_type=#module_type#,num=#num#,en_name=#en_name#,
+    	is_show=#is_show#,in_date=#in_date#,m_ip=#m_ip#
+    	WHERE key_id=$key_id$
+	</update>
+	
+	<update id="updatekeynums" parameterClass="keyword">
+    	UPDATE keyword SET num=num+1,in_date=#in_date#,m_ip=#m_ip# WHERE key_id=$key_id$
+	</update>
+	
+
+	<insert id="insert" parameterClass="keyword">
+		INSERT INTO keyword (key_name,module_type,num,en_name,is_show,in_date,m_ip) 
+		VALUES (#key_name#,#module_type#,#num#,#en_name#,#is_show#,#in_date#,#m_ip#)
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from keyword where key_id in ($value$)
+	</delete>
+	
+	<sql id="getCommon">
+	   FROM keyword 
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="key_name"> 
+			     instr(key_name,#key_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="keyword"> 
+			     key_name=#keyword#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="en_name"> 
+			     en_name=#en_name#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="module_type"> 
+			     module_type=#module_type#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="is_show"> 
+			     is_show=#is_show#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="in_date"> 
+			     in_date=#in_date#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="m_ip"> 
+			     m_ip=#m_ip#
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+         SELECT key_id,key_name,en_name,module_type,num,(select module_name from sysmodule where module_type=keyword.module_type) as module_name
+         ,is_show,in_date,m_ip
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by num DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull>
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+ 	
+</sqlMap>

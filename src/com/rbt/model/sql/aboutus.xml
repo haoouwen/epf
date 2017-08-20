@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="aboutus">
+
+	<typeAlias alias="aboutus" type="com.rbt.model.Aboutus" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="aboutus">
+		<![CDATA[ 
+    SELECT info_id,title,content,ch_id,user_id,in_date FROM aboutus WHERE info_id=$info_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="aboutus">
+		UPDATE aboutus SET info_id=#info_id#,title=#title#,content=#content#,ch_id=#ch_id#,user_id=#user_id#,in_date=now() WHERE info_id=$info_id$
+	</update> 
+
+	<insert id="insert" parameterClass="aboutus">
+		INSERT INTO aboutus (title,content,ch_id,user_id,in_date) VALUES (#title#,#content#,#ch_id#,#user_id#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM aboutus WHERE info_id in ($info_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM aboutus as t1 left join commpara as t2 on t1.ch_id=t2.para_value
+	     <dynamic prepend="WHERE">
+		 <isNotNull prepend="and" property="title"> 
+			     instr(t1.title,#title#)>0
+	     </isNotNull>
+	      <isNotNull prepend="and" property="ch_id"> 
+			     t1.ch_id=#ch_id#
+	     </isNotNull>
+	     <isNotNull prepend="and" property="starttime"> 
+			DATE(t1.in_date)>=#starttime#
+	    </isNotNull>
+		<isNotNull prepend="and" property="endtime"> 
+			#endtime#>=DATE(t1.in_date)
+		</isNotNull>
+	      <isNotNull prepend="and" property="para_code"> 
+			    t2.para_code=#para_code#
+	     </isNotNull>
+	     </dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT info_id,title,content,ch_id,user_id,in_date,t2.para_key as model_value
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		    ORDER BY info_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+		
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

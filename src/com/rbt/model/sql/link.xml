@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="link">
+
+	<typeAlias alias="link" type="com.rbt.model.Link" />
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="link">
+	<![CDATA[ 
+        SELECT link_id,link_name,link_group,url,area_attr,sort_no,is_display,img_path FROM link WHERE link_id=$VALUE$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="link">
+    	UPDATE link SET  link_name=#link_name#,link_group=#link_group#,area_attr=#area_attr#,url=#url#,sort_no=#sort_no#,is_display=#is_display#,img_path=#img_path# WHERE link_id=$link_id$
+	</update>
+
+	<insert id="insert" parameterClass="link">
+		INSERT INTO link (link_name,link_group,area_attr,url,sort_no,is_display,img_path) 
+		VALUES (#link_name#,#link_group#,#area_attr#,#url#,$sort_no$,#is_display#,#img_path#)
+	</insert>
+	<!-- 批量更新是否显示is_display -->
+    <update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE link SET is_display=#is_display# WHERE link_id=$link_id$
+	</update>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from link where link_id in ($value$)
+	</delete>
+	
+	<sql id="getCommon">
+	   FROM link left join link_group on link.link_group=link_group.id
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="link_name"> 
+			     instr(link_name,#link_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="link_group"> 
+			     link_group=#link_group#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="area_attr"> 
+			 INSTR(area_attr,#area_attr#) >0
+			 </isNotNull>
+			  <isNotNull prepend="and" property="name"> 
+			     name=#name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_display"> 
+			     is_display=#is_display#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="url"> 
+			     url=#url#
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+        SELECT link_id,link_name,link_group,area_attr,url,sort_no,is_display,img_path,link_group.name as name
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by link_id DESC,sort_no DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull>
+ 
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+ 	
+</sqlMap>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>EPF-O2O触屏版—商品分类</title>
+<meta name="author" content="EPF-O2O">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Expires" content="-1">           
+<meta http-equiv="Cache-Control" content="no-cache">           
+<meta http-equiv="Pragma" content="no-cache">
+<link href="/wro/webapp_common.css" rel="stylesheet" type="text/css"/>
+<link href="/malltemplate/webapp/css/mbClass.css" rel="stylesheet" type="text/css"></link>
+</head>
+
+<body>
+
+<div class="top">商品分类 <span class="navBut"></span></div>
+
+<div class="pubNavDiv">
+
+  <!--搜索,导航-->
+   
+  <!--头部LOGO，搜索-->
+  <header class="searchDiv">
+     <table width="100%" cellpadding="0" cellspacing="0">
+       <tr>
+          <td>
+             <div class="searTextDiv">
+              <input type="text" class="searText" id="keyword" onfocus="searchstart();" onblur="searchend();"/>
+              <input type="button" class="searBut" onclick="searchgoods();"/>
+              <input type="hidden" id="en_word" />
+              <input type="hidden" id="default_search" value="德国奶粉" />
+              <span class="clearSearBut"></span>
+             </div>
+            </td>
+       </tr>
+     </table>
+  </header>
+  
+  <!--导航-->
+  <nav class="sNavDiv">
+     <a href="/mindex.html" class="homeA">首页</a>
+     <a href="javascript:void(0);" onclick="goCart();" class="cartA">购物车</a>		
+     <a href="/webappmembercenter.html" class="memberA">会员中心</a>
+     <a href="/a/webapp/webappClassification.html" class="claA">商品分类</a>
+  </nav>
+
+
+  
+</div>
+
+<!--商品分类-->
+<div class="classDiv">
+    <ul>
+    <li>
+        <h3 id="8712215675">进口食品</h3>
+        <div id="8712215675_div">
+          <a href="/webapp/goodslist/TangGuo.html">糖果</a><a href="/webapp/goodslist/JianKangZaoCan.html">健康早餐</a><a href="/webapp/goodslist/QiaoKeLi.html">巧克力</a><a href="/webapp/goodslist/LingShiJianGuo.html">零食坚果</a><a href="/webapp/goodslist/BingGanQuQi.html">饼干曲奇</a><a href="/webapp/goodslist/PengHuaShiPin.html">膨化食品</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="5447172767">母婴用品</h3>
+        <div id="5447172767_div">
+          <a href="/webapp/goodslist/DeGuoJinKouNaiFen.html">德国进口奶粉</a><a href="/webapp/goodslist/YingErFuShi.html">婴儿辅食</a><a href="/webapp/goodslist/MuYingYingYangPin.html">母婴营养品</a><a href="/webapp/goodslist/MuYingHuLi.html">母婴护理</a><a href="/webapp/goodslist/YingErYongPin.html">婴儿用品</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="1133734814">进口饮料</h3>
+        <div id="1133734814_div">
+          <a href="/webapp/goodslist/KuangQuanShui.html">矿泉水</a><a href="/webapp/goodslist/GuoZhi.html">果汁</a><a href="/webapp/goodslist/RuYinLiao.html">乳饮料</a><a href="/webapp/goodslist/NenLiangYinLiao.html">能量饮料</a><a href="/webapp/goodslist/PinPaiKaFeiChaYeBanLv.html">品牌咖啡/茶叶/伴侣</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="6125442213">进口酒类</h3>
+        <div id="6125442213_div">
+          <a href="/webapp/goodslist/DeGuoPiJiu.html">德国啤酒</a><a href="/webapp/goodslist/PiJiuHunHeYinLiao.html">啤酒混合饮料</a><a href="/webapp/goodslist/JinKouPuTaoJiu.html">进口葡萄酒</a><a href="/webapp/goodslist/QiPaoJiuXiangBing.html">起泡酒/香槟</a><a href="/webapp/goodslist/YangJiu.html">洋酒</a><a href="/webapp/goodslist/BingJiu.html">冰酒</a><a href="/webapp/goodslist/JiWeiJiu.html">鸡尾酒</a><a href="/webapp/goodslist/QiTaJiuLei.html">其它酒类</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="8656584765">德国厨具</h3>
+        <div id="8656584765_div">
+          <a href="/webapp/goodslist/ChuFangCanYinYongJu.html">厨房/餐饮用具</a><a href="/webapp/goodslist/DeGuoChuFangGuoJu.html">德国厨房锅具</a><a href="/webapp/goodslist/ChuFangXiaoJiaDian.html">厨房小家电</a><a href="/webapp/goodslist/DeGuoDaoJuJiPeiJian.html">德国刀具及配件</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="2211434136">生活日用</h3>
+        <div id="2211434136_div">
+          <a href="/webapp/goodslist/ShengHuoYongPin.html">生活用品</a><a href="/webapp/goodslist/GeRenHuLi.html">个人护理</a><a href="/webapp/goodslist/CaiZhuangMeiRong.html">彩妆美容</a><a href="/webapp/goodslist/ChongWu.html">宠物</a>
+          <br class="clear"/>
+        </div>
+      </li><li>
+        <h3 id="8377883857">营养健康</h3>
+        <div id="8377883857_div">
+          <a href="/webapp/goodslist/YingYangBaoJian.html">营养保健</a><a href="/webapp/goodslist/FeiChuFangYao.html">非处方药</a><a href="/webapp/goodslist/BaoJianShiPin.html">保健食品</a>
+          <br class="clear"/>
+        </div>
+      </li>
+    </ul>
+</div>
+
+<!--尾部-->
+<div id="footer">
+  <!--尾部-->
+  <footer class="botDiv">
+     <div class="both2">
+        <span class="f_left"><script src="/include/iswebapplogin.jsp"></script></span>
+        <span class="f_right"><a href="/mindex.html">返回首页</a><a href="#">返回顶部</a></span>
+     </div>
+     <div class="botCont">
+       <p><b>电脑版</b>&nbsp;&nbsp;|&nbsp;&nbsp;<b>触屏版</b></p>
+       <p>©2015 久通宏达科贸（北京）有限公司<br/>京ICP备14053039号-4</p>
+     </div>
+  </footer>
+  </div>
+
+
+
+
+</body>
+<script src="/wro/webapp_common.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+   var catindex=getUrlParam('catindex');
+   if(catindex!=null&&catindex!=""){
+      $("#"+catindex).attr("class","selh3");
+      $("#"+catindex+"_div").attr("style","display:block;");
+   }
+});
+</script>
+</html>
+

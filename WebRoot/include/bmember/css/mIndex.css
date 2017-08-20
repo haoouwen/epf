@@ -1,0 +1,110 @@
+/**/
+.descript{
+	width:788px;
+	height:120px;
+	padding:10px;
+	background:#fffdee;
+	border:#ffe6bd solid 1px;
+	border-bottom:none;
+}
+.destab td{
+	text-align:left;
+	vertical-align:top;
+}
+.destab .destd{
+	border-left:#dedede dotted 1px;
+	padding-left:15px
+}
+.destab td div{
+	width:110px;
+	height:110px;
+	border:#e5e5e5 solid 1px;
+	background:#fff;
+	padding:4px;
+}
+.destab td p{
+	line-height:28px;
+} 
+.destab b{
+	color:#e93134;
+	padding:0 2px;
+}
+.destab .cblue{
+	color:#2262b0;
+	font-weight:400;
+}
+.destab .destd span{
+	width:130px;
+	display:inline-block;
+	color:#666;
+}
+.destab span{
+	color:#999;
+}
+/*3个安全级别*/
+.destab i{
+	width:130px;
+	height:20px;
+	display:inline-block;
+	background:url(../images/member.gif) no-repeat;
+}
+.destab .lowSafety{
+	background-position:0 -339px;
+}
+.destab .midSafety{
+	background-position:0 -361px;
+}
+.destab .heightSafety{
+	background-position:0 -383px;
+}
+/*邮箱验证*/
+.destab .safetyP a{
+	padding-left:22px;
+	display:inline-block;
+	margin:0 5px;
+}
+.destab  .safetyP a:hover{
+	color:#d81d20;
+}
+.destab  td .nPhone{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 5px;
+}
+.destab  td  .sPhone{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 -19px;
+	color:#2953a6;
+}
+.destab td .sPhone:hover{
+	color:#2953a6;
+}
+.destab  td .nEmail{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 -41px; 
+}
+.destab  td .sEmail{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 -64px;
+	color:#2953a6;
+}
+.destab td .sEmail:hover{
+	color:#2953a6;
+}
+.destab  td .nPaypsw{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 -88px; 
+}
+.destab td .sPaypsw{
+	background:url(../images/member.gif) no-repeat;
+	background-position:0 -112px;
+	color:#2953a6;
+}
+.destab td .sPaypsw:hover{
+	color:#2953a6;
+}
+/*右边统一标题*/
+.rwTitle{
+	width:808px;
+	border:#e6e6e6 solid 1px;
+	border-bottom:none;
+}

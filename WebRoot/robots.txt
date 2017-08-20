@@ -1,0 +1,8 @@
+# robots.txt for jiutong
+User-agent: *
+Disallow: /admin/
+Disallow: /include/
+Disallow: /install/
+Disallow: /templets/
+Disallow: /uploads/
+Disallow: /agent/

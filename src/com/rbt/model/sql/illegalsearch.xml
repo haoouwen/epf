@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="illegalsearch">
+
+	<typeAlias alias="illegalsearch" type="com.rbt.model.Illegalsearch" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="illegalsearch">
+		<![CDATA[ 
+    SELECT illegal_search_id,illegal_search_word,illegal_in_date,illegal_ip FROM illegalsearch WHERE illegal_search_id=$illegal_search_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="illegalsearch">
+		UPDATE illegalsearch SET illegal_search_id=#illegal_search_id#,illegal_search_word=#illegal_search_word#,illegal_in_date=#illegal_in_date#,illegal_ip=#illegal_ip# WHERE illegal_search_id=$illegal_search_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE illegalsearch SET 
+    	 <isNotNull  property="illegal_search_id"> 
+		   illegal_search_id=$illegal_search_id$
+		 </isNotNull>
+    	 WHERE illegal_search_id=$illegal_search_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="illegalsearch">
+		UPDATE illegalsearch SET illegal_search_id=$illegal_search_id$ WHERE illegal_search_id=$illegal_search_id$
+	</update>
+
+	<insert id="insert" parameterClass="illegalsearch">
+		INSERT INTO illegalsearch (illegal_search_id,illegal_search_word,illegal_in_date,illegal_ip) VALUES (#illegal_search_id#,#illegal_search_word#,#illegal_in_date#,#illegal_ip#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM illegalsearch WHERE illegal_search_id in ($illegal_search_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM illegalsearch 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="illegal_search_id">
+				illegal_search_id=#illegal_search_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT illegal_search_id,illegal_search_word,illegal_in_date,illegal_ip
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY illegal_search_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

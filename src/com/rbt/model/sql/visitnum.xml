@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="visitnum">
+
+	<typeAlias alias="visitnum" type="com.rbt.model.Visitnum" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="visitnum">
+		<![CDATA[ 
+    SELECT id,day_pv,day_time FROM visitnum WHERE id=$id$ 
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="visitnum">
+		UPDATE visitnum SET id=#id#,day_pv=#day_pv# WHERE id=$id$
+	</update>
+
+	<insert id="insert" parameterClass="visitnum">
+		INSERT INTO visitnum (id,day_pv,day_time) VALUES (#id#,#day_pv#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM visitnum WHERE id in ($id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM visitnum 
+		<dynamic prepend="WHERE">
+		   <isNotNull prepend="and" property="today">
+				DATE_FORMAT(day_time,'%Y-%m-%d')=CURDATE()
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime_s">
+			day_time
+			<![CDATA[ 
+			>=
+			 ]]>
+				#starttime_s#
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime_s">
+			day_time
+			<![CDATA[ 
+			<=
+			 ]]>
+				#endtime_s#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT id,day_pv,day_time
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getSum" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT SUM(day_pv) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

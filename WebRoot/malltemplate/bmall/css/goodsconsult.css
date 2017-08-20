@@ -1,0 +1,106 @@
+.reply{
+	width:745px;
+	padding-bottom:10px;
+	border-bottom:#cccccc dashed 1px;
+}
+.reply span{
+	margin-left:20px;
+	margin-right:20px;
+}
+.reply p{
+	line-height:24px;
+	padding-top:5px;
+}
+.qtion{
+	background:url(../images/qt_03.gif) no-repeat 10px center;
+	padding-left:30px;
+}
+.answer{
+	background:url(../images/hd_03.gif) no-repeat 10px center;
+	padding-left:30px;
+	color:#ff0315;
+}
+.message{
+	width:1180px;
+	padding-top:15px;
+}
+.message h2{
+	width:740px;
+	height:30px;
+	line-height:30px;
+	font-size:12px;
+	background:#f3f3f3;
+	border-top:#d5d5d5 solid 1px;
+	padding-left:15px;
+}
+.messcont{
+	width:755px;
+	background:#f9f9f9;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.messcont p{
+	width:730px;
+	padding-left:15px;
+	line-height:22px;
+	padding-top:10px;
+}
+.messtarea{
+	width:620px;
+	height:60px;
+	border:#c4c4c4 solid 1px;
+}
+.messtext{
+	width:40px;
+	height:20px;
+	border:#c4c4c4 solid 1px;
+}
+.subMess{
+	background: url("../images/tijiao_03.gif") no-repeat scroll 0 0 transparent;
+	height: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 63px;
+    border: medium none;
+    cursor: pointer;
+}
+/*翻页*/
+.paging{
+	width:500px;
+	color:#999999;
+	padding:15px 0;
+	float:right;
+}
+.paging a{
+	display:inline-block;
+	color:#2953a6;
+	border:#e5e5e5 solid 1px;
+	margin-left:5px;
+	margin-right:5px;
+}
+.paging a:hover{
+	text-decoration:none;
+	color:#2953a6;
+	border:#2953a6 solid 1px;
+}
+.paging .pnpag{
+	padding:4px 10px;
+}
+.paging .numpag{
+	font-size:12px;
+	padding:4px 10px;
+}
+.paging .pagtext{
+	width:40px;
+	height:18px;
+	border:#cccccc solid 1px;
+	margin:0 5px;
+}
+.paging .pagbut{
+	width:46px;
+	height:20px;
+	background:url(../images/pagbut_07.gif) no-repeat;
+	border:none;
+	cursor:pointer;
+	margin:0 10px;
+}

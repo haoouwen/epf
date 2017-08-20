@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="memberchannel">
+
+	<typeAlias alias="memberchannel" type="com.rbt.model.Memberchannel" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="memberchannel">
+		<![CDATA[ 
+    SELECT ch_id,cust_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num,sys_ch,meta_keyword,meta_desc,ch_content  FROM memberchannel WHERE ch_id=$ch_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="memberchannel">
+		UPDATE memberchannel SET ch_id=#ch_id#,cust_id=#cust_id#,ch_name=#ch_name#,
+		ch_type=#ch_type#,is_dis=#is_dis#,sort_no=#sort_no#,ch_num=#ch_num#,meta_keyword=#meta_keyword#,
+		meta_desc=#meta_desc#,ch_content=#ch_content# WHERE ch_id=$ch_id$
+	</update>
+	
+	<update id="updatechannel" parameterClass="java.util.HashMap">
+		UPDATE memberchannel SET ch_name=#ch_name#,sort_no=#sort_no#,ch_num=#ch_num# WHERE ch_id=$ch_id$
+	</update>
+	
+	<!-- 批量更新是否显示isshow 
+	<update id="updateisdis" parameterClass="java.util.HashMap">
+    	UPDATE memberchannel SET is_dis=#is_dis# WHERE ch_id=$ch_id$
+	</update>
+	-->
+	<!-- 批量更新是否显示isshow -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE memberchannel SET is_dis=#is_dis# WHERE ch_id=$ch_id$
+	</update>
+	
+	<insert id="insert" parameterClass="memberchannel">
+		INSERT INTO memberchannel (ch_id,cust_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num,sys_ch,meta_keyword,meta_desc,ch_content) 
+		VALUES (#ch_id#,#cust_id#,#ch_name#,#ch_code#,#ch_type#,#is_dis#,#sort_no#,#ch_num#,#sys_ch#,#meta_keyword#,#meta_desc#,#ch_content#)
+	</insert>
+	
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM memberchannel WHERE ch_id in ($ch_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM memberchannel 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_id"> 
+			     cust_id=#cust_id#
+			 </isNotNull> 
+             <isNotNull prepend="and" property="ch_code"> 
+			     ch_code=#ch_code#
+			 </isNotNull>  
+			 <isNotNull prepend="and" property="ch_name"> 
+			     instr(ch_name,#ch_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ch_name_"> 
+			     ch_name=#ch_name_#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_dis"> 
+			     is_dis=#is_dis#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ch_type"> 
+			     ch_type=#ch_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="ch_id"> 
+			     ch_id=#ch_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ch_id,cust_id,ch_name,ch_code,ch_type,is_dis,sort_no,ch_num,sys_ch,meta_keyword,meta_desc,ch_content
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no,ch_type ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

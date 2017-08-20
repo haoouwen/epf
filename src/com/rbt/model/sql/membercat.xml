@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="membercat">
+
+	<typeAlias alias="membercat" type="com.rbt.model.Membercat" />
+<cacheModel id="membercat-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="membercat.update" />
+		<flushOnExecute statement="membercat.insert" />
+		<flushOnExecute statement="membercat.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+	<select id="getAll" resultClass="java.util.HashMap" cacheModel="membercat.membercat-cache">
+    	SELECT cat_id,cat_name FROM membercat
+	</select>
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="membercat">
+		<![CDATA[ 
+    SELECT cat_id,cust_id,cat_name,cat_type,sort_no,parent_cat_id,in_date,level FROM membercat WHERE cat_id=$cat_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="membercat">
+		UPDATE membercat SET cat_id=#cat_id#,cust_id=#cust_id#,cat_name=#cat_name#,cat_type=#cat_type#,sort_no=#sort_no#,parent_cat_id=#parent_cat_id#,in_date=now(),level=#level# WHERE cat_id=$cat_id$
+	</update>
+
+	<insert id="insert" parameterClass="membercat">
+		INSERT INTO membercat (cat_id,cust_id,cat_name,cat_type,sort_no,parent_cat_id,in_date,level) VALUES (#cat_id#,#cust_id#,#cat_name#,#cat_type#,#sort_no#,#parent_cat_id#,now(),#level#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM membercat WHERE cat_id in ($cat_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM membercat 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_id"> 
+			    cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="parent_cat_id">
+			 	parent_cat_id=#parent_cat_id#
+			 </isNotNull>
+			 
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cat_id,cust_id,cat_name,cat_type,sort_no,parent_cat_id,in_date,level
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no asc,in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	<select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(cat_id) as cat_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

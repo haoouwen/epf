@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="smshistory">
+
+	<typeAlias alias="smshistory" type="com.rbt.model.Smshistory" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="smshistory">
+		<![CDATA[ 
+    SELECT trade_id,cellphones,celltitle,cellnum,cellname,content,cell_code,send_date,user_id FROM smshistory WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="smshistory">
+		UPDATE smshistory SET trade_id=#trade_id#,cellphones=#cellphones#,celltitle=#celltitle#,cellnum=#cellnum#,cellname=#cellname#,content=#content#,cell_code=#cell_code#,send_date=now(),user_id=#user_id# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="smshistory">
+		INSERT INTO smshistory (trade_id,cellphones,celltitle,cellnum,cellname,content,cell_code,send_date,user_id) VALUES (#trade_id#,#cellphones#,#celltitle#,#cellnum#,#cellname#,#content#,#cell_code#,now(),#user_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM smshistory WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM smshistory s
+		left join commutemplate c on s.cell_code = c.temp_code
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cellphones"> 
+     		    INSTR(s.cellphones,#cellphones#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="celltitle_s">
+			 	INSTR(s.celltitle,#celltitle_s#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cellnum"> 
+     		    INSTR(s.cellnum,#cellnum#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_name"> 
+     		    INSTR(s.cellname,#user_name#) > 0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.trade_id,s.cellphones,s.celltitle,s.cellnum,s.cellname,s.content,s.cell_code,s.send_date,
+		s.user_id,c.temp_name,s.cellname as user_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

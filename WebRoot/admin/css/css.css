@@ -1,0 +1,122 @@
+body {
+    margin:0;
+    padding: 0px;
+    font-size: 12px;
+    font-family: "宋体";
+	background:url(../images/bg.jpg) repeat;
+}
+
+ul,li {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+div, ul, p,input{
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+img {
+    border: 0;
+}		
+.clear {
+    clear: both;
+}
+
+
+.cont{
+	width:681px;
+	height:319px;
+	margin:145px auto 0;
+	background:url(../images/cont.jpg) repeat-x;
+	}
+.main{
+	width:665px;
+	height:303px;
+	margin:8px;
+	display:inline-block;
+	background:url(../images/main.jpg) repeat-x;
+	}	
+.main_l{
+	width:300px;
+	height:304px;
+	float:left;
+	background:url(../images/main_l.jpg) no-repeat right;
+	}	
+.logo{
+	margin:75px 0 0 43px;
+	width: 228px;
+	height: 128px;
+	}	
+	
+.main_r{
+	width:276px;
+	float:left;
+	padding:40px 0 0 22px;
+	}	
+.name li{
+	padding-top:12px;
+	*padding-top:10px;
+	line-height:29px;
+	float:left;
+	}	
+.name input{
+	width:210px; 
+	height:29px;
+	border:0; 
+	line-height:29px;
+	padding-left:3px;
+	background:url(../images/text.gif) no-repeat;
+	}
+	
+.yz li{
+	*padding-top:10px;
+	padding-top:12px;
+	float:left;
+	}
+.yz_input{
+	width:136px;
+	height:29px;
+	border:0; 
+	line-height:29px;
+	padding-left:3px;
+	background:url(../images/yz.gif) no-repeat;
+	}
+.yz_pic{
+	padding-left:10px;
+	}
+.buttom li{
+	float:left;
+	*padding-top:10px;
+	padding-top:12px;
+	
+	}
+.submit{
+	width:127px; 
+	height:47px;
+	border:0;
+	background:url(../images/submit.jpg) no-repeat;
+	}
+.buttom .check{
+	*padding:35px 0 0 0px;
+	padding:35px 0 0 10px;
+	
+	}		
+	
+.ts{
+	width:276px;
+	height:47px;
+	line-height:47px;
+	*margin-top:20px;
+	margin-top:15px;
+	padding-left:50px;
+	background:url(../images/loginmsgbg_24.jpg) no-repeat;
+	}		
+	
+.bottom{
+	clear:both;
+	width:681px;
+	height:175px;
+	background:url(../images/bottom_03.jpg) no-repeat;}	
+	

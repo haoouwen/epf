@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodfloormark">
+
+	<typeAlias alias="goodfloormark" type="com.rbt.model.Goodfloormark" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodfloormark">
+		<![CDATA[ 
+    SELECT gm_id,goods_id,fm_id,f_id,gm_name,img_path,gm_url,gm_type,cat_attr,gm_sort,gm_position FROM goodfloormark WHERE gm_id=$gm_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodfloormark">
+		UPDATE goodfloormark SET gm_id=#gm_id#,goods_id=#goods_id#,fm_id=#fm_id#,f_id=#f_id#,gm_name=#gm_name#,img_path=#img_path#,gm_url=#gm_url#,gm_type=#gm_type#,cat_attr=#cat_attr#,gm_sort=#gm_sort#,gm_position=#gm_position# WHERE gm_id=$gm_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE goodfloormark SET 
+    	 <isNotNull  property="gm_id"> 
+		   gm_id=$gm_id$
+		 </isNotNull>
+    	 WHERE gm_id=$gm_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="goodfloormark">
+		UPDATE goodfloormark SET gm_id=$gm_id$ WHERE gm_id=$gm_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodfloormark">
+		INSERT INTO goodfloormark (gm_id,goods_id,fm_id,f_id,gm_name,img_path,gm_url,gm_type,cat_attr,gm_sort,gm_position) VALUES (#gm_id#,#goods_id#,#fm_id#,#f_id#,#gm_name#,#img_path#,#gm_url#,#gm_type#,#cat_attr#,#gm_sort#,#gm_position#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodfloormark WHERE f_id =#f_id#
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodfloormark 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="gm_id">
+				gm_id=#gm_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="f_id">
+				f_id=#f_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr">
+				cat_attr=#cat_attr#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_position">
+				gm_position=#gm_position#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_type">
+				gm_type in ($gm_type$)
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+				goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="fm_id">
+				fm_id=#fm_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_sort">
+				gm_sort=#gm_sort#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT gm_id,goods_id,fm_id,f_id,gm_name,img_path,gm_url,gm_type,cat_attr,gm_sort,gm_position
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY gm_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+     <sql id="getGoodsFCommon">
+		FROM goodfloormark LEFT JOIN goods AS g   ON goodfloormark.goods_id=g.goods_id 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="gm_id">
+				gm_id=#gm_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="f_id">
+				f_id=#f_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_position">
+				gm_position=#gm_position#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_type">
+				gm_type in ($gm_type$)
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+				goodfloormark.goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="fm_id">
+				fm_id=#fm_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="gm_sort">
+				gm_sort=#gm_sort#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getGoodsFList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+	    SELECT gm_id,goodfloormark.goods_id,fm_id,f_id,gm_name,gm_url,gm_type,gm_sort,gm_position,
+		g.cat_attr,g.goods_name,g.goods_no,g.list_img,g.img_path,g.weight,g.unit,g.is_ship,g.give,
+		g.lab,g.is_up,g.is_del,g.info_state,g.ship_id,g.in_date,g.click_num,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  AS min_sale_price,
+		(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  AS goods_market_price,g.active_state 
+		,(SELECT IF(SUM((stock)) IS NULL,0,SUM(stock)) FROM goodsattr ga WHERE ga.goods_id=g.goods_id)  AS total_stock
+		<isParameterPresent>
+			<include refid="getGoodsFCommon" />
+		</isParameterPresent>
+		     ORDER BY gm_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getGoodsFCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getGoodsFCommon" />
+		</isParameterPresent>
+	</select>
+</sqlMap>
+

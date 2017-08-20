@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="storeservce">
+
+	<typeAlias alias="storeservce" type="com.rbt.model.Storeservce" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="storeservce">
+		<![CDATA[ 
+    SELECT store_id,store_name,store_img,state,content,store_color FROM storeservce WHERE store_id=$store_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="storeservce">
+		UPDATE storeservce SET store_id=#store_id#,store_name=#store_name#,store_color=#store_color#,
+		store_img=#store_img#,state=#state#,content=#content# WHERE store_id=$store_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE storeservce SET 
+    	 <isNotNull  property="store_id"> 
+		   store_id=$store_id$
+		 </isNotNull>
+    	 WHERE store_id=$store_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="storeservce">
+		UPDATE storeservce SET store_id=$store_id$ WHERE store_id=$store_id$
+	</update>
+
+
+     <!-- state启用/禁用 -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE storeservce SET state=#state# WHERE store_id=$store_id$
+	</update>
+     
+
+	<insert id="insert" parameterClass="storeservce">
+		INSERT INTO storeservce (store_id,store_name,store_img,state,content,store_color) VALUES (#store_id#,#store_name#,#store_img#,#state#,#content#,#store_color#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM storeservce WHERE store_id in ($store_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM storeservce 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="store_id">
+				store_id=#store_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="store_name">
+			store_name=#store_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="state">
+			state=#state#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT store_id,store_name,store_img,state,content,store_color
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY store_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

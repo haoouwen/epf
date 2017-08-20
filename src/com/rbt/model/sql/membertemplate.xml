@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="membertemplate">
+
+	<typeAlias alias="membertemplate" type="com.rbt.model.Membertemplate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="membertemplate">
+		<![CDATA[ 
+    SELECT temp_id,temp_img,temp_code,temp_name,author,price,mem_level,file_pos,sort_no,temp_loc FROM membertemplate WHERE temp_id=$temp_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="membertemplate">
+		UPDATE membertemplate SET temp_id=#temp_id#,temp_img=#temp_img#,temp_code=#temp_code#,temp_name=#temp_name#,author=#author#,price=#price#,mem_level=#mem_level#,file_pos=#file_pos#,sort_no=#sort_no#,temp_loc=#temp_loc# WHERE temp_id=$temp_id$
+	</update>
+
+	<insert id="insert" parameterClass="membertemplate">
+		INSERT INTO membertemplate (temp_id,temp_img,temp_code,temp_name,author,price,mem_level,file_pos,sort_no,temp_loc) VALUES (#temp_id#,#temp_img#,#temp_code#,#temp_name#,#author#,#price#,#mem_level#,#file_pos#,#sort_no#,#temp_loc#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM membertemplate WHERE temp_id in ($temp_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM membertemplate mt
+			<!-- 先注释inner join malllevelset ml on mt.mem_level=ml.level_code-->
+		<dynamic prepend="WHERE">
+	 <isNotNull prepend="and" property="temp_name">
+				INSTR(temp_name,#temp_name#)>0
+	 </isNotNull>
+	 <isNotNull prepend="and" property="author">
+				INSTR(author,#author#)>0
+	 </isNotNull>
+	 <isNotNull prepend="and" property="startprice">
+				price>#startprice#
+	 </isNotNull>
+	 <isNotNull prepend="and" property="endprice">
+				#endprice#>price
+	 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT temp_id,temp_img,temp_code,temp_name,author,price,mem_level,file_pos,sort_no,temp_loc<!--先注释  ,ml.img_url,ml.level_name-->
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

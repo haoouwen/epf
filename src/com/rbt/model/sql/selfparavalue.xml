@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="selfparavalue">
+
+	<typeAlias alias="selfparavalue" type="com.rbt.model.Selfparavalue" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="selfparavalue">
+		<![CDATA[ 
+    SELECT slef_para_value_id,slef_para_group_id,para_id,slef_para_value,sort_no FROM selfparavalue WHERE slef_para_value_id=$slef_para_value_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="selfparavalue">
+		UPDATE selfparavalue SET slef_para_value_id=#slef_para_value_id#,slef_para_group_id=#slef_para_group_id#,para_id=#para_id#,slef_para_value=#slef_para_value#,sort_no=#sort_no# WHERE slef_para_value_id=$slef_para_value_id$
+	</update>
+
+	<insert id="insert" parameterClass="selfparavalue">
+		INSERT INTO selfparavalue (slef_para_value_id,slef_para_group_id,para_id,slef_para_value,sort_no) VALUES (#slef_para_value_id#,#slef_para_group_id#,#para_id#,#slef_para_value#,#sort_no#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM selfparavalue WHERE slef_para_value_id in ($slef_para_value_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM selfparavalue s left join selfparagroup se on s.slef_para_group_id = se.slef_para_group_id
+		                     left join paravalue p on s.para_id = p.para_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id"> 
+				  se.goods_id=#goods_id#
+			</isNotNull>			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT slef_para_value_id,s.slef_para_group_id,s.para_id,slef_para_value,s.sort_no,p.para_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY slef_para_value_id ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

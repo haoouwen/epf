@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsask">
+
+	<typeAlias alias="goodsask" type="com.rbt.model.Goodsask" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="goodsask">
+		<![CDATA[ 
+    SELECT trade_id,goods_id,c_type,cust_id,user_id,c_content,c_date,re_cust_id,re_content,re_date,re_man,is_enable FROM goodsask WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodsask">
+		UPDATE goodsask SET  re_cust_id=#re_cust_id#,re_content=#re_content#,re_date=now(),re_man=#re_man#,is_enable=#is_enable# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="goodsask">
+		INSERT INTO goodsask (trade_id,goods_id,c_type,cust_id,user_id,c_content,c_date,re_cust_id,re_content,re_date,re_man,is_enable) VALUES (#trade_id#,#goods_id#,#c_type#,#cust_id#,#user_id#,#c_content#,now(),#re_cust_id#,#re_content#,#re_date#,#re_man#,#is_enable#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsask WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodsask left join memberuser on memberuser.user_id=goodsask.user_id 
+		
+		left join member on goodsask.cust_id=member.cust_id 
+		 left join goods on goods.goods_id=goodsask.goods_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="buy_cust_id">
+		   		 goodsask.cust_id=#buy_cust_id#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="goods_id">
+		    	goodsask.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="area_attr"> 
+			INSTR(member.area_attr,#area_attr#)>0
+			</isNotNull>
+		  
+		    <isNotNull prepend="and" property="cust_id">
+		    goods.cust_id=#cust_id#
+		    </isNotNull>
+		    
+		    <isNotNull prepend="and" property="goods_name">
+		    INSTR(goods_name,#goods_name#)>0
+		    </isNotNull>
+		 
+		    <isNotNull prepend="and" property="c_type">
+		    c_type=#c_type#
+		    </isNotNull>
+			<isNotNull prepend="and" property="start_time"> 
+		    DATE(c_date)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time"> 
+			#end_time#>=DATE(c_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="rstart_time"> 
+		    DATE(re_date)>=#rstart_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="rend_time"> 
+			#rend_time#>=DATE(re_date)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_enable">
+			is_enable=#is_enable#
+			</isNotNull>
+			<isNotNull prepend="and" property="today">
+		          DAY(c_date)=DAY(NOW()) AND MONTH(c_date)=MONTH(NOW()) AND YEAR(c_date)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="re_date"> 
+				re_date is null
+			</isNotNull>
+			<isNotNull prepend="and" property="reg"> 
+				re_date is not null
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,goodsask.goods_id,c_type,goodsask.cust_id,goodsask.user_id,c_content,c_date,re_cust_id,re_content,re_date,re_man,is_enable,
+		       member.cust_name as cust_name,memberuser.user_name as user_name, goods_name 
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

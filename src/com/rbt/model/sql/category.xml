@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="category">
+
+	<cacheModel id="category-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="category.update" />
+		<flushOnExecute statement="category.insert" />
+		<flushOnExecute statement="category.delete" />
+		<flushOnExecute statement="category.edit" />
+		<property value="500" name="size" />
+	</cacheModel>
+
+	<typeAlias alias="category" type="com.rbt.model.Category" />
+
+	<select id="getAll" resultClass="java.util.HashMap" cacheModel="category.category-cache">
+    	SELECT cat_id,cat_name,is_sys FROM category
+	</select>
+
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="category">
+		<![CDATA[ 
+    SELECT cat_id,cat_name,en_name,word_index,mem_type,up_cat_id,cat_level,module_type,is_display,sort_no,member_add,seotitle,seokeyword,seodesc,cat_intr,cat_simple,cat_click,is_sys,tariff,img_ico,cat_attribute FROM category WHERE cat_id=$cat_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="category">
+		UPDATE category SET cat_id=#cat_id#,cat_name=#cat_name#,en_name=#en_name#,cat_simple=#cat_simple#,word_index=#word_index#,up_cat_id=#up_cat_id#,cat_level=#cat_level#,module_type=#module_type#,is_display=#is_display#,sort_no=#sort_no#,member_add=#member_add#,seotitle=#seotitle#,seokeyword=#seokeyword#,seodesc=#seodesc#,mem_type=#mem_type#,cat_intr=#cat_intr#,cat_click=#,cat_click#,tariff=#tariff#,img_ico=#img_ico#,cat_attribute=#cat_attribute# WHERE cat_id=$cat_id$
+	</update>
+	
+	<update id="updateSort" parameterClass="java.util.HashMap">
+		 UPDATE category SET sort_no=#sort_no# WHERE cat_id=$cat_id$
+	</update>
+	
+	<update id="updateDisplay" parameterClass="java.util.HashMap">
+		UPDATE category SET is_display=#is_display# WHERE cat_id=$cat_id$
+	</update>	
+	
+	<update id="edit" parameterClass="category">
+		UPDATE category SET cat_id=#cat_id#,cat_name=#cat_name#,en_name=#en_name#,word_index=#word_index# WHERE cat_id=$cat_id$
+	</update>	
+
+	<insert id="insert" parameterClass="category">
+		INSERT INTO category (cat_id,cat_name,en_name,word_index,up_cat_id,cat_level,module_type,is_display,sort_no,member_add,seotitle,seokeyword,seodesc,mem_type,cat_intr,cat_simple,cat_click,tariff,img_ico,cat_attribute) 
+		VALUES (#cat_id#,#cat_name#,#en_name#,#word_index#,#up_cat_id#,#cat_level#,#module_type#,#is_display#,#sort_no#,#member_add#,#seotitle#,#seokeyword#,#seodesc#,#mem_type#,#cat_intr#,#cat_simple#,#cat_click#,#tariff#,#img_ico#,#cat_attribute#)
+	</insert>
+	
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM category WHERE cat_id in (#cat_id#)
+	</delete>
+	
+
+	<sql id="getCommon">
+		FROM category 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="up_cat_id"> 
+			     up_cat_id=#up_cat_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="en_name"> 
+			     en_name=#en_name#
+			 </isNotNull>
+			<isNotNull prepend="and" property="module_type"> 
+			     module_type=#module_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_string">
+			     cat_id in($cat_string$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_level"> 
+			     cat_level=#cat_level#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="word_index"> 
+			     word_index=#word_index#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="mem_type"> 
+			     mem_type in($mem_type$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="member_add"> 
+			     member_add=#member_add#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="is_display"> 
+			     is_display=#is_display#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="tariff"> 
+			     tariff=#tariff#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="en_index"> 
+			     INSTR((SELECT GROUP_CONCAT(goods_attr) goods_attr FROM goodsbrand WHERE en_index=#en_index#),cat_id) > 0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT cat_id,cat_name,en_name,word_index,mem_type,up_cat_id,cat_level,cat_simple,module_type,is_display,sort_no,member_add,seotitle,seokeyword,seodesc,cat_click,is_sys,tariff,img_ico
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		order by sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	<select id="getDeleteList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		select GROUP_CONCAT(cat_id) as cat_id_str
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+	<select id="getCategoryIndexList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT cat_id,cat_name,cat_level FROM category WHERE cat_id=(SELECT up_cat_id FROM category 
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cat_id"> 
+			     cat_id=#cat_id#
+			 </isNotNull>			
+		</dynamic>
+		)
+	</select>
+	
+	<!-- 根据地区查找分类信息 -->
+	<select id="getAreaCategoryList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT cat_id,cat_name,en_name FROM category
+		<dynamic prepend="WHERE">
+		     <isNotNull prepend="and" property="module_type"> 
+			    module_type=#module_type# and is_display = '1'
+			 </isNotNull>
+			 <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(area_attr,#area_attr#) >0
+			 </isNotNull>	
+			  <isNotNull prepend="and" property="up_cat_id"> 
+			     up_cat_id=#up_cat_id#
+			 </isNotNull>		
+		</dynamic>
+		 order by sort_no asc
+	</select>
+	
+	<!-- 根据tow地区查找分类信息 -->
+	<select id="getTowAreaCategoryList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT cat_id,cat_name,en_name,up_cat_id FROM category
+		<dynamic prepend="WHERE">
+		     <isNotNull prepend="and" property="module_type"> 
+			    module_type=#module_type# and is_display = '1'
+			 </isNotNull>
+			 <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(area_attr,#area_attr#) >0
+			 </isNotNull>
+		</dynamic>
+		 order by sort_no asc
+	</select>
+	
+
+	
+	
+</sqlMap>
+

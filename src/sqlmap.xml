@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMapConfig
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    
+    
+    <settings cacheModelsEnabled="true" enhancementEnabled="false"
+		lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000"
+		maxTransactions="3000" useStatementNamespaces="true" />
+    
+    <!-- ���������ܣ���ʵ�ֲַ�ʽ���棬����һ��������Ϊȫ�ֱ�����������SqlMapʹ�� -->
+    <typeAlias alias="OSCACHE" type="com.ibatis.sqlmap.engine.cache.oscache.OSCacheController" />
+  
+	
+	<sqlMap resource="com/rbt/model/sql/sysuser.xml" />
+	<sqlMap resource="com/rbt/model/sql/sysmenu.xml" />
+	<sqlMap resource="com/rbt/model/sql/link.xml" />
+	<sqlMap resource="com/rbt/model/sql/link_group.xml" />
+	<sqlMap resource="com/rbt/model/sql/role.xml" />
+	<sqlMap resource="com/rbt/model/sql/logs.xml" />
+	<sqlMap resource="com/rbt/model/sql/roleright.xml"/>
+	<sqlMap resource="com/rbt/model/sql/filterword.xml" />
+	<sqlMap resource="com/rbt/model/sql/nav.xml"/>
+	<sqlMap resource="com/rbt/model/sql/ban_ip.xml" />
+	<sqlMap resource="com/rbt/model/sql/keyword.xml" />
+	<sqlMap resource="com/rbt/model/sql/commpara.xml" />
+	<sqlMap resource="com/rbt/model/sql/sysconfig.xml" />
+	<sqlMap resource="com/rbt/model/sql/backup.xml" />
+	<sqlMap resource="com/rbt/model/sql/advpos.xml" />
+	<sqlMap resource="com/rbt/model/sql/advinfo.xml" />
+    <sqlMap resource="com/rbt/model/sql/message.xml" />
+    <sqlMap resource="com/rbt/model/sql/aboutus.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberfund.xml" />
+	<sqlMap resource="com/rbt/model/sql/fundrecharge.xml" />
+	<sqlMap resource="com/rbt/model/sql/member.xml" />
+    <sqlMap resource="com/rbt/model/sql/fundtocash.xml" />
+	<sqlMap resource="com/rbt/model/sql/fundhistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberinter.xml" />
+	<sqlMap resource="com/rbt/model/sql/interhistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/emailhistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberuser.xml" />
+	<sqlMap resource="com/rbt/model/sql/smshistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberlink.xml" />
+	<sqlMap resource="com/rbt/model/sql/categoryattr.xml" />	
+	<sqlMap resource="com/rbt/model/sql/membercat.xml" />
+	<sqlMap resource="com/rbt/model/sql/topdomain.xml" />
+	<sqlMap resource="com/rbt/model/sql/index_history.xml" />
+	<sqlMap resource="com/rbt/model/sql/channel.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberchconfig.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberchannel.xml" />
+	<sqlMap resource="com/rbt/model/sql/buyeraddr.xml" />
+	<sqlMap resource="com/rbt/model/sql/payment.xml" />
+	<sqlMap resource="com/rbt/model/sql/organize.xml" />
+	<sqlMap resource="com/rbt/model/sql/interrule.xml" />
+	<sqlMap resource="com/rbt/model/sql/audithistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/certification.xml" />
+    <sqlMap resource="com/rbt/model/sql/category.xml" />
+    <sqlMap resource="com/rbt/model/sql/area.xml" />
+    <sqlMap resource="com/rbt/model/sql/sysmodule.xml" />
+	<sqlMap resource="com/rbt/model/sql/goods.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsbrand.xml" />
+	<sqlMap resource="com/rbt/model/sql/malllevelset.xml" />
+	<sqlMap resource="com/rbt/model/sql/shopconfig.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsorder.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsask.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodseval.xml" />
+	<sqlMap resource="com/rbt/model/sql/sendmode.xml" />
+	<sqlMap resource="com/rbt/model/sql/busimes.xml" />
+	<sqlMap resource="com/rbt/model/sql/orderdetail.xml" />
+	<sqlMap resource="com/rbt/model/sql/areaset.xml" />
+	<sqlMap resource="com/rbt/model/sql/sellerscore.xml" />
+	<sqlMap resource="com/rbt/model/sql/shiptemplate.xml" />
+	<sqlMap resource="com/rbt/model/sql/indexrecord.xml" />
+	<sqlMap resource="com/rbt/model/sql/attrvalue.xml" />
+	<sqlMap resource="com/rbt/model/sql/auditmodel.xml" />
+	<sqlMap resource="com/rbt/model/sql/msgcheck.xml" />
+	<sqlMap resource="com/rbt/model/sql/visitnum.xml" />
+	<sqlMap resource="com/rbt/model/sql/onlinepaytrade.xml" />
+	<sqlMap resource="com/rbt/model/sql/waterfall.xml" />
+	<sqlMap resource="com/rbt/model/sql/imagemana.xml" />
+	<sqlMap resource="com/rbt/model/sql/malltemplate.xml" />
+	<sqlMap resource="com/rbt/model/sql/seoset.xml" />
+	<sqlMap resource="com/rbt/model/sql/commutemplate.xml" />
+	<sqlMap resource="com/rbt/model/sql/emailtemplate.xml" />
+	<sqlMap resource="com/rbt/model/sql/specname.xml" />
+	<sqlMap resource="com/rbt/model/sql/specvalue.xml" />
+	<sqlMap resource="com/rbt/model/sql/membertemplate.xml" />
+	<sqlMap resource="com/rbt/model/sql/paragroup.xml" />
+	<sqlMap resource="com/rbt/model/sql/paravalue.xml" />
+	<sqlMap resource="com/rbt/model/sql/rate.xml" />
+	<sqlMap resource="com/rbt/model/sql/memrole.xml" />
+	<sqlMap resource="com/rbt/model/sql/express.xml" />
+	<sqlMap resource="com/rbt/model/sql/expresshistory.xml" />
+	<sqlMap resource="com/rbt/model/sql/expressfundrun.xml" />
+	<sqlMap resource="com/rbt/model/sql/expressfund.xml" />
+	<sqlMap resource="com/rbt/model/sql/extendattr.xml" />
+	<sqlMap resource="com/rbt/model/sql/autofck.xml" />
+	<sqlMap resource="com/rbt/model/sql/pagetip.xml" />
+	<sqlMap resource="com/rbt/model/sql/infocount.xml" />
+	<sqlMap resource="com/rbt/model/sql/receipt.xml" />
+	<sqlMap resource="com/rbt/model/sql/receiptmanage.xml" />
+	<sqlMap resource="com/rbt/model/sql/sendbox.xml" />
+	<sqlMap resource="com/rbt/model/sql/receivebox.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsattr.xml" />
+	<sqlMap resource="com/rbt/model/sql/selfspecname.xml" />
+	<sqlMap resource="com/rbt/model/sql/selfspecvalue.xml" />
+	<sqlMap resource="com/rbt/model/sql/selfextendattr.xml" />
+	<sqlMap resource="com/rbt/model/sql/selfparagroup.xml" />
+	<sqlMap resource="com/rbt/model/sql/selfparavalue.xml" />
+	<sqlMap resource="com/rbt/model/sql/autoupgoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/messagealert.xml" />
+	<sqlMap resource="com/rbt/model/sql/smodetemplete.xml" />
+	<sqlMap resource="com/rbt/model/sql/article.xml" />
+	<sqlMap resource="com/rbt/model/sql/memprotect.xml" />
+	<sqlMap resource="com/rbt/model/sql/aftersales.xml" />
+	<sqlMap resource="com/rbt/model/sql/printstyle.xml" />
+	<sqlMap resource="com/rbt/model/sql/printstyletem.xml" />
+	<sqlMap resource="com/rbt/model/sql/shopmsg.xml" />
+	<sqlMap resource="com/rbt/model/sql/shopreplymsg.xml" />
+	<sqlMap resource="com/rbt/model/sql/consultation.xml" />
+	<sqlMap resource="com/rbt/model/sql/consulting.xml" />
+	<sqlMap resource="com/rbt/model/sql/recycle.xml" />
+	<sqlMap resource="com/rbt/model/sql/ordertrans.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsspread.xml" />
+	<sqlMap resource="com/rbt/model/sql/combo.xml" />
+	<sqlMap resource="com/rbt/model/sql/pointsgoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/groupgoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/refundapp.xml" />
+	<sqlMap resource="com/rbt/model/sql/spikegoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/groupladder.xml" />
+	<sqlMap resource="com/rbt/model/sql/collect.xml" />
+	<sqlMap resource="com/rbt/model/sql/cartgoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/pushlogistics.xml" />
+	<sqlMap resource="com/rbt/model/sql/capitalmanagement.xml" />
+	<sqlMap resource="com/rbt/model/sql/directorderdetail.xml" />
+	<sqlMap resource="com/rbt/model/sql/directsell.xml" />
+	<sqlMap resource="com/rbt/model/sql/directladder.xml" />
+	<sqlMap resource="com/rbt/model/sql/template.xml" />
+	<sqlMap resource="com/rbt/model/sql/membercredit.xml" />
+	<sqlMap resource="com/rbt/model/sql/sendshipmode.xml" />
+	<sqlMap resource="com/rbt/model/sql/invoice.xml" />
+	<sqlMap resource="com/rbt/model/sql/memberfundrun.xml" />
+	<sqlMap resource="com/rbt/model/sql/trygoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/tryapply.xml" />
+	<sqlMap resource="com/rbt/model/sql/sysfund.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodsshare.xml" />
+	<sqlMap resource="com/rbt/model/sql/cancleordertrans.xml" />
+	<sqlMap resource="com/rbt/model/sql/cancelorder.xml" />
+	<sqlMap resource="com/rbt/model/sql/exchange.xml" />
+	<sqlMap resource="com/rbt/model/sql/searchfilter.xml" />
+	<sqlMap resource="com/rbt/model/sql/illegalsearch.xml" />
+	<sqlMap resource="com/rbt/model/sql/associationkeywords.xml" />
+	<sqlMap resource="com/rbt/model/sql/depot.xml" />
+	<sqlMap resource="com/rbt/model/sql/floorinfo.xml" />
+	<sqlMap resource="com/rbt/model/sql/floormark.xml" />
+	<sqlMap resource="com/rbt/model/sql/goodfloormark.xml" />
+	<sqlMap resource="com/rbt/model/sql/asysuser.xml" />
+	<sqlMap resource="com/rbt/model/sql/navtab.xml" />
+	<sqlMap resource="com/rbt/model/sql/navigation.xml" />
+	<sqlMap resource="com/rbt/model/sql/catnav.xml" />
+	<sqlMap resource="com/rbt/model/sql/taxrate.xml" />
+	<sqlMap resource="com/rbt/model/sql/internationaltariff.xml" />
+	<sqlMap resource="com/rbt/model/sql/orderinvoice.xml" />
+	<sqlMap resource="com/rbt/model/sql/coupon.xml" />
+	<sqlMap resource="com/rbt/model/sql/salegoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/redpacket.xml" />
+	<sqlMap resource="com/rbt/model/sql/saleorder.xml" />
+	<sqlMap resource="com/rbt/model/sql/comsumer.xml" />
+	<sqlMap resource="com/rbt/model/sql/redsumer.xml" />	
+	<sqlMap resource="com/rbt/model/sql/storeservce.xml" />
+	<sqlMap resource="com/rbt/model/sql/kjtrecall.xml" />
+	<sqlMap resource="com/rbt/model/sql/fepbill.xml" />
+	<sqlMap resource="com/rbt/model/sql/storeintro.xml" />
+	<sqlMap resource="com/rbt/model/sql/freegoods.xml" />
+	<sqlMap resource="com/rbt/model/sql/excoupons.xml" />
+	<sqlMap resource="com/rbt/model/sql/exredbag.xml" />
+	<sqlMap resource="com/rbt/model/sql/rechargeablecard.xml" />
+	<sqlMap resource="com/rbt/model/sql/rechargeablecards.xml" />
+	<sqlMap resource="com/rbt/model/sql/tokensInfo.xml" />
+	<sqlMap resource="com/rbt/model/sql/messagepush.xml" />
+<!--tagbody-->
+</sqlMapConfig>
+
+
+
+
+
+
+
+

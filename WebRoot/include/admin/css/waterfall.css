@@ -1,0 +1,18 @@
+.tabbar li.selected {
+    background: url("../images/topbar1.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    font-weight: 600;
+}
+.tabbar li {
+    background: url("../images/topbar2.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
+    color: #666666;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}

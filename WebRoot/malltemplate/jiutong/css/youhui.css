@@ -1,0 +1,142 @@
+body{
+	background:#c01839 url(../images/couponBack_03.gif) repeat-x top center;
+	padding-bottom:60px;
+}
+/*领取优惠劵*/
+.lqyhj{
+	width:242px;
+	margin:0 auto;
+}
+.lqyhj h2{
+	width:242px;
+	height:88px;
+	background:url(../images/lqyhj.png) no-repeat center;
+	margin:30px 0 0;
+}
+.lqyhj li{
+	width:241px;
+	float:left;
+	display:inline;
+	margin:10px 0;
+	padding-bottom:10px;
+}
+.lqyhj li div{
+	width:241px;
+	height:90px;
+	background:url(../images/yhjbPic.png) no-repeat;
+	text-align:center;
+	font-family:"微软雅黑";
+	color:#d83053;
+	padding-top:12px;
+}
+.lqyhj li .size22{
+	font-size:22px;
+}
+.lqyhj li b{
+	font-family:Arial;
+	font-size:44px;
+	padding:0 2px;
+}
+.lqyhj li .padp{
+	text-align:center;
+	margin-top:20px;
+}
+.lqyhj li .padp span{
+	cursor:pointer;
+}
+.lqyhj li .sysm{
+	color:#fff;
+	text-align:center;
+	line-height:20px;
+	margin-top:10px;
+	padding:0 5px;
+}
+/*领取红包*/
+.lqhb{
+	width:210px;
+	margin:0 auto;
+}
+.lqhb h2{
+	width:210px;
+	height:88px;
+	background:url(../images/lqhb.png) no-repeat center;
+	margin:30px 0 0;
+}
+.lqhb li{
+	width:210px;
+	float:left;
+	display:inline;
+	margin:10px 0;
+	padding-bottom:10px;
+}
+.lqhb li div{
+	width:210px;
+	height:139px;
+	background:url(../images/hbbPic.png) no-repeat;
+	text-align:center;
+	font-family:"微软雅黑";
+	color:#fffba5;
+	font-size:32px;
+	line-height:145px;
+	text-shadow:2px 2px 2px #c92222;
+}
+.lqhb li b{
+	font-family:Arial;
+	font-size:44px;
+	font-weight:200;
+}
+.lqhb li p{
+	text-align:center;
+	margin-top:10px;
+}
+.lqhb li p span{
+	cursor:pointer;
+}
+.lqhb li .sysm{
+	color:#fff;
+	text-align:center;
+	line-height:20px;
+	margin-top:10px;
+	padding:0 5px;
+}
+/*分享插件*/
+.shareDiv{
+	width:275px;
+	height:80px;
+	border-top:#a20e2b dotted 1px;
+	margin:10px auto;
+}
+.shareDiv p{
+	text-align:center;
+	color:#fff;
+	font-size:14px;
+	padding:10px 0;
+}
+.jiathis_style_32x32{
+	width:185px;
+	height:32px;
+	float:left;
+}
+.jiathis_style_32x32 span{
+	margin:0px 5px;
+}
+#nativeShare{
+	width:80px;
+	height:32px;
+	float:left;
+}
+#nativeShare .list span i {
+    width:32px;
+    height:32px;
+    display:block;
+    float:left;
+    margin:0px 8px 0 0;
+}
+#nativeShare .weixin i {
+    background-image: url('../images/weixin_friend.png');
+    background-size: cover;
+}
+#nativeShare .weixin_timeline i {
+    background-image: url('../images/weixin.png');
+    background-size: cover;
+}

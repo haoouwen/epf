@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sysuser">
+
+	<typeAlias alias="sysuser" type="com.rbt.model.Sysuser" />
+	
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="sysuser">
+	<![CDATA[ 
+    select user_id,user_name,nike_name,passwd,role_id,real_name,email,logintime,loginip,state,user_type,org_id,grade,subjection,is_del from sysuser where user_id=$value$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sysuser">
+    	UPDATE sysuser SET  user_name=#user_name#,nike_name=#nike_name#,loginnum=#loginnum#,org_id=#org_id#,grade=#grade#,subjection=#subjection#,is_del=#is_del#,
+    	<isNotNull prepend="" property="passwd"> 
+	     	passwd=#passwd#,
+	 	</isNotNull>
+    	role_id=$role_id$,real_name=#real_name#,email=#email#,state=#state# WHERE user_id=$user_id$
+	</update>
+	
+	<update id="updatelaststate" parameterClass="sysuser">
+    	UPDATE sysuser SET  loginnum=loginnum+1,logintime=now(),loginip=#loginip#    	
+    	WHERE user_id=$user_id$
+	</update>
+	
+	
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE sysuser SET state=#state# WHERE user_id=$user_id$
+	</update>
+
+	<insert id="insert" parameterClass="sysuser">
+		INSERT INTO sysuser (user_name,nike_name,passwd,role_id,real_name,email,logintime,loginip,state,loginnum,user_type,org_id,grade,subjection,is_del) 
+		VALUES (#user_name#,#nike_name#,#passwd#,$role_id$,#real_name#,#email#,#logintime#,#loginip#,#state#,#loginnum#,#user_type#,#org_id#,#grade#,#subjection#,#is_del#)
+	</insert>
+	
+	<!-- 这里只能删除子账号 -->
+	<delete id="delete" parameterClass="java.lang.String">
+		delete from sysuser where user_id in ($value$) and user_type='4'
+	</delete>
+	
+	<sql id="getCommon">
+	   FROM sysuser s LEFT JOIN role r ON s.role_id=r.role_id 
+     	<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="user_name"> 
+			     INSTR(s.user_name,#user_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="login_name"> 
+			     s.user_name=#login_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="nike_name"> 
+			     INSTR(s.nike_name,#nike_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="passwd"> 
+			     s.passwd=#passwd#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="state"> 
+			     s.state=#state#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="role_id"> 
+			     s.role_id=#role_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="user_id"> 
+			     s.user_id=#user_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_ids"> 
+			     s.user_id in ($user_ids$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="sys_role_id"> 
+			     s.role_id=#sys_role_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_type"> 
+			     s.user_type=#user_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="org_id"> 
+			     s.org_id in ($org_id$)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="not_user_id"> 
+			     s.user_id!=#not_user_id# and s.user_type!=3 
+			 </isNotNull>
+			 <isNotNull prepend="and" property="subjection"> 
+			     s.subjection=#subjection#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="subjection_in"> 
+			     s.subjection in ($subjection_in$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="is_del"> 
+			     s.is_del = #is_del#
+			 </isNotNull>
+			  <isNotNull prepend="or" property="supper"> 
+			     s.user_type = $supper$
+			 </isNotNull>
+		</dynamic>
+ 	</sql>
+	
+	<select id="getList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+        SELECT s.user_id,user_name,nike_name,passwd,loginnum,s.role_id,real_name,s.email,logintime,loginip,
+        state,user_type,r.role_name,s.org_id,grade,(select user_name from sysuser where user_id = s.subjection) as subjection,is_del
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+          order by s.user_id DESC
+	 	<isNotNull prepend="LIMIT" property="start">
+		  #start#,#limit#
+		</isNotNull> 
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	     select count(*) ct
+	    <isParameterPresent>
+          <include refid="getCommon"/>
+        </isParameterPresent>
+	</select>  
+ 	
+ 	<select id="getMsgList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	 SELECT DISTINCT 
+		<isNotNull property="table_name">
+		    $table_name$
+		</isNotNull>	
+	 FROM member
+	</select>
+ 	
+</sqlMap>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="autofck">
+
+	<typeAlias alias="autofck" type="com.rbt.model.Autofck" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="autofck">
+		<![CDATA[ 
+    SELECT id,content,in_date,cust_id,random_num,table_name,table_id FROM autofck WHERE id=$id$
+    ]]>
+	</select>
+	
+	<select id="getrandom" parameterClass="java.util.HashMap"
+		resultClass="autofck">
+		<![CDATA[ 
+    SELECT id,content,in_date,cust_id,random_num,table_name,table_id FROM autofck WHERE table_id=#table_id# and table_name=#table_name#
+    ]]>
+	</select>
+	
+	
+	<update id="update" parameterClass="autofck">
+		UPDATE autofck SET id=#id#,content=#content#,in_date=#in_date#,cust_id=#cust_id#,random_num=#random_num#,table_name=#table_name#,table_id=#table_id# WHERE id=$id$
+	</update>
+
+	<update id="updaterandom" parameterClass="java.util.HashMap">
+		UPDATE autofck SET table_name=#table_name#,table_id=#table_id# WHERE random_num=#random_num# and cust_id=#cust_id#
+	</update>
+
+
+	<insert id="insert" parameterClass="autofck">
+		INSERT INTO autofck (id,content,in_date,cust_id,random_num,table_name,table_id) VALUES (#id#,#content#,now(),#cust_id#,#random_num#,#table_name#,#table_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM autofck WHERE id in ($id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM autofck 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="random">
+				random_num=#random#
+			</isNotNull>
+			<isNotNull prepend="and" property="delin_date"> 
+			      TO_DAYS(NOW()) - TO_DAYS(in_date) = 7 
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT id,DATE_FORMAT(in_date,'%Y-%c-%d %h:%i:%s') AS new_in_data,cust_id,random_num,table_name,table_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

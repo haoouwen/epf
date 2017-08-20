@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="recycle">
+
+	<typeAlias alias="recycle" type="com.rbt.model.Recycle" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="recycle">
+		<![CDATA[ 
+    SELECT recycle_id,box_type,send_cust_id,get_cust_id,send_id,in_date,receive_id,is_read FROM recycle WHERE recycle_id=$recycle_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="recycle">
+		UPDATE recycle SET recycle_id=#recycle_id#,box_type=#box_type#,get_cust_id=#get_cust_id#,send_cust_id=#send_cust_id#,
+		send_id=#send_id#,in_date=now(),is_read=#is_read#,receive_id=#receive_id# WHERE recycle_id=$recycle_id$
+	</update>
+
+	<insert id="insert" parameterClass="recycle">
+		INSERT INTO recycle (recycle_id,box_type,send_cust_id,send_id,in_date,receive_id,is_read,get_cust_id) VALUES (#recycle_id#,#box_type#,#send_cust_id#,#send_id#,now(),#receive_id#,#is_read#,#get_cust_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM recycle WHERE recycle_id in ($recycle_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM recycle r
+			left join member m on r.send_cust_id = m.cust_id
+				left join sendbox s on s.send_id = r.send_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_id"> 
+			     r.send_cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="or" property="cust_id"> 
+			     r.get_cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_name">
+			  m.cust_name=#cust_name#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT r.recycle_id,box_type,r.send_cust_id,r.get_cust_id,r.send_id,r.in_date,m.cust_name,r.is_read,r.receive_id,
+			s.content,s.title
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY recycle_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="payment">
+
+	<typeAlias alias="payment" type="com.rbt.model.Payment" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="payment">
+		<![CDATA[ 
+    SELECT pay_id,pay_code,seller_name,pay_name,pay_desc,pay_account,passwd,hand_fare,enabled,pay_logo,appID,appSecret FROM payment WHERE pay_id=$pay_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="payment">
+		UPDATE payment SET seller_name=#seller_name#,pay_name=#pay_name#,pay_desc=#pay_desc#,pay_account=#pay_account#,
+		passwd=#passwd#,hand_fare=#hand_fare#,enabled=#enabled#,pay_logo=#pay_logo#,appID=#appID#,appSecret=#appSecret# WHERE pay_id=$pay_id$
+	</update>
+ 
+    <!-- 批量更新启用Enabled -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE payment SET enabled=#enabled# WHERE pay_id=$pay_id$
+	</update>
+
+	<insert id="insert" parameterClass="payment">
+		INSERT INTO payment (pay_id,pay_code,seller_name,pay_name,pay_desc,pay_account,passwd,hand_fare,enabled,pay_logo,appID,appSecret) VALUES
+		 (#pay_id#,#pay_code#,#seller_name#,#pay_name#,#pay_desc#,#pay_account#,#passwd#,#hand_fare#,#enabled#,#pay_logo#,#appID#,#appSecret#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM payment WHERE pay_id in ($pay_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM payment 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="end" property="pay_code">
+			pay_code=#pay_code#
+			</isNotNull>
+			<isNotNull prepend="end" property="pay_name">
+			pay_name=#pay_name#
+			</isNotNull>
+			<isNotNull prepend="end" property="pay_account">
+			pay_account=#pay_account#
+			</isNotNull>
+			<isNotNull prepend="end" property="enabled">
+			enabled=#enabled#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT pay_id,pay_code,seller_name,pay_name,pay_desc,pay_account,passwd,hand_fare,enabled,pay_logo,appID,appSecret
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY pay_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

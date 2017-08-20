@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="fundrecharge">
+
+	<typeAlias alias="fundrecharge" type="com.rbt.model.Fundrecharge" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="fundrecharge">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,fund_num,payplat,pay_date,user_id,order_state,remark,bank_order_id,order_id,recharge_state FROM fundrecharge WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	
+	<select id="getByOrderId" parameterClass="java.lang.String"
+		resultClass="fundrecharge">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,fund_num,payplat,pay_date,user_id,order_state,remark,bank_order_id,order_id,recharge_state FROM fundrecharge WHERE order_id=#order_id#
+    ]]>
+	</select>
+	
+	<select id="getByTrxid" parameterClass="java.lang.String"
+		resultClass="fundrecharge">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,fund_num,payplat,pay_date,user_id,order_state,remark,bank_order_id,order_id,recharge_state FROM fundrecharge WHERE bank_order_id=#bank_order_id#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="fundrecharge">
+		UPDATE fundrecharge SET user_id=#user_id#,order_state=#order_state#,payplat=#payplat#,bank_order_id=#bank_order_id#,remark=#remark#,order_id=#order_id#,recharge_state=#recharge_state# WHERE trade_id=$trade_id$
+	</update>
+     
+	<insert id="insert" parameterClass="fundrecharge">
+		INSERT INTO fundrecharge (trade_id,cust_id,fund_num,payplat,pay_date,user_id,order_state,remark,bank_order_id,order_id,recharge_state) VALUES (#trade_id#,#cust_id#,#fund_num#,#payplat#,now(),#user_id#,#order_state#,#remark#,#bank_order_id#,#order_id#,#recharge_state#)
+	</insert>
+
+    <insert id="insertGetPk" parameterClass="fundrecharge">
+		INSERT INTO fundrecharge (trade_id,cust_id,fund_num,payplat,pay_date,user_id,order_state,remark,bank_order_id,order_id,recharge_state) VALUES (#trade_id#,#cust_id#,#fund_num#,#payplat#,now(),#user_id#,#order_state#,#remark#,#bank_order_id#,#order_id#,#recharge_state#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM fundrecharge WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM fundrecharge left join member on fundrecharge.cust_id=member.cust_id   
+		left join payment as py on fundrecharge.payplat=py.pay_code
+		<dynamic prepend="WHERE">
+			  <isNotNull prepend="and" property="order_state"> 
+			     fundrecharge.order_state in($order_state$)
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cust_name"> 
+			     member.cust_name=#cust_name#
+			 </isNotNull>
+			   <isNotNull prepend="and" property="payplat"> 
+			     payplat=#payplat#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cust_id"> 
+			     fundrecharge.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="starttime"> 
+			     fundrecharge.pay_date>=#starttime#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="endtime"> 
+			     #endtime#>=fundrecharge.pay_date
+			 </isNotNull>
+			 <isNotNull prepend="and" property="charge_cust_id"> 
+			     fundrecharge.cust_id!=#charge_cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="bank_order_id"> 
+			     fundrecharge.bank_order_id=#bank_order_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="order_id"> 
+			     fundrecharge.order_id=#order_id#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT fundrecharge.trade_id,member.cust_id,cust_name,fundrecharge.fund_num,payplat,fundrecharge.pay_date,fundrecharge.user_id,
+		fundrecharge.order_state,fundrecharge.remark,py.pay_name,bank_order_id,order_id,recharge_state
+		,IF((SELECT m1.user_name FROM memberuser m1  WHERE  fundrecharge.user_id=m1.user_id) IS NULL,
+		(SELECT s.user_name FROM sysuser s  WHERE  fundrecharge.user_id=s.user_id),member.cust_name) AS user_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

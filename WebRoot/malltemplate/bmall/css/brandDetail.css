@@ -1,0 +1,134 @@
+/*logo*/
+.rsearchback{
+	width:509px;
+	height:30px;
+	line-height:30px;
+	background:url(../images/searchback.gif) repeat-x;
+	position:relative;
+	border-left:#7f6b60 solid 1px;
+	display:inline;
+	margin-top:35px;
+	float:right;
+}
+.seartext{
+	width:421px;
+	height:16px;
+	line-height:16px;
+	position:absolute;
+	left:2px;
+	top:4px;
+	border:#ffffff solid 1px;
+}
+.rsearchback .searpor{
+	width:80px;
+	height:30px;
+	background:url(../images/sysreapro.gif) no-repeat;
+	position:absolute;
+	left:431px;
+}
+.rsearchback .searpor:hover{
+	width:80px;
+	height:30px;
+	background:url(../images/sysreahpro.gif) no-repeat;
+}
+/*导航*/
+.b2cnav{
+	width:100%;
+	height:34px;
+	background:#8f0100;
+}
+/*品牌列表*/
+.lwb880{
+	width:880px;
+	float:left;
+}
+.rwb290{
+	width:290px;
+	float:right;
+}
+/*品牌信息*/
+.brandInfo{
+	width:848px;
+	border:#d9d9d9 solid 1px;
+	padding:0px 15px 10px;
+}
+.brandInfo h2{
+	width:848px;
+	height:35px;
+	line-height:35px;
+	font-size:14px;
+	border-bottom:#dddddd solid 1px;
+}
+.brandInfo th{
+	font-size:14px;
+	font-weight:100;
+	text-align:right;
+	padding:12px 0 12px;
+}
+.brandInfo td{
+	padding:12px 0 12px;
+}
+.brandInfo td img{
+	width:125px;
+	height:55px;
+	border:#dddddd solid 1px;
+}
+.brandInfo td a{
+	color:#2652a5;
+}
+.brandcont{
+	width:848px;
+}
+.brandcont p{
+	padding-top:10px;
+	line-height:24px;
+	text-indent:2em;
+}
+/*推荐品牌，相关品牌*/
+.recBrand{
+	width:290px;
+}
+.recBrand h2{
+	width:278px;
+	height:32px;
+	line-height:32px;
+	font-size:12px;
+	padding-left:10px;
+	border:#d9d9d9 solid 1px;
+	border-bottom:none;
+	background:#f5f5f5;
+}
+.recBrandcont{
+	width:288px;
+	border:#d9d9d9 solid 1px;
+	border-top:none;
+	padding:10px 0px;
+}
+.recBrandcont ul{
+	line-height:18px;
+}
+.recBrandcont li{
+	width:127px;
+	float:left;
+	padding:5px 0px 5px 11px;
+}
+.recBrandcont li div{
+	width:125px;
+	height:55px;
+	border:#dddddd solid 1px;
+}
+.recBrandcont li img{
+	width:125px;
+	height:55px;
+}
+.recBrandcont li p{
+	text-align:center;
+	padding-top:5px;
+}
+.recBrandcont li a:hover{
+	color:#b20000;
+	text-decoration:none;
+}
+.recBrandmag{
+	margin-top:10px;
+}

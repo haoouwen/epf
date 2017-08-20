@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="express">
+
+	<typeAlias alias="express" type="com.rbt.model.Express" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="express">
+		<![CDATA[ 
+    SELECT trade_id,spread_name,image_path,spread_link,click_charges,info_state,cust_id,use_id,application_time,put_price,put_starttime,put_endtime,goods_id,is_enable,last_price FROM express WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="express">
+		UPDATE express SET trade_id=#trade_id#,spread_name=#spread_name#,image_path=#image_path#,spread_link=#spread_link#,click_charges=#click_charges#,info_state=#info_state#,cust_id=#cust_id#,use_id=#use_id#,application_time=now(),put_price=#put_price#,put_starttime=#put_starttime#,put_endtime=#put_endtime#,goods_id=#goods_id#,is_enable=#is_enable#,last_price=#last_price# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="express">
+		INSERT INTO express (trade_id,spread_name,image_path,spread_link,click_charges,info_state,cust_id,use_id,application_time,put_price,put_starttime,put_endtime,goods_id,is_enable,last_price) VALUES (#trade_id#,#spread_name#,#image_path#,#spread_link#,#click_charges#,#info_state#,#cust_id#,#use_id#,now(),#put_price#,#put_starttime#,#put_endtime#,#goods_id#,#is_enable#,#last_price#)
+	</insert>
+	
+   <insert id="insertGetPk" parameterClass="express">
+		INSERT INTO express (trade_id,spread_name,image_path,spread_link,click_charges,info_state,cust_id,use_id,application_time,put_price,put_starttime,put_endtime,goods_id,is_enable,last_price) VALUES (#trade_id#,#spread_name#,#image_path#,#spread_link#,#click_charges#,#info_state#,#cust_id#,#use_id#,now(),#put_price#,#put_starttime#,#put_endtime#,#goods_id#,#is_enable#,#last_price#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM express WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM express e
+				left join member m on e.cust_id = m.cust_id
+						         left join goodsattr g on e.goods_id=g.goods_id
+						            left join orderdetail od ON od.goods_id=g.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="info_state_s"> 
+     		     e.info_state in ($info_state_s$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="spread_name">
+				instr(e.spread_name,#spread_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="startput_price">
+				 e.put_price>=#startput_price#
+			</isNotNull>
+			<isNotNull prepend="and" property="endput_price">
+				#endput_price#>=e.put_price
+			</isNotNull>
+			<isNotNull prepend="and" property="st_put_date">
+				 e.put_starttime>=#st_put_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_put_date">
+				#en_put_date#>=e.put_starttime
+			</isNotNull>
+			<isNotNull prepend="and" property="st_en_date">
+				e.put_endtime>=#st_en_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_en_date">
+				#en_en_date#>=e.put_endtime
+			</isNotNull>
+			<isNotNull prepend="and" property="in_start_end">
+				TO_DAYS(NOW())>=TO_DAYS(e.put_starttime) AND TO_DAYS(e.put_endtime)>=TO_DAYS(NOW())
+			</isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+			   e.cust_id=#cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="enough_pay"> 
+			   e.last_price >= e.click_charges
+			 </isNotNull>
+			 <isNotNull prepend="and" property="trade_id_no"> 
+			   e.trade_id not in ($trade_id_no$)
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT DISTINCT(e.trade_id),e.spread_name,e.image_path,e.spread_link,e.click_charges,e.info_state,e.cust_id,
+		e.use_id AS user_name,e.application_time,e.put_price,e.put_starttime,e.put_endtime,m.cust_name,e.goods_id,
+		e.is_enable,e.last_price,g.sale_price,g.market_price,IF(SUM(od.order_num) IS NULL,0,SUM(od.order_num)) AS sale_num
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		 GROUP BY e.trade_id
+		<isNotNull property="time_desc"> 
+		     ORDER BY e.application_time desc
+		</isNotNull>
+		<isNotNull property="id_desc"> 
+		     ORDER BY e.trade_id DESC
+		</isNotNull>
+		<isNotNull property="put_price_desc"> 
+		     ORDER BY e.put_price DESC
+		</isNotNull>
+		<isNotNull property="click_charges_desc"> 
+		     ORDER BY e.click_charges DESC
+		</isNotNull>
+		<isNotNull property="trade_desc"> 
+		     ORDER BY e.trade_id DESC
+		</isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+        
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

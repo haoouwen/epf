@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="template">
+
+	<typeAlias alias="template" type="com.rbt.model.Template" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="template">
+		<![CDATA[ 
+    SELECT template_id,template_name,width,height,in_date,user_id,template_content FROM template WHERE template_id=$template_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="template">
+		UPDATE template SET template_id=#template_id#,template_name=#template_name#,width=#width#,height=#height#,user_id=#user_id#,template_content=#template_content# WHERE template_id=$template_id$
+	</update>
+
+	<insert id="insert" parameterClass="template">
+		INSERT INTO template (template_id,template_name,width,height,in_date,user_id,template_content) VALUES (#template_id#,#template_name#,#width#,#height#,now(),#user_id#,#template_content#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM template WHERE template_id in ($template_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM template t 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT template_id,template_name,width,height,in_date,t.user_id AS user_name,template_content
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY template_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

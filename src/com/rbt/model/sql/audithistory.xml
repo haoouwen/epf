@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="audithistory">
+
+	<typeAlias alias="audithistory" type="com.rbt.model.Audithistory" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="audithistory">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,info_id,module_type,user_id,user_name,info_state,no_reason,in_date FROM audithistory WHERE info_id=$info_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="audithistory">
+		UPDATE audithistory SET trade_id=#trade_id#,cust_id=#cust_id#,info_id=#info_id#,module_type=#module_type#,user_id=#user_id#,user_name=#user_name#,info_state=#info_state#,no_reason=#no_reason#,in_date=now() WHERE info_id=$info_id$
+	</update>
+
+	<insert id="insert" parameterClass="audithistory">
+		INSERT INTO audithistory (trade_id,info_id,module_type,user_id,user_name,info_state,no_reason,in_date,cust_id) VALUES (#trade_id#,#info_id#,#module_type#,#user_id#,#user_name#,#info_state#,#no_reason#,now(),#cust_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM audithistory WHERE info_id in ($info_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM audithistory 
+		<dynamic prepend="WHERE">			
+			<isNotNull prepend="and" property="info_id">
+				info_id=#info_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="module_type">
+				module_type=#module_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="user_id">
+				user_id=#user_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,info_id,module_type,user_id,user_name,info_state,no_reason,in_date,cust_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC,in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getAuditList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT trade_id,info_id,module_type,user_id,user_name,info_state,no_reason,in_date,cust_id
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY in_date ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	
+</sqlMap>
+

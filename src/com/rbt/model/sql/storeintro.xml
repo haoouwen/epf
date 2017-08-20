@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="storeintro">
+
+	<typeAlias alias="storeintro" type="com.rbt.model.Storeintro" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="storeintro">
+		<![CDATA[ 
+    SELECT sto_id,sto_name,img_path,content,is_show,sort_no FROM storeintro WHERE sto_id=$sto_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="storeintro">
+		UPDATE storeintro SET sto_id=#sto_id#,sto_name=#sto_name#,img_path=#img_path#,content=#content#,is_show=#is_show#,sort_no=#sort_no# WHERE sto_id=$sto_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE storeintro SET 
+    	 <isNotNull  property="sto_id"> 
+		   sto_id=$sto_id$
+		 </isNotNull>
+    	 WHERE sto_id=$sto_id$
+    </update>
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE storeintro SET sort_no=#sort_no# WHERE sto_id=$sto_id$
+	</update>
+    
+	<update id="updateSate" parameterClass="storeintro">
+		UPDATE storeintro SET sto_id=$sto_id$ WHERE sto_id=$sto_id$
+	</update>
+    <!-- is_show显示/不显示 -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE storeintro SET is_show=#is_show# WHERE sto_id=$sto_id$
+	</update>
+	
+	<insert id="insert" parameterClass="storeintro">
+		INSERT INTO storeintro (sto_id,sto_name,img_path,content,is_show,sort_no) VALUES (#sto_id#,#sto_name#,#img_path#,#content#,#is_show#,#sort_no#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM storeintro WHERE sto_id in ($sto_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM storeintro 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sto_id">
+				sto_id=#sto_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="sto_name">
+				INSTR(sto_name,#sto_name#) >0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sto_id,sto_name,img_path,content,is_show,sort_no
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,sto_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM storeintro 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="sto_id">
+				sto_id=#sto_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_show">
+				is_show=#is_show#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT sto_id,sto_name,img_path,content,is_show,sort_no
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+</sqlMap>

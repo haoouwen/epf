@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sendbox">
+
+	<typeAlias alias="sendbox" type="com.rbt.model.Sendbox" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="sendbox">
+		<![CDATA[ 
+    SELECT send_id,send_cust_id,title,content,is_send_del,in_date,recevie_name,is_draft FROM sendbox WHERE send_id=$send_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="sendbox">
+		UPDATE sendbox SET send_id=#send_id#,recevie_name=#recevie_name#,send_cust_id=#send_cust_id#,title=#title#,content=#content#,is_send_del=#is_send_del#,in_date=now(),is_draft=#is_draft# WHERE send_id=$send_id$
+	</update>
+
+	<insert id="insert" parameterClass="sendbox">
+		INSERT INTO sendbox (send_cust_id,title,recevie_name,content,is_send_del,in_date,is_draft) VALUES (#send_cust_id#,#title#,#recevie_name#,#content#,#is_send_del#,now(),#is_draft#)
+	</insert>
+	
+	<update id="deletelogic" parameterClass="java.util.HashMap">
+		UPDATE sendbox SET is_send_del=#is_send_del# WHERE send_id=$send_id$
+	</update>
+	
+	<insert id="insertGetPk" parameterClass="sendbox">
+		INSERT INTO sendbox (send_cust_id,title,recevie_name,content,is_send_del,in_date,is_draft) VALUES (#send_cust_id#,#title#,#recevie_name#,#content#,#is_send_del#,now(),#is_draft#)
+		 <selectKey resultClass="java.lang.String" keyProperty="send_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM sendbox WHERE send_id in ($send_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM sendbox s
+		  left join member m on s.send_id=m.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id"> 
+	    		s.send_cust_id in ($cust_id$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_send_del"> 
+	    		is_send_del=#is_send_del#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="send_id">
+		    	s.send_id in ($send_id$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="send_cust_name">
+		    	INSTR(recevie_name,#send_cust_name#)>0
+		    </isNotNull>	
+		    <isNotNull prepend="and" property="is_draft">
+		    	s.is_draft=#is_draft#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="recevie_name">
+		    	s.recevie_name=#recevie_name#
+		    </isNotNull>
+		    		    
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT s.send_id,send_cust_id,recevie_name,title,content,is_send_del,s.in_date,m.cust_name,m.cust_id,is_draft
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY send_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+
+</sqlMap>
+

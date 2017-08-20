@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="categoryattr">
+
+	<typeAlias alias="categoryattr" type="com.rbt.model.Categoryattr" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="categoryattr">
+		<![CDATA[ 
+    SELECT attr_id,attr_name,cat_attr,attr_type,is_must,sort_no,module_type FROM categoryattr WHERE attr_id=#attr_id#
+    ]]>
+	</select>
+ 
+	<update id="update" parameterClass="categoryattr">
+		UPDATE categoryattr SET attr_id=#attr_id#,attr_name=#attr_name#,cat_attr=#cat_attr#,attr_type=#attr_type#,is_must=#is_must#,sort_no=#sort_no#,module_type=#module_type# WHERE attr_id=$attr_id$
+	</update>
+
+	<insert id="insert" parameterClass="categoryattr">
+
+		INSERT INTO categoryattr (attr_id,attr_name,cat_attr,attr_type,is_must,sort_no,module_type) VALUES (#attr_id#,#attr_name#,#cat_attr#,#attr_type#,#is_must#,#sort_no#,#module_type#)
+
+	</insert>
+	
+	<insert id="insertGetPk" parameterClass="categoryattr">
+		INSERT INTO categoryattr (attr_id,attr_name,cat_attr,attr_type,is_must,sort_no) VALUES (#attr_id#,#attr_name#,#cat_attr#,#attr_type#,#is_must#,#sort_no#)
+		<selectKey resultClass="java.lang.String" keyProperty="attr_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM categoryattr WHERE attr_id in ($attr_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM categoryattr c
+			left join sysmodule s on c.module_type=s.module_type
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="module_type"> 
+			    INSTR(c.module_type,#module_type#) >0
+			 </isNotNull>
+			<isNotNull prepend="and" property="attr_name"> 
+			    INSTR(attr_name,#attr_name#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_attr"> 
+			    INSTR(cat_attr,#cat_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_attrlev"> 
+			    cat_attr=#cat_attrlev#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cat_attr_more"> 
+			    cat_attr=#cat_attr_more#
+			 </isNotNull>
+			<isNotNull prepend="and" property="is_must"> 
+			    is_must=$is_must$
+			 </isNotNull>
+			 <isNotNull prepend="and" property="attr_type"> 
+			    attr_type=#attr_type#
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT c.attr_id,attr_name,cat_attr,attr_type,is_must,c.sort_no,s.module_name
+
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,attr_name  DESC   
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+  <select id="getCatAttrList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT categoryattr.attr_id,attr_name,cat_attr,attr_type,is_must,sort_no,trade_id,attr_value
+		FROM categoryattr right join attrvalue on categoryattr.attr_id = attrvalue.attr_id
+		where 
+		<isNotNull  property="cat_attr_more"> 
+			    cat_attr=#cat_attr_more#
+		</isNotNull>
+		ORDER BY sort_no ASC 
+  </select>
+	
+	
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

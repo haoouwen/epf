@@ -1,0 +1,276 @@
+/*秒杀日期*/
+.msdate{
+	width:1180px;
+	background:#f6f1e5;
+	border-bottom:#d9d1c7 solid 1px;
+}
+.datediv{
+	margin: 0 auto;
+    padding-top: 10px;
+    width: 1180px;
+    height:100px;
+}
+.msdateul{
+	width:1180px;
+	height:32px;
+	line-height:32px;
+	background:#e9e0ce;
+}
+.msdateul li{
+	float:left;
+	padding:0 15px;
+	color:#9c8b74;
+	cursor:pointer;
+}
+.msdateul .selli{
+	color:#7e5216;
+	background:#f6f1e5;
+}
+.msdatecont{
+	width:1152px;
+	padding:0 14px;
+}
+.msdatecont  ul{
+	padding-top:10px;
+	height:130px;
+	line-height:16px;
+}
+.msdatecont li{
+	width:72px;
+	height:34px;
+	background:url(../images/dateli.gif) no-repeat;
+	float:left;
+	text-align:center;
+	cursor:pointer;
+	color:#7e5216;
+	padding-top:24px;
+	margin-bottom:5px;
+}
+.msdatecont .panicdate{
+	background:url(../images/qgdate.gif) no-repeat;
+	color:#fff;
+}
+.msdatecont .panic{
+	background:url(../images/havadate.gif) no-repeat;
+	color:#fff;
+}
+.msdatecont .seldate{
+	background:url(../images/seldate.gif) no-repeat;
+}
+.msdatecont .hoverdate{
+	background:url(../images/ahdate.gif) no-repeat;
+}
+.msdatecont .overdate{
+	color:#baafa1;
+}
+/*秒杀内容*/
+.msMian{
+	width:1196px;
+	margin:0 auto;
+}
+.msMianul{
+	width:1196px;
+	color:#a7a7a7;
+}
+.msMianul h2{
+	height:34px;
+	line-height:34px;
+	font-size:22px;
+	color:#333333;
+	padding-top:20px;
+}
+.msMianul h2 .lclock{
+	height:34px;
+	background:url(../images/clock_03.gif) no-repeat 5px center;
+	display:inline-block;
+	float:left;
+	padding-left:45px;
+	margin-top:60px;
+}
+.msMianul h2 .rtime{
+	font-size:22px;
+	float:right;
+	padding-right:10px;
+	font-size:18px;
+}
+.msMianul h2 b{
+	color:#ff5933;
+}
+.msMianul ul{
+	width:1196px;
+}
+.msMianul li{
+	width:201px;
+	padding:10px;
+	padding-top:0;
+	border:#e3d5c4 solid 1px;
+	margin:0 8px;
+	float:left;
+	display:inline;
+	position:relative;
+	z-index:1;
+	line-height:18px;
+	margin-top:80px;
+}
+.msMianul li a:hover{
+	text-decoration:none;
+	color:#b20000;
+}
+.msMianul li .discount{
+	width:87px;
+	height:44px;
+	background:url(../images/zkback.gif) no-repeat;
+	position:absolute;
+	left:130px;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	padding:0px;
+	line-height:24px;
+	font-weight:bold;
+	z-index:2;
+}
+.msMianul li .discount b{
+	font-size:16px;
+}
+.msMianul li .seldiscount{
+	width:87px;
+	height:44px;
+	background:url(../images/zksback.gif) no-repeat;
+	position:absolute;
+	left:130px;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	padding:0px;
+	line-height:24px;
+	font-weight:bold;
+	z-index:2;
+}
+.msMianul li .seldiscount b{
+	font-size:16px;
+}
+.msMianul li div{
+	width:200px;
+	height:200px;
+	padding-top:10px;
+}
+.msMianul li p{
+	padding-top:5px;
+}
+.msMianul li div img{
+	width:200px;
+	height:200px;
+}
+.msMianul li  span{
+	line-height:29px;
+}
+.msMianul .addborder{
+	border:#f74a21 solid 1px;
+}
+/*团购*/
+.groupBuy{
+	width:1180px;
+}
+.groupBuy h2{
+	width:1168px;
+	height:36px;
+	line-height:36px;
+	background:#f5f5f5;
+	padding-left:10px;
+	font-size:14px;
+	border:#dfdfdf solid 1px;
+	border-bottom:none;
+}
+.groupBuy h2 a{
+	float:right;
+	margin-right:10px;
+	font-weight:100;
+	font-size:12px;
+}
+.gbmain{
+	width:1178px;
+	border:#dfdfdf solid 1px;
+	border-top:none;
+}
+.gbmain ul{
+	width:1168px;
+	*padding-bottom:15px;
+}
+.gbmain li{
+	width:240px;
+	padding:14px;
+	border:#f2f2f2 solid 1px;
+	float:left;
+	display:inline;
+	position:relative;
+	margin:15px 4px 15px 16px;
+}
+.gbmain li .discount{
+	width:87px;
+	height:44px;
+	background:url(../images/zksback.gif) no-repeat;
+	position:absolute;
+	left:170px;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	padding:0px;
+	line-height:24px;
+	font-weight:bold;
+	z-index:2;
+}
+.gbmain li .discount b{
+	font-size:16px;
+}
+.gbmain  .ph2{
+	font-size:14px;
+	font-weight:bold;
+	line-height:22px;
+}
+.gbmain  .ph2 a{
+	color:#333333;
+}
+.gbmain  .ph2 a:hover{
+	color:#d20000;
+}
+.gbmain li div{
+	width:240px;
+	height:240px;
+	margin-top:10px;
+}
+.gbmain li div img{
+	width:240px;
+	height:240px;
+}
+.gbmain .addborder{
+	border:#f74a21 solid 1px;
+}
+.gbmain .pyj{
+	width:230px;
+	height:26px;
+	line-height:26px;
+	background:#f2f2f2;
+	padding:0 5px;
+}
+.gbmain  .orange{
+	color:#fe3c05;
+}
+.gbmain .lookb{
+	width:240px;
+	height:48px;
+	background:url(../images/tglookback_04.gif) no-repeat;
+	position:relative;
+}
+.gbmain .lookb b{
+	font-size:24px;
+	color:#fff;
+	position:absolute;
+	top:12px;
+	left:10px;
+}
+.gbmain .lookb a{
+	position:absolute;
+	top:10px;
+	left:140px;
+}

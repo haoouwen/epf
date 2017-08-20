@@ -1,0 +1,70 @@
+/*密码验证提示CSS --------------------------------开始--------------------------------*/
+#tipPosition
+{
+width: 400px;
+height: 16px;
+line-height: 18px;
+padding: 2px 30px;
+}
+.tip
+{
+background: #E6F2FF url(images/register_tip.png) no-repeat 10px center;
+border: 1px #0E5863 dashed;
+color: #0E5863;
+}
+.success
+{
+background: #D6FCD2 url(images/register_success.png) no-repeat 10px center;
+border: 1px #2F5D36 dashed;
+color: #3D934A;
+}
+/*密码强度CSS --------------------------------开始--------------------------------*/
+#pwdStrong_color
+{
+width: 136px;
+height: 3px;
+border: 0px;
+border-collapse: collapse;
+border-spacing: 0;
+background: #E6EAED;
+margin-top: 5px;
+}
+#pwdStrong_color td
+{
+padding: 0px;
+width: 44px; /*如不加td宽度,Google的Chrome不会正常显示*/
+}
+#pwdStrong_text
+{
+font: 12px 宋体;
+} 
+.tipform{
+	height:32px;
+	line-height:32px;
+	display:inline-block;
+	float:left;
+	background:url(/malltemplate/bmall/images/jg.gif) no-repeat 10px center;
+	padding-left:35px;
+	color:#898989;
+}
+
+.error{
+	height:32px;
+	line-height:32px;
+	display:inline-block;
+	float:left;
+	background:url(/malltemplate/bmall/images/cw.gif) no-repeat 10px center;
+	padding-left:35px;
+	color:#898989;
+}
+
+
+.success_form{
+	height:32px;
+	line-height:32px;
+	display:inline-block;
+	float:left;
+	background:url(/malltemplate/bmall/images/cg.gif) no-repeat 10px center;
+	padding-left:35px;
+	color:#898989;
+}

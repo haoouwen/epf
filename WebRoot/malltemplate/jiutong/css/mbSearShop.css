@@ -1,0 +1,240 @@
+/*门店查询*/
+.shopSearDiv{
+	width:100%;
+	background:#ededed;
+	position:fixed;
+	bottom:49px;
+	left:0px;
+	text-align:center;
+	padding:10px 0;
+}
+.shopSearDiv  .ssbut{
+	padding:1px 10px;
+	margin-left:5px;
+}
+/*购物车为空*/
+.empty{
+	padding:30px 30px 15px;
+	text-align:center;
+}
+.empty p{
+	padding-top:10px;
+	line-height:24px;
+	font-size:14px;
+}
+.empty .emptyP{
+	padding-top:15px;
+}
+.empty .emptyP a{
+	width:50%;
+	height:38px;
+	display:inline;
+	float:left;
+}
+.empty .emptyP i{
+	height:38px;
+	background:#fba540;
+	margin:0 10px;
+	display:block;
+	border-radius:4px;
+	line-height:38px;
+	font-style:normal;
+	color:#fff;
+	font-size:13px;
+}
+.empty .emptyP .iRed{
+	background:#fd5d5d;
+}
+/*店铺列表*/
+.shopList{
+}
+.shopList li{
+	padding:7px 10px;
+	line-height:20px;
+	border-top:#dadada solid 1px;
+	border-bottom:#dadada solid 1px;
+	margin-top:10px;
+	background:#fff;
+}
+.shopList p{
+	padding:4px 0;
+}
+.shopList li img{
+	width:16px;
+	height:22px;
+	vertical-align:text-bottom;
+	padding-right:5px;
+}
+.shopList li a{
+	font-size:14px;
+}
+/*详细页*/
+.sdTopDiv{
+	background:#fff;
+	padding:10px;
+	border-bottom:#dadada solid 1px;
+}
+.sdTopDiv .sdPic{
+	max-width:620px;
+	min-width:300px;
+	margin:0 auto;
+}
+
+.sdTopDiv .sdmap{
+	max-width:300px;
+	text-align:center;
+}
+
+.sdTopDiv .sdPic img{
+	width:100%;
+}
+.sdTopDiv p{
+	padding:5px 0;
+	line-height:20px;
+}
+.sdTopDiv span{
+	font-size:15px;
+}
+/*热门品牌*/
+.brandList{
+	background:#fff;
+}
+.brandList h3{
+	height:32px;
+	background:#f5f5f5;
+	line-height:32px;
+	padding:0 10px;
+	font-size:15px;
+	font-weight:400;
+}
+.brandList .pBrand{
+	padding:5px 0 10px;
+}
+.brandList .pBrand a{
+	display:inline-block;
+	margin:10px 0 0 10px;
+} 
+.brandList .pBrand img{
+	width:140px;
+	height:70px;
+	border:#f8f8f8 solid 1px;
+}
+
+/*筛选*/
+.sxDiv{
+	width:100%;
+	background:#fff;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	text-align:center;
+	padding:6px 0;
+	box-shadow:0px -1px 2px #e6e6e6;
+}
+.sxDiv span{
+	width:100px;
+	height:32px;
+	display:inline-block;
+	line-height:32px;
+	color:#fff;
+	background:#fd5d5d;
+	text-align:center;
+	border-radius:5px;
+}
+.filterDiv{/*筛选*/
+	width:250px;
+	position:fixed;
+	right:-250px;
+	top:0px;
+	background:#676767;
+	z-index:50;
+	color:#fff;
+	overflow:auto;
+	display:none;
+}
+.filterDiv .filh2{/**/
+	height:40px;
+	background:#2f2f2f;
+	padding:0 10px;
+	font-size:14px;
+	line-height:40px;
+	color:#fff;
+	text-align:center;
+}
+.filsDiv{/**/
+	border-bottom:#797979 solid 1px;
+	padding-bottom:10px;
+}
+.filsDiv .ph2{
+	height:38px;
+	background:url(../images/line.gif) repeat-x bottom;
+	line-height:38px;
+	padding:0 10px;
+}
+.filsDiv  .pfil a{
+	color:#fff;
+	padding:6px 10px;
+	display:inline-block;
+	margin:10px 0 0 10px;
+}
+.filsDiv  .pfil .sela{
+	border:#e5383c solid 1px;
+	background:#fff url(../images/selsj.png) no-repeat right bottom;
+	color:#888;
+	padding:5px 9px;
+}
+.filsDiv .selelctP{
+	padding:12px 0 0 15px;
+}
+.filsDiv .selelctP select{
+	width:220px;
+	height:24px;
+	border:#fff solid 1px;
+}
+.filrBut{/**/
+	height:32px;
+	padding:15px;
+	margin-top:5px;
+}
+.filrBut span{
+	width:100%;
+	height:34px;
+	float:left;
+	display:inline;	
+}
+.filrBut span i{
+	height:34px;
+	background:#be1a00;
+	display:block;
+	margin:0 8px;
+	font-style:normal;
+	line-height:34px;
+	text-align:center;
+	border-radius:5px;
+	cursor:pointer;
+}
+.filClose{
+	width:38px;
+	height:60px;
+	position:fixed;
+	right:-250px;
+	top:100px;
+	display:none;
+}
+.findlistservice{
+    color:#fff;
+    font-size:12px;
+    border-radius:2px;
+    padding:0px 3px;
+    margin:3px;
+    display: inline-block;
+}
+.findlistservicedetail{
+    color:#fff;
+    font-size:11px;
+    border-radius:2px;
+    padding:0px 3px;
+    margin:3px;
+    display: inline-block;
+}
+

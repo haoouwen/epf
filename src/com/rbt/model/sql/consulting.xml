@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="consulting">
+
+	<typeAlias alias="consulting" type="com.rbt.model.Consulting" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="consulting">
+		<![CDATA[ 
+    SELECT re_id,trade_id,user_id,re_content,re_date,is_display FROM consulting WHERE re_id=$re_id$
+    ]]>
+	</select>
+	<select id="getByTradeId" parameterClass="java.lang.String"
+		resultClass="consulting">
+		<![CDATA[ 
+    SELECT re_id,trade_id,user_id,re_content,re_date,is_display FROM consulting WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="consulting">
+		UPDATE consulting SET re_id=#re_id#,trade_id=#trade_id#,user_id=#user_id#,re_content=#re_content#,re_date=now(),is_display=#is_display# WHERE re_id=$re_id$
+	</update>
+
+	<insert id="insert" parameterClass="consulting">
+		INSERT INTO consulting (re_id,trade_id,user_id,re_content,re_date,is_display) VALUES (#re_id#,#trade_id#,#user_id#,#re_content#,now(),#is_display#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM consulting WHERE re_id in ($re_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM consulting 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT re_id,trade_id,user_id,re_content,re_date,is_display
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY re_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="autoupgoods">
+
+	<typeAlias alias="autoupgoods" type="com.rbt.model.Autoupgoods" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="autoupgoods">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,goods_id,up_time,down_time,in_date FROM autoupgoods WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="autoupgoods">
+		UPDATE autoupgoods SET trade_id=#trade_id#,cust_id=#cust_id#,goods_id=#goods_id#,up_time=#up_time#,down_time=#down_time#,in_date=#in_date# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="autoupgoods">
+		INSERT INTO autoupgoods (trade_id,cust_id,goods_id,up_time,down_time,in_date) VALUES (#trade_id#,#cust_id#,#goods_id#,#up_time#,#down_time#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM autoupgoods WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<delete id="deleteByGoodsid" parameterClass="java.lang.String">
+		DELETE FROM autoupgoods WHERE goods_id in ($goods_id$)
+	</delete>
+	<sql id="getCommon">
+		FROM autoupgoods aug
+			left join member on aug.cust_id=member.cust_id
+				left join goods on aug.goods_id=goods.goods_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_name">
+				INSTR(goods.goods_name,#goods_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr">
+				INSTR(goods.cat_attr,#cat_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name">
+				INSTR(member.cust_name,#cust_name#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="start_time"> 
+		    DATE(up_time)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time"> 
+			#end_time#>=DATE(up_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="rstart_time"> 
+		    DATE(down_time)>=#rstart_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="rend_time"> 
+			#rend_time#>=DATE(down_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_id">
+				aug.goods_id=#goods_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_cust_id">
+				aug.cust_id=#up_cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				aug.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="up_is_virtual">
+				goods.is_virtual=#up_is_virtual#
+			</isNotNull>
+			<isNotNull prepend="and" property="autoup">
+				<![CDATA[  TO_DAYS(NOW()) - TO_DAYS(aug.up_time) >0 ]]> 
+			</isNotNull>
+			<isNotNull prepend="and" property="autodown">
+				<![CDATA[  TO_DAYS(NOW()) - TO_DAYS(aug.down_time) <0 ]]> 
+			</isNotNull>
+			<isNotNull prepend="and" property="willup">
+				<![CDATA[  TO_DAYS(aug.up_time)>TO_DAYS(NOW()) ]]> 
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT aug.trade_id,aug.cust_id,aug.goods_id,aug.up_time,aug.down_time,aug.in_date,goods.goods_name,member.cust_name,goods.is_virtual,goods.cat_attr,goods.list_img,
+		(SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE ga.goods_id=aug.goods_id)  as min_sale_price,(SELECT MIN(ga.market_price) FROM goodsattr ga WHERE ga.goods_id=aug.goods_id)  as min_market_price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY (aug.in_date)DESC,  (aug.up_time) ASC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

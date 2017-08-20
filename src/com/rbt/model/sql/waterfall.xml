@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="waterfall">
+
+	<typeAlias alias="waterfall" type="com.rbt.model.Waterfall" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="waterfall">
+		<![CDATA[ 
+    SELECT wf_code,template_content,in_date,user_id,width,height,temp_type,area_attr FROM waterfall WHERE wf_code=#wf_code#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="waterfall">
+		UPDATE waterfall SET wf_code=#wf_code#,template_content=#template_content#,in_date=now(),user_id=#user_id#,width=#width#,height=#height#,temp_type=#temp_type#,area_attr=#area_attr# WHERE wf_code=#wf_code#
+	</update>
+
+	<insert id="insert" parameterClass="waterfall">
+		INSERT INTO waterfall (wf_code,template_content,in_date,user_id,width,height,temp_type,area_attr) VALUES (#wf_code#,#template_content#,now(),#user_id#,#width#,#height#,#temp_type#,#area_attr#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM waterfall WHERE wf_code in (#wf_code#)
+	</delete>
+
+	<sql id="getCommon">
+		FROM waterfall w 
+		<dynamic prepend="WHERE">
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT wf_code,template_content,in_date,w.user_id AS user_name,width,height,temp_type,area_attr
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

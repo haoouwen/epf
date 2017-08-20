@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="directsell">
+
+	<typeAlias alias="directsell" type="com.rbt.model.Directsell" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="directsell">
+		<![CDATA[ 
+    SELECT trade_id,goods_id,earnest,info_state,saleprice,saledesc,cat_attr,start_time,end_time,sort,stock,in_date,img_path,sale_title,cust_id,user_id,list_img,tail_time,deliver_time,max_buy,stock_maxbuy,is_limit,limit_num,is_del,
+    (select sum(od.order_num) from directorderdetail od where od.direct_id = directsell.trade_id and (od.pay_state=1 or od.pay_state=2)) as deposit_num,
+    if((DATE_ADD(tail_time,interval 3 day)>= NOW() AND  NOW() >=start_time),"0","1") as pretime,DATE_ADD(tail_time,INTERVAL (SELECT var_value FROM sysconfig WHERE var_name='cfg_yushouendpaytime') DAY) AS final_time
+     FROM directsell WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+	
+	 <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE directsell SET sort=#sort# WHERE trade_id=$trade_id$
+	</update>
+	
+	<!-- 批量逻辑删除 -->
+	<update id="updateisdel" parameterClass="java.util.HashMap">
+    	UPDATE directsell SET is_del=#is_del# WHERE trade_id=$trade_id$
+	</update>
+	
+	<update id="update" parameterClass="directsell">
+		UPDATE directsell SET trade_id=#trade_id#,goods_id=#goods_id#,earnest=#earnest#,info_state=#info_state#,saleprice=#saleprice#,saledesc=#saledesc#,cat_attr=#cat_attr#,start_time=#start_time#,end_time=#end_time#,sort=#sort#,stock=#stock#,in_date=now(),img_path=#img_path#,sale_title=#sale_title#,cust_id=#cust_id#,user_id=#user_id#,list_img=#list_img#,tail_time=#tail_time#,deliver_time=#deliver_time#,max_buy=#max_buy#,stock_maxbuy=#stock_maxbuy#,is_limit=#is_limit#,limit_num=#limit_num#,is_del=#is_del#   WHERE trade_id=$trade_id$
+	</update>
+	
+	 <!--修改库存 stock -->
+	<update id="updateStock" parameterClass="java.util.HashMap">
+    	UPDATE directsell SET stock=stock-#stock# WHERE trade_id=$trade_id$
+	</update>
+	
+	<insert id="insert" parameterClass="directsell">
+		INSERT INTO directsell (trade_id,goods_id,earnest,info_state,saleprice,saledesc,cat_attr,start_time,end_time,sort,stock,in_date,img_path,sale_title,cust_id,user_id,list_img,tail_time,deliver_time,max_buy,stock_maxbuy,is_limit,limit_num,is_del) VALUES (#trade_id#,#goods_id#,#earnest#,#info_state#,#saleprice#,#saledesc#,#cat_attr#,#start_time#,#end_time#,#sort#,#stock#,now(),#img_path#,#sale_title#,#cust_id#,#user_id#,#list_img#,#tail_time#,#deliver_time#,#max_buy#,#stock_maxbuy#,#is_limit#,#limit_num#,#is_del#)
+	</insert>
+	 <insert id="insertGetPk" parameterClass="directsell">
+		INSERT INTO directsell (trade_id,goods_id,earnest,info_state,saleprice,saledesc,cat_attr,start_time,end_time,sort,stock,in_date,img_path,sale_title,cust_id,user_id,list_img,tail_time,deliver_time,max_buy,stock_maxbuy,is_limit,limit_num,is_del) VALUES (#trade_id#,#goods_id#,#earnest#,#info_state#,#saleprice#,#saledesc#,#cat_attr#,#start_time#,#end_time#,#sort#,#stock#,now(),#img_path#,#sale_title#,#cust_id#,#user_id#,#list_img#,#tail_time#,#deliver_time#,#max_buy#,#stock_maxbuy#,#is_limit#,#limit_num#,#is_del#)
+		 <selectKey resultClass="java.lang.String" keyProperty="trade_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM directsell WHERE trade_id in ($trade_id$)
+	</delete>
+	
+	<sql id="getdeliverpay">
+	     FROM directsell d
+	     LEFT JOIN goods g ON g.goods_id = d.goods_id
+	     LEFT JOIN directorderdetail dod ON dod.goods_id = g.goods_id
+	     LEFT JOIN goodsorder go ON go.order_id = dod.order_id	
+	     <dynamic prepend="WHERE">
+	       <isNotNull prepend="and" property="tail_time"> 
+		      NOW() > d.tail_time
+		   </isNotNull>
+		   <isNotNull prepend="and" property="order_type"> 
+		      go.order_type = #order_type#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_status"> 
+		      go.info_status = #info_status#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="order_state"> 
+		      go.order_state = #order_state#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="ortimeout"> 
+			  SUBDATE(NOW(),INTERVAL #ortimeout# MINUTE) > go.order_time
+		   </isNotNull>
+	     </dynamic>
+	</sql>
+	     
+	<sql id="getCommon">
+		FROM directsell d
+		LEFT JOIN goods g ON d.goods_id = g.goods_id
+		LEFT JOIN member m ON d.cust_id = m.cust_id
+		LEFT JOIN memberuser mu ON mu.user_id = d.user_id
+	<!--  	LEFT JOIN directladder gl ON d.trade_id = gl.direct_id-->
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="trade_id"> 
+     		     d.trade_id=#trade_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="goods_id"> 
+     		     d.goods_id=#goods_id#
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_state_s"> 
+     		     d.info_state in ($info_state_s$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="info_state"> 
+     		     d.info_state in ($info_state$)
+		   </isNotNull>
+		   <isNotNull prepend="and" property="st_put_date">
+				 d.start_time>=#st_put_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_put_date">
+				 #en_put_date#>=d.start_time
+			</isNotNull>
+			<isNotNull prepend="and" property="st_en_date">
+				 d.end_time>=#st_en_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="en_en_date">
+				 #en_en_date#>=d.end_time
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id"> 
+			     d.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_name"> 
+			     instr(m.cust_name,#cust_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="cat_attr"> 
+			     INSTR(d.cat_attr,#cat_attr#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="sale_title"> 
+			     INSTR(d.sale_title,#sale_title#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(area_attr,#area_attr#) >0
+			 </isNotNull>
+			<isNotNull prepend="and" property="difftime">
+				 d.tail_time>= NOW() AND  NOW() >=d.start_time
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del">
+				 d.is_del=#is_del#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getdeliverpayList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	    select DISTINCT go.buy_cust_id as cust_id,go.order_id,g.goods_id,dod.trade_id,d.trade_id as dtrade_id
+	    <isParameterPresent>
+			<include refid="getdeliverpay" />
+		</isParameterPresent>
+    </select>
+    
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT d.trade_id,d.goods_id,d.earnest,d.info_state,d.saleprice,d.saledesc,d.cat_attr,d.start_time,d.end_time,d.sort,d.stock,d.in_date,d.img_path,d.sale_title,d.cust_id,d.user_id,g.list_img,d.tail_time,
+		g.goods_name,m.cust_name,mu.user_name,d.max_buy,d.stock_maxbuy,d.is_limit,d.limit_num,d.is_del,
+		    (select count(*) from directorderdetail od where od.direct_id = d.trade_id and ( od.pay_state=1 or  od.pay_state=2) ) as paynum,
+		    (select sum(order_num) from directorderdetail od where od.direct_id = d.trade_id and ( od.pay_state=1 or  od.pay_state=2) ) as buynum,
+		    (select sum(order_num) from directorderdetail od where od.direct_id = d.trade_id and (od.pay_state=1 or  od.pay_state=2)) as deposit_num,
+		    (select sum(order_num) from directorderdetail od where od.direct_id = d.trade_id and od.pay_state=2) as final_num,
+		    (SELECT price FROM directladder dl WHERE d.trade_id=dl.direct_id AND dl.lownum=1) AS direct_price,area_attr,
+		    (SELECT MIN(ga.sale_price) FROM goodsattr ga WHERE d.goods_id=ga.goods_id)  as min_sale_price,
+		    (SELECT MIN(ga.market_price) FROM goodsattr ga WHERE d.goods_id=ga.goods_id)  as min_market_price,deliver_time,
+		    if((date_add(d.tail_time,interval 3 day)>= NOW() AND  NOW() >=d.start_time),"0","1") as pretime,if((NOW() >=date_add(d.tail_time,interval 3 day)),"0","1") as preovertime,if((d.start_time>=NOW()),"0","1") as prenotstarttime,
+		    ((SELECT dl.price FROM directladder dl WHERE d.trade_id=dl.direct_id AND dl.lownum=1)-d.earnest) as finalprice
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		<isNotNull property="defaultSort"> 
+		    ORDER BY d.sort ASC,d.in_date DESC
+		  </isNotNull>
+		  <isNotNull property="paynum"> 
+		    ORDER BY paynum DESC
+		  </isNotNull>
+		  <isNotNull  property="pricedesc"> 
+		    ORDER BY price DESC
+		  </isNotNull>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+ 
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

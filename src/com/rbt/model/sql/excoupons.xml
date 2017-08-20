@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="excoupons">
+
+	<typeAlias alias="excoupons" type="com.rbt.model.Excoupons" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="excoupons">
+		<![CDATA[ 
+    SELECT ex_id,coupon_id,ex_state,coupon_no,ex_date,in_date FROM excoupons WHERE ex_id=$ex_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="excoupons">
+		UPDATE excoupons SET ex_id=#ex_id#,coupon_id=#coupon_id#,ex_state=#ex_state#,coupon_no=#coupon_no#,ex_date=#ex_date# WHERE ex_id=$ex_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE excoupons SET 
+    	 <isNotNull  property="ex_id"> 
+		   ex_id=$ex_id$
+		 </isNotNull>
+    	 WHERE ex_id=$ex_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="excoupons">
+		UPDATE excoupons SET ex_id=$ex_id$ WHERE ex_id=$ex_id$
+	</update>
+
+	<insert id="insert" parameterClass="excoupons">
+		INSERT INTO excoupons (ex_id,coupon_id,ex_state,coupon_no,ex_date,in_date) VALUES (#ex_id#,#coupon_id#,#ex_state#,#coupon_no#,#ex_date#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM excoupons WHERE ex_id in ($ex_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM excoupons 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="ex_id">
+				ex_id=#ex_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ex_state">
+				ex_state=#ex_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="coupon_id">
+				coupon_id=#coupon_id#
+			</isNotNull>
+		   <isNotNull prepend="and" property="coupon_no">
+				coupon_no=#coupon_no#
+			</isNotNull>		
+			 <isNotNull prepend="and" property="couponkey"> 
+			      ex_id in($couponkey$)
+			</isNotNull> 					
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ex_id,coupon_id,ex_state,coupon_no,ex_date,in_date,
+		(SELECT coupon_name FROM coupon  where coupon.coupon_id=excoupons.coupon_id) as coupon_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY ex_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

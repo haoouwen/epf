@@ -1,0 +1,37 @@
+
+.searchsmode{
+	width:760px;
+	height:505px;
+	padding:11px;	
+	margin-left: -380px;
+	margin-top: -260px;
+	background:#CAD9E6;
+	border:1px solid #3D596F;
+}
+
+.sg_contain_up{
+	width:749px;
+	height:468px;
+	border:1px solid #cecece;
+	background:#FFFFFF;
+	padding:5px;
+	padding-top:8px;
+}
+
+.searchtitle{
+	padding:2px 0px 6px 2px;
+}
+
+.txt_sm_name{
+	width:230px;
+}
+
+.showtemplatename{
+	padding:3px;
+	margin-right:5px;
+}
+
+
+
+
+

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="extendattr">
+
+	<typeAlias alias="extendattr" type="com.rbt.model.Extendattr" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="extendattr">
+		<![CDATA[ 
+    SELECT ex_attr_id,attr_name,option_type,default_value,is_display,sort_no,cat_attr,in_date FROM extendattr WHERE ex_attr_id=$ex_attr_id$
+    ]]>
+	</select>
+    <!--批量更新sort_no字段 -->
+	<update id="updateSort" parameterClass="java.util.HashMap">
+    	UPDATE extendattr SET sort_no=#sort_no# WHERE ex_attr_id=$ex_attr_id$
+	</update>
+	<update id="update" parameterClass="extendattr">
+		UPDATE extendattr SET ex_attr_id=#ex_attr_id#,attr_name=#attr_name#,option_type=#option_type#,default_value=#default_value#,is_display=#is_display#,sort_no=#sort_no#,cat_attr=#cat_attr#,in_date=now() WHERE ex_attr_id=$ex_attr_id$
+	</update>
+
+	<insert id="insert" parameterClass="extendattr">
+		INSERT INTO extendattr (ex_attr_id,attr_name,option_type,default_value,is_display,sort_no,cat_attr,in_date) VALUES (#ex_attr_id#,#attr_name#,#option_type#,#default_value#,#is_display#,#sort_no#,#cat_attr#,now())
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM extendattr WHERE ex_attr_id in ($ex_attr_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM extendattr e 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="attr_name">
+		    	INSTR(attr_name,#attr_name#)>0
+		    </isNotNull> 
+		    <isNotNull prepend="and" property="option_type">
+		   		 INSTR(option_type,#option_type#)>0
+		    </isNotNull> 
+		    <isNotNull prepend="and" property="is_display">
+		    	INSTR(is_display,#is_display#)>0
+		    </isNotNull>
+		    <isNotNull prepend="and" property="cat_attr">
+		   		INSTR(cat_attr,#cat_attr#)>0
+		    </isNotNull>
+		    <isNotNull prepend="and" property="goods_id">
+		   		s.goods_id=#goods_id#
+		    </isNotNull>
+		</dynamic>
+	</sql>
+
+
+	<select id="getexAttrList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT e.ex_attr_id,e.attr_name,e.option_type,e.default_value,e.is_display,e.sort_no,e.cat_attr
+		,s.ex_attr_value FROM extendattr e	left join selfextendattr s on e.ex_attr_id=s.ex_attr_id 
+		where 1=1
+		<isNotNull prepend="and" property="cat_attr">
+		   		INSTR(e.cat_attr,#cat_attr#)>0
+		</isNotNull>
+		<isNotNull prepend="and" property="goods_id">
+		   		s.goods_id=#goods_id#
+		</isNotNull>
+		ORDER BY e.sort_no ASC,e.ex_attr_id DESC
+	</select>	
+		
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT e.ex_attr_id,e.attr_name,e.option_type,e.default_value,e.is_display,e.sort_no,e.cat_attr
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY sort_no ASC,in_date DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

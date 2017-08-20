@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="redpacket">
+
+	<typeAlias alias="redpacket" type="com.rbt.model.Redpacket" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="redpacket">
+		<![CDATA[ 
+    SELECT red_id,red_name,red_no,info_state,content,money,start_time,end_time,member_level,red_num,is_show FROM redpacket WHERE red_id=$red_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="redpacket">
+		UPDATE redpacket SET red_id=#red_id#,red_name=#red_name#,red_no=#red_no#,info_state=#info_state#,content=#content#,money=#money#,start_time=#start_time#,end_time=#end_time#,member_level=#member_level#,red_num=#red_num#,is_show=#is_show# WHERE red_id=$red_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE redpacket SET 
+    	 <isNotNull  property="red_id"> 
+		   red_id=$red_id$
+		 </isNotNull>
+    	 WHERE red_id=$red_id$
+    </update>
+    
+	<update id="updateState" parameterClass="java.util.HashMap">
+		UPDATE redpacket SET info_state=#info_state# WHERE red_id=$red_id$
+	</update>
+
+	<insert id="insert" parameterClass="redpacket">
+		INSERT INTO redpacket (red_id,red_name,red_no,info_state,content,money,start_time,end_time,member_level,red_num,is_show) VALUES (#red_id#,#red_name#,#red_no#,#info_state#,#content#,#money#,#start_time#,#end_time#,#member_level#,#red_num#,#is_show#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM redpacket WHERE red_id in ($red_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM redpacket 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="red_name">
+				INSTR(red_name,#red_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="red_no">
+				red_no=#red_no#
+			</isNotNull>
+			<isNotNull prepend="and" property="info_state">
+				info_state=#info_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="money">
+				money=#money#
+			</isNotNull>
+			<isNotNull prepend="and" property="start_time">
+				 DATE(start_time)>=#start_time#
+			</isNotNull>
+			<isNotNull prepend="and" property="end_time">
+				#end_time#>=DATE(end_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="member_level">
+				INSTR(member_level,#member_level#) >0
+			</isNotNull>
+			<isNotNull prepend="and" property="time">
+				DATE_FORMAT(NOW(),'%y-%m-%d')>=DATE(start_time) and DATE(end_time) >= DATE_FORMAT(NOW(),'%y-%m-%d')
+ 			</isNotNull>
+			<isNotNull prepend="and" property="sgis"> 
+			      red_id in ($sgis$)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_show">
+				is_show=#is_show#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT red_id,red_name,red_no,info_state,content,money,start_time,end_time,member_level,red_num,is_show,
+		( SELECT COUNT(*) FROM exredbag WHERE exredbag.red_id=redpacket.red_id) AS down_count,
+		( SELECT COUNT(*) FROM exredbag WHERE exredbag.ex_state='0' AND exredbag.red_id=redpacket.red_id) AS down_count_no_use
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY red_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,66 @@
+#modletype {
+    left: 25px;
+    position: relative;
+    top: 12px;
+}
+.main_top{
+	background:#FFFFFF;
+	height:880px;
+}
+.contentDiv{
+	border:1px solid #D3D3D3;
+	width:300px;
+	height:388px;
+	margin-top:30px;
+	margin-left:25px;
+	float:left;
+}
+.contentDiv h3{
+	height: 36px;
+	line-height: 36px;
+	margin: 0px;
+	padding: 0 4px;
+	border-bottom: 1px dotted #d3d3d3;
+	background: #f7f7f7
+}
+
+.licontent{
+	height:315px;
+	overflow:auto;
+}
+
+.licontent li{
+	border-bottom:1px dashed #999999;
+	line-height:32px;
+	vertical-align:middle;
+	cursor: pointer;
+}
+
+.contxt{
+	overflow:hidden;
+	padding-right:8px;
+	padding-left:6px;
+	float:left;
+	font-size:14px;
+}
+
+.sortno{
+	width:28px;
+	margin-left:5px;
+	margin-top:6px;
+	float:left;
+}
+
+.operbt{
+	float:right;
+}
+
+.operimg{
+	cursor: pointer;
+	margin-top:8px;
+	margin-right:8px;
+}
+
+.libackground{
+	background-color:#E2EFEB;
+}

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="topdomain">
+
+	<typeAlias alias="topdomain" type="com.rbt.model.Topdomain" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="topdomain">
+		<![CDATA[ 
+    SELECT info_id,cust_id,domain_url,in_date,enabled,go_url,domain_type FROM topdomain WHERE info_id=$info_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="topdomain">
+		UPDATE topdomain SET cust_id=#cust_id#,domain_url=#domain_url#,enabled=#enabled#,go_url=#go_url#,domain_type=#domain_type# WHERE info_id=$info_id$
+	</update>
+	
+	<update id="updateenabled" parameterClass="topdomain">
+		UPDATE topdomain SET enabled=#enabled# WHERE info_id=$info_id$
+	</update>
+
+	<insert id="insert" parameterClass="topdomain">
+		INSERT INTO topdomain (cust_id,domain_url,in_date,enabled,go_url,domain_type) VALUES (#cust_id#,#domain_url#,now(),#enabled#,#go_url#,#domain_type#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM topdomain WHERE info_id in ($info_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM topdomain left join member on member.cust_id=topdomain.cust_id
+		<dynamic prepend="WHERE">
+		     <isNotNull prepend="and" property="domain_url"> 
+			     INSTR(domain_url,#domain_url#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_name"> 
+			     INSTR(cust_name,#cust_name#)>0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="starttime"> 
+			     DATE(in_date)>=#starttime#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="endtime"> 
+			     #endtime#>=DATE(in_date)
+			 </isNotNull>
+			 <isNotNull prepend="and" property="enabled"> 
+			     enabled=#enabled#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="cust_id"> 
+			     topdomain.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="is_no_cust_id"> 
+			     topdomain.cust_id!=#is_no_cust_id#
+			 </isNotNull>
+			  <isNotNull prepend="and" property="domain_type"> 
+			     domain_type=#domain_type#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="today">
+		        DAY(topdomain.in_date)=DAY(NOW()) AND MONTH(topdomain.in_date)=MONTH(NOW()) AND YEAR(topdomain.in_date)=YEAR(NOW())
+		     </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT info_id,(SELECT cust_name FROM member WHERE member.cust_id=topdomain.cust_id) AS cust_name,
+        topdomain.cust_id,domain_url,topdomain.in_date,enabled,go_url,domain_type,member.cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY info_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

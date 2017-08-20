@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="shiptemplate">
+
+	<typeAlias alias="shiptemplate" type="com.rbt.model.Shiptemplate" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="shiptemplate">
+		<![CDATA[ 
+    SELECT ship_id,ship_name,start_area,valuation_mode,smode_attr,cust_id FROM shiptemplate WHERE ship_id=$ship_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="shiptemplate">
+		UPDATE shiptemplate SET ship_name=#ship_name#,start_area=#start_area#,valuation_mode=#valuation_mode#,smode_attr=#smode_attr#,cust_id=#cust_id# WHERE ship_id=$ship_id$
+	</update>
+
+	<insert id="insert" parameterClass="shiptemplate">
+		INSERT INTO shiptemplate (ship_id,ship_name,start_area,valuation_mode,smode_attr,cust_id) VALUES (#ship_id#,#ship_name#,#start_area#,#valuation_mode#,#smode_attr#,#cust_id#)
+	</insert>
+	
+	
+		
+	<insert id="insertGetPk" parameterClass="shiptemplate">
+		INSERT INTO shiptemplate (ship_name,start_area,valuation_mode,smode_attr,cust_id) VALUES (#ship_name#,#start_area#,#valuation_mode#,#smode_attr#,#cust_id#)
+		 <selectKey resultClass="java.lang.String" keyProperty="ship_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+	
+	
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM shiptemplate WHERE ship_id in ($ship_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM shiptemplate s left join member m on s.cust_id=m.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id">
+				s.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ship_id">
+				s.ship_id=#ship_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="ship_name">
+				 instr(s.ship_name,#ship_name#) > 0
+			</isNotNull>
+			<isNotNull prepend="and" property="valuation_mode">
+				 instr(s.valuation_mode,#valuation_mode#) > 0
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT ship_id,ship_name,start_area,start_area as area_attr,valuation_mode,smode_attr,s.cust_id,cust_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY ship_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

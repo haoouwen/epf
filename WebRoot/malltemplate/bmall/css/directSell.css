@@ -1,0 +1,251 @@
+/*特卖*/
+.tmposb{
+	width:100%;
+	height:55px;
+	background:url(../images/tmposb_03.gif) repeat-x;
+}
+.tmpos{
+	width:1180px;
+	height:55px;
+	margin:0 auto;
+}
+/*预售内容*/
+.yswMain{
+	width:100%;
+	background:url(../images/tmMianb_07.gif) repeat;
+	padding:12px 0 20px;
+}
+/*预售轮播*/
+.ys1180{
+	width:1180px;
+	margin:0 auto;
+}
+.ysfocus{
+	width:1180px;
+	height:250px;
+	overflow: hidden;
+	position: relative;
+	float: left;
+}
+.ysfocus ul{
+	width:1180px;
+	height:250px;
+	float: left;
+	position:absolute;
+}
+.ysfocus ul li{
+	width:1180px;
+	height:250px;
+	float: left;
+	overflow: hidden;
+	position: relative;
+}
+.ysfocus .preNext{
+	width:28px;
+	height:40px; 
+	position: absolute;
+	top:110px;
+	cursor:pointer;
+}
+.ysfocus .pre {
+	left:0;
+}
+.ysfocus .next{
+	right: 0;
+}
+/*具体内容*/
+.ysMain{
+	width:1180px;
+	background:#fff;
+}
+.ysMain h2{
+	width:1136px;
+	height:40px;
+	line-height:40px;
+	border-bottom:#494949 solid 2px;
+	margin-left:22px;
+	padding-top:10px;
+	position:relative;
+}
+.ysMain h2 span{
+	width:180px;
+	height:38px;
+	display:inline-block;
+}
+.ysMain h2 .ysfspan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 0;
+}
+.ysMain h2 .yssspan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -44px;
+}
+.ysMain h2 .ystspan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -88px;
+}
+.ysMain h2 .ysfospan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -134px;
+}
+.ysMain h2 .ysfispan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -183px;
+}
+.ysMain h2 .yssispan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -229px;
+}
+.ysMain h2 .yssespan{
+	background:url(../images/ystitle.gif) no-repeat;
+	background-position:0 -276px;
+}
+.ysMain h2 a{
+	position:absolute;
+	top:17px;
+	right:0px;
+}
+.ysul{
+}
+.ysul li{
+	width:250px;
+	height:450px;
+	border-bottom:#e9e9e9 solid 1px;
+	border-right:#e9e9e9 solid 1px;
+	padding:18px 22px 0px 22px;
+	float:left;
+	color:#999999;
+}
+.ysul .addlib{
+	border-right:none;
+}
+.ysul li div{
+	width:250px;
+	height:250px;
+	position:relative;
+}
+.ysul li div img{
+	width:250px;
+	height:250px;
+}
+.ysul li div .ysz{
+	position:absolute;
+	top:0px;
+	right:0px;
+	width:67px;
+	height:30px;
+	background:url(../images/ysz.gif) no-repeat;
+}
+.ysul li div .ystime{
+	width:250px;
+	height:30px;
+	background:#a29486;
+	position:absolute;
+	z-index:2;
+	top:0px;
+	right:0px;
+	filter:alpha(opacity=90); 
+	-moz-opacity:0.90;
+	opacity:0.90;
+	color:#fff;
+	padding:0px;
+	display:none;
+}
+.ysul li div .ystime span{
+	background:url(../images/timep.png) no-repeat 25px 5px;
+	_background:url(../images/timep.gif) no-repeat 25px 5px;
+	text-align:left;
+	padding-left:50px;
+	display:inline-block;
+	line-height:30px;
+}
+.ysul li a{
+	font-size:14px;
+	font-weight:bold;
+	color:#444444;
+}
+.ysul li a:hover{
+	font-size:14px;
+	font-weight:bold;
+	color:#c80002;
+}
+.ysul li p{
+	padding:12px 0px 0px;
+}
+.ysul li .djspan{
+	color:#666666;
+	float:left;
+	line-height:25px;
+}
+.ysul li .ysdiv{
+	width:250px;
+	height:80px;
+	background:url(../images/ysulb_11.gif) no-repeat;
+	margin-top:12px;
+	position:relative;
+}
+.ysul li .ysdiv p{
+	padding:0px;
+}
+.ysul li .ysdiv .ydp{
+	width:80px;
+	height:50px;
+	top:20px;
+	position:absolute;
+	text-align:center;
+	line-height:26px;
+}
+.ysul li .ysdiv .ydp b{
+	font-size:16px;
+	color:#444444;
+}
+.ysul li .ysdiv .jgp{
+	width:110px;
+	height:50px;
+	top:20px;
+	left:95px;
+	position:absolute;
+	line-height:25px;
+}
+.ysul li .ysdiv .jgp b{
+	font-family:Arial;
+	font-size:18px;
+	color:#b10000;
+	font-weight:100;
+}
+.ysul li .ysdiv .jgp .jgps{
+	color:#b10000;
+}
+.ysul li .ysdiv .jgp .jgb{
+	font-size:12px;
+	color:#999999;
+	text-decoration:line-through;
+}
+.ysul li .ysdiv  .lsp{
+	position:absolute;
+	top:45px;
+	left:206px;
+	width:40px;
+	height:20px;
+	text-align:center;
+	line-height:20px;
+	color:#fff;
+	padding:0px;
+}
+
+
+
+.ysul li div .ysnum{
+	width:250px;
+	background:#9f9385;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	opacity:0.90;
+	filter:alpha(opacity=90); 
+	-moz-opacity:0.90;
+	text-align:center;
+	color:#fff;
+	font-weight:bold;
+	padding:10px 0;
+}

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd" >
+<struts>
+
+	<package name="user_curd" extends="struts-default" namespace="/">
+
+
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+
+			<interceptor-stack name="myDefaultStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="multiselect"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                  <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+		
+			<interceptor name="authority"
+				class="com.rbt.interceptor.LoginIterceptor">
+			</interceptor>
+			
+			<!-- 菜单和操作权限过滤器 -->
+			<interceptor name="menuOperRight"
+				class="com.rbt.interceptor.RightIterceptor">
+			</interceptor>
+			
+			<interceptor name="sessionout"
+				class="com.rbt.interceptor.SessionIterceptor">
+			</interceptor>
+			
+			<interceptor name="adjustedFunds"
+				class="com.rbt.interceptor.AdjustedFundsIterceptor">
+			</interceptor>
+			
+			<!-- 默认拦截器栈 -->
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="myDefaultStack" />
+				<interceptor-ref name="authority" />
+				<interceptor-ref name="sessionout" />
+				<interceptor-ref name="menuOperRight" />
+			</interceptor-stack>
+			
+		</interceptors>
+
+
+		<!-- 定义全局Result -->
+		<global-results>
+			<!-- 下面定义的结果对所有的Action都有效 -->
+			<result name="exception">/</result>
+			<!--当管理员/会员session失效时，跳转至管理员/会员登陆界面-->
+			<result name="adminlogin" type="redirect">/admin/index.jsp</result>
+			<result name="agent" type="redirect">/agent/index.jsp</result>
+			<result name="memberlogin" type="redirect">/login.html</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<!-- 指Action抛出Exception异常时，转入名为exception的结果。 -->
+			<exception-mapping exception="java.lang.Exception" result="exception" />
+		</global-exception-mappings>
+		
+		<!-- struts2整合uploadify上传文件 -->
+		<action name="uploadfy_*" method="{1}" class="com.rbt.action.UpFileAction">
+		</action>
+		
+		<!-- struts2整合ckeditor上传文件 -->
+		<action name="ckupload" class="com.rbt.action.CkeditorUploadAction">
+		</action>
+		
+		<!-- 运营商后台首页 -->
+		<action name="adminindex" class="com.rbt.action.SysuserAction" method="main">
+			<result type="freemarker">/WEB-INF/template/manager/admin/index.ftl</result>
+			<interceptor-ref name="mydefault" />
+		</action>
+
+		<!-- 商城后台_我是卖家首页 -->
+		<action name="bmall-*" class="com.rbt.action.BmallAction"  method="{1}">
+			<result  type="freemarker">/WEB-INF/template/manager/bmall/{1}.ftl</result>
+			<interceptor-ref name="mydefault" />
+		</action>
+		
+		<!-- 运营商后台首页 -->
+		<action name="agentindex" class="com.rbt.action.AsysuserAction" method="main">
+			<result type="freemarker">/WEB-INF/template/manager/agent/index.ftl</result>
+			<interceptor-ref name="mydefault" />
+		</action>
+		
+		
+		<action name="adminAdjustedFund*" class="com.rbt.action.CapitalmanagementAction"  method="fund{1}">
+			<result name="adminAdjusLogin" type="redirect">/admin_Capitalmanagement_list.action</result>
+			<result name="adjustedFunds" type="redirect">/admin_Capitalmanagement_toAdjuste.action</result>
+			<interceptor-ref name="mydefault" />
+			<interceptor-ref name="adjustedFunds" />
+		</action>
+
+		<!-- 
+			通配符解释
+			第一个：是哪个系统后台，管理员是admin，会员是member
+			第二个：业务文件夹名称
+			第三个：方法名
+		-->
+		<action name="*_*_*" class="com.rbt.action.{2}Action"
+			method="{3}">
+			<result name="input" type="freemarker">/WEB-INF/template/manager/{1}/{2}/{3}.ftl</result>
+			<result name="redirectUrl" type="freemarker">/WEB-INF/template/manager/{1}/{2}/${redirectUrl}.ftl</result>
+			<!-- 防止重复提交 -->
+			<result name="invalid.token">
+				/include/tokenError.jsp
+			</result>
+			<interceptor-ref name="mydefault" />
+			<interceptor-ref name="token">
+				<param name="includeMethods">*insert,*update</param>
+			</interceptor-ref>
+			<result name="adminactionException">/include/adminError.jsp</result>
+			<exception-mapping exception="java.lang.Exception" result="adminactionException" />
+		</action>
+		
+		<!-- 生成验证码 -->
+		<action name="imgrand" class="com.rbt.action.ImgrandomAction">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+
+	</package>
+	
+	
+	<package name="ajax_code" extends="json-default" namespace="/plugin"> 
+		<!-- 文件上传 --> 
+		<action name="uploadfy_*" method="{1}" class="com.rbt.action.UpFileAction"> 
+		   <result type="json" name="success"> 
+		      <param name="contentType">text/html</param> 
+		   </result> 
+		</action> 
+	</package>
+
+	<package name="mall" extends="struts-default" namespace="/mall">
+	
+		
+		<action name="*!*" class="com.rbt.webaction.Web{1}Action" method="{2}">
+			<result name="redirectUrl" type="freemarker">/WEB-INF/template/bmall/${default_template}/${redirectUrl}.ftl</result>
+			<result name="actionException">/</result>
+			<exception-mapping exception="java.lang.Exception" result="actionException" />
+		</action>
+		
+	</package>
+	
+	
+	<!--******************以下是触屏版商城前台和会员后台 操作类 请求路径 ******************************* -->
+	
+	<package name="webapp" extends="struts-default" namespace="/webapp">
+	    
+	    <action name="*!*" class="com.rbt.webappaction.WebApp{1}Action" method="{2}">
+			<result name="redirectUrl" type="freemarker">/WEB-INF/template/webapp/jiutong/${redirectUrl}.ftl</result>
+			<result name="webappActionException">/mindex.html</result>
+			<exception-mapping exception="java.lang.Exception" result="webappActionException" />
+		</action>
+	
+	</package>
+	
+	<!-- 活动标识 -->
+	<package name="act" extends="struts-default" namespace="/act">
+		<action name="*!*" class="com.rbt.webaction.Web{1}Action" method="{2}">
+			<result name="redirectUrl" type="freemarker">/WEB-INF/template/bmall/mallactivity/${redirectUrl}.ftl</result>
+			<result name="actionException">/</result>
+			<exception-mapping exception="java.lang.Exception" result="actionException" />
+		</action>
+	</package>
+	
+</struts>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<decorators defaultdir="/include/decorators">  
+  
+    <excludes>  
+        <pattern>/styles/*</pattern>  
+        <pattern>/images/*</pattern>  
+        <pattern>/js/*</pattern>  
+        <pattern>/include/decorators/*</pattern>
+        <pattern>/adminlogin.action</pattern>
+        <pattern>/agentlogin.action</pattern>
+    </excludes>
+
+    <decorator name="admin" page="adminMode.jsp">
+        
+        <!-- 管理员后台struts2业务请求装饰 -->
+        <pattern>/admin_*_*.action</pattern>
+        <pattern>/admin*.action</pattern>
+        <pattern>/adjustedFund*.action</pattern>
+    </decorator>
+    
+    <decorator name="member" page="memberMode.jsp">
+        
+        <!-- 会员后台struts2业务请求装饰 -->
+        <pattern>/member_*_*.action</pattern>
+        <pattern>/member*.action</pattern>
+        
+    </decorator>
+
+    <decorator name="bmall" page="bmallMode.jsp">
+        
+        <!-- 商城后台struts2业务请求装饰 -->
+        <pattern>/bmall_*_*.action</pattern>
+        <pattern>/bmall*.action</pattern>
+    </decorator>
+    
+    <decorator name="agent" page="agentMode.jsp">
+        
+        <!-- 代理商管理员后台struts2业务请求装饰 -->
+        <pattern>/agent_*_*.action</pattern>
+        <pattern>/agent*.action</pattern>
+    </decorator>
+</decorators>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="tryapply">
+
+	<typeAlias alias="tryapply" type="com.rbt.model.Tryapply" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="tryapply">
+		<![CDATA[ 
+    SELECT tryapply_id,ta.try_id,ta.user_id,add_id,report,comment,ta.in_date,report_date,status,user_name,m.cust_name,order_id,t.try_type,g.goods_name,g.list_img FROM tryapply ta left join memberuser mu on  ta.user_id = mu.user_id left join trygoods t on ta.try_id=t.try_id left join goods g on g.goods_id=t.goods_id left join member m on t.cust_id=m.cust_id WHERE tryapply_id=$tryapply_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="tryapply">
+		UPDATE tryapply SET tryapply_id=#tryapply_id#, try_id=#try_id#,user_id=#user_id#,add_id=#add_id#,report=#report#,comment=#comment#,in_date=#in_date#,report_date=#report_date#,status=#status#,order_id=#order_id# WHERE tryapply_id=$tryapply_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE tryapply SET 
+    	 <isNotNull  property="tryapply_id"> 
+		   tryapply_id=$tryapply_id$
+		 </isNotNull>
+    	 WHERE tryapply_id=$tryapply_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="tryapply">
+		UPDATE tryapply SET tryapply_id=$tryapply_id$ WHERE tryapply_id=$tryapply_id$
+	</update>
+
+	<insert id="insert" parameterClass="tryapply">
+		INSERT INTO tryapply (tryapply_id,try_id,user_id,add_id,report,comment,in_date,report_date,status,order_id,weiboid) VALUES (#tryapply_id#,#try_id#,#user_id#,#add_id#,#report#,#comment#,now(),#report_date#,#status#,#order_id#,#weiboid#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM tryapply WHERE tryapply_id in ($tryapply_id$)
+	</delete>
+	
+	<!-- 批量更新是否显示is_display -->
+    <update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE tryapply SET status=#status# WHERE tryapply_id=$tryapply_id$
+	</update>
+
+	<sql id="getCommon">
+		FROM tryapply ta left join memberuser mu on  ta.user_id = mu.user_id
+		       left join trygoods t on ta.try_id=t.try_id
+		       left join goods g on g.goods_id=t.goods_id
+		       left join member m on t.cust_id=m.cust_id
+		       left join goodsorder gr on gr.order_id=ta.order_id
+		       left join member m1 on mu.cust_id=m1.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="try_id">
+				ta.try_id=#try_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="status">
+				status=#status#
+			</isNotNull>
+			<isNotNull prepend="and" property="comment">
+				comment in(0,1,2)
+			</isNotNull>
+			<isNotNull prepend="and" property="user_id">
+				ta.user_id=#user_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="user_name">
+				INSTR(mu.user_name,#user_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="goods_name">
+				INSTR(g.goods_name,#goods_name#)>0
+			</isNotNull>
+			<isNotNull prepend="and" property="try_type">
+				t.try_type=#try_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id">
+				g.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="order_id">
+				ta.order_id=#order_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT tryapply_id,ta.try_id,ta.user_id,add_id,report,comment,ta.in_date,report_date,status,user_name,t.try_type,g.goods_name,g.list_img,m.cust_name,ta.order_id,gr.order_state,t.postage,weiboid,m1.logo_path as pic
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY try_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

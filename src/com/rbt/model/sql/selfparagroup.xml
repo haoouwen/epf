@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="selfparagroup">
+
+	<typeAlias alias="selfparagroup" type="com.rbt.model.Selfparagroup" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="selfparagroup">
+		<![CDATA[ 
+    SELECT slef_para_group_id,para_group_id,goods_id,sort_no FROM selfparagroup WHERE slef_para_group_id=$slef_para_group_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="selfparagroup">
+		UPDATE selfparagroup SET slef_para_group_id=#slef_para_group_id#,para_group_id=#para_group_id#,goods_id=#goods_id#,sort_no=#sort_no# WHERE slef_para_group_id=$slef_para_group_id$
+	</update>
+
+	<insert id="insert" parameterClass="selfparagroup">
+		INSERT INTO selfparagroup (slef_para_group_id,para_group_id,goods_id,sort_no) VALUES (#slef_para_group_id#,#para_group_id#,#goods_id#,#sort_no#)
+	</insert>
+
+	<insert id="insertGetPk" parameterClass="selfparagroup">
+		INSERT INTO selfparagroup (slef_para_group_id,para_group_id,goods_id,sort_no) VALUES (#slef_para_group_id#,#para_group_id#,#goods_id#,#sort_no#)
+		 <selectKey resultClass="java.lang.String" keyProperty="slef_para_group_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM selfparagroup WHERE slef_para_group_id in ($slef_para_group_id$)
+	</delete>
+	<delete id="deleteByGoodsId" parameterClass="java.lang.String">
+		DELETE FROM selfparagroup WHERE goods_id in ($goods_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM selfparagroup s left join paragroup p on s.para_group_id = p.para_group_id 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="goods_id"> 
+				  goods_id=#goods_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT slef_para_group_id,s.para_group_id,goods_id,s.sort_no,p.para_name
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY slef_para_group_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

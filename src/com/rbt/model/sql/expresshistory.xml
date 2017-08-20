@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="expresshistory">
+
+	<typeAlias alias="expresshistory" type="com.rbt.model.Expresshistory" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="expresshistory">
+		<![CDATA[ 
+    SELECT trade_id,express_id,trigger_ip,trigger_time,trigger_type FROM expresshistory WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="expresshistory">
+		UPDATE expresshistory SET trade_id=#trade_id#,express_id=#express_id#,trigger_ip=#trigger_ip#,trigger_time=#trigger_time#,trigger_type=#trigger_type#,click_charges=#click_charges# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="expresshistory">
+		INSERT INTO expresshistory (trade_id,express_id,trigger_ip,trigger_time,click_charges,trigger_type) VALUES (#trade_id#,#express_id#,#trigger_ip#,now(),#click_charges#,#trigger_type#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM expresshistory WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM expresshistory eh
+		left join express e on eh.express_id = e.trade_id
+		left join member m on e.cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id"> 
+			   e.cust_id=#cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_id"> 
+			   eh.express_id=#express_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="trigger_ip"> 
+			   eh.trigger_ip=#trigger_ip#
+			</isNotNull>
+			<isNotNull prepend="and" property="trigger_type"> 
+			   eh.trigger_type=#trigger_type#
+			</isNotNull>
+			<isNotNull prepend="and" property="charges_cycle"> 
+			   DATE_ADD(eh.trigger_time ,INTERVAL #charges_cycle# MINUTE) >= NOW()
+			</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT eh.trade_id,eh.express_id,eh.trigger_ip,eh.click_charges,eh.trigger_time,eh.trigger_type,m.cust_name,e.spread_name,eh.area_attr,e.put_starttime,e.click_charges as click_price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		GROUP BY eh.express_id ORDER BY eh.express_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	<select id="getExpressList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT eh.trade_id,eh.express_id,eh.trigger_ip,eh.click_charges,eh.trigger_time,eh.trigger_type,m.cust_name,e.spread_name,eh.area_attr,e.put_starttime,e.click_charges as click_price
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		 ORDER BY eh.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	<!-- 分组查询 开始 -->
+	<sql id="getGroup">
+		FROM expresshistory eh
+		left join express e on eh.express_id = e.trade_id
+		left join member m on e.cust_id = m.cust_id
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="cust_name">
+				INSTR(m.cust_name,#cust_name#)>0 
+			</isNotNull>
+			<isNotNull prepend="and" property="cust_id_no">
+				m.cust_id IS NOT NULL
+				
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getListByGroup" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT eh.trade_id,eh.express_id,eh.trigger_ip,eh.click_charges,eh.trigger_time,eh.trigger_type,m.cust_name,m.cust_id,e.spread_name,eh.area_attr,e.put_starttime,COUNT(DISTINCT(eh.express_id)) as info_num
+		<isParameterPresent>
+			<include refid="getGroup" />
+		</isParameterPresent>
+		GROUP BY m.cust_id ORDER BY eh.trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<select id="getGroupCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(DISTINCT(m.cust_id)) ct FROM expresshistory eh
+		LEFT JOIN express e ON eh.express_id = e.trade_id
+		LEFT JOIN member m ON e.cust_id = m.cust_id
+			<dynamic prepend="WHERE">
+				<isNotNull prepend="and" property="cust_name">
+					INSTR(m.cust_name,#cust_name#)>0 
+				</isNotNull>
+				<isNotNull prepend="and" property="cust_id_no">
+					m.cust_id IS NOT NULL
+				</isNotNull>
+			</dynamic>
+	</select>
+		
+	<!-- 分组查询 结束 -->
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getExpressCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(DISTINCT(eh.express_id)) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

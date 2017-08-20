@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="expressfundrun">
+
+	<typeAlias alias="expressfundrun" type="com.rbt.model.Expressfundrun" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="expressfundrun">
+		<![CDATA[ 
+    SELECT trade_id,fundtype,income,pay,balance,cust_id,pay_code,deal_time FROM expressfundrun WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="expressfundrun">
+		UPDATE expressfundrun SET trade_id=#trade_id#,fundtype=#fundtype#,income=#income#,pay=#pay#,balance=#balance#,cust_id=#cust_id#,pay_code=#pay_code#,deal_time=now(),reason=#reason# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="expressfundrun">
+		INSERT INTO expressfundrun (trade_id,fundtype,income,pay,balance,cust_id,pay_code,deal_time,reason) VALUES (#trade_id#,#fundtype#,#income#,#pay#,#balance#,#cust_id#,#pay_code#,now(),#reason#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM expressfundrun WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM expressfundrun er
+		left join payment p on er.pay_code = p.pay_code
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="cust_id"> 
+			 er.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="fundtype"> 
+			 er.fundtype in ($fundtype$)
+			 </isNotNull>
+			
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT  er.trade_id,er.fundtype,er.income,er.pay,er.balance,er.cust_id,er.pay_code,p.pay_name,er.deal_time,er.reason
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY er.trade_id desc
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

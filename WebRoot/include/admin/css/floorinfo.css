@@ -1,0 +1,148 @@
+.advDiv{
+	width:1000px;
+	height:294px;
+	border:#dbdbdb solid 1px;
+}
+.advDiv .ladvDiv{
+	width:311px;
+	height:284px;
+	border-right:#dbdbdb solid 1px;
+	float:left;
+} 
+.ladvDiv .firstli{
+	height:100px;
+	border-bottom:#dbdbdb solid 1px;
+	padding:8px;
+}
+.ladvDiv .midli{
+	height:130px;
+	border-bottom:#dbdbdb solid 1px;
+	padding:8px;
+}
+.ladvDiv li p{
+	line-height:20px;
+}
+.ladvDiv .lastli{
+	height:30px;
+	padding:8px;
+	border-bottom:none;
+}
+.ladvDiv .lastli span{
+	height:30px;
+	border:#dbdbdb solid 1px;
+}
+.radvDiv li{
+	width:170px;
+	height:140px;
+	float:left;
+	border:#dbdbdb solid 1px;
+	text-align:center;
+	line-height:140px;
+	position:relative;
+}
+
+.ntTabDiv{
+	border:#e7e7e8 solid 1px;
+	margin-top:10px;
+	margin-top:10px;
+	height:500px;
+}
+.ntTabDiv .ntTitle{
+	height:37px;
+	background:#f2f2f4;
+	border-bottom:#e7e7e8 solid 1px;
+	position:relative;
+}
+.ntTitle ul{
+	width:100%;
+	position:absolute;
+	left:-1px;
+	top:-1px;
+}
+.ntTitle li{
+	height:37px;
+	line-height:36px;
+	float:left;
+	padding:0 25px;
+	font-size:12px;
+	color:#000;
+	font-weight:bold;
+	border-right:#e7e7e8 solid 1px;
+	cursor:pointer;
+}
+.ntTitle .selli{
+	color:#fa7f05;
+	border:#e7e7e8 solid 1px;
+	border-top:#fa7f05 solid 2px;
+	background:#fff;
+	border-bottom:#fff solid 1px;
+}
+.ntTabCont{
+	padding:10px;
+	display:none;
+}
+.ntTabCont .showtitle{
+	color:#808080;
+}
+/*选择分类样式*/
+.morecatdiv{
+	margin-left:-3px;
+}
+.rdtable .show_add_cat,.rdtable .show_add_cat tr,.rdtable .show_add_cat td{
+	border:none;
+}
+.show_add_cat  {
+	padding: 15px;
+}
+.oper_add{
+	color:#990000;
+}
+.oper{
+	padding-left:5px;
+	color:#990000;
+}
+
+.tabbar li.selected {
+    background: url("../images/topbar1.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    font-weight: 600;
+}
+.tabbar li {
+    background: url("../images/topbar2.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
+    color: #666666;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+    margin-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+/*选择推荐商品*/
+
+.selecttable{
+	margin:10px 0 0 10px;
+	width:98%;
+	border:0px;
+	background:#c4c5c9;
+}
+.selecttable tr{
+		background:#ffffff;
+}
+.selecttable ul{
+   margin: 0px;
+   padding: 3px;
+   vertical-align: middle;
+}
+.selecttable .fmhead{
+	font-size:14px;	
+	font-weight:bold;
+}
+.searchDiv_td{
+  padding-left: 6px;
+  color: #808080;
+  font-weight: bold;
+  text-align: right;
+}

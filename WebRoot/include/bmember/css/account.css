@@ -1,0 +1,484 @@
+/*2014-9-1*/
+/*账户安全*/
+.accSafety{
+	width:762px;
+	padding:12px;
+}
+.accSafety .safetyP{
+	height:38px;
+	line-height:38px;
+	background:#fffdee;
+	border:#f4c36d solid 1px;
+	padding:0 15px;
+}
+.safetyP b{
+	color:#373737;
+	float:left;
+}
+/*3个安全级别*/
+.safetyP i{
+	width:130px;
+	height:20px;
+	display:inline-block;
+	float:left;
+	background:url(../images/member.gif) no-repeat;
+	margin-top:6px;
+}
+.safetyP .lowSafety{
+	background-position:0 -339px;
+}
+.safetyP .midSafety{
+	background-position:0 -361px;
+}
+.safetyP .heightSafety{
+	background-position:0 -383px;
+}
+.safetyP span{
+	color:#ff6600;
+}
+/**/
+.safeTab{
+	border:#e6e6e6 solid 1px;
+	border-bottom:none;
+	margin-top:12px;
+	color:#999999;
+}
+.safeTab th{
+	width:120px;
+	padding:17px 15px;
+	border-bottom:#e6e6e6 solid 1px;
+	text-align:left;
+	font-size:14px;
+	color:#373737;
+}
+.safeTab th img{
+	margin-right:15px;
+}
+.safeTab td{
+	padding:17px 15px;
+	border-bottom:#e6e6e6 solid 1px;
+}
+.safeTab td span{
+	color:#d81d20;
+}
+.safeTab .modTd{
+	width:80px;
+	text-align:center;
+}
+.safeTab .modTd a{
+	color:#2262b0;
+}
+.safeTab .modTd  .na{
+	width:88px;
+	height:25px;
+	line-height:25px;
+	text-align:center;
+	background:url(../images/member.gif) no-repeat;
+	background-position:-110px -144px;
+	display:inline-block;
+	color:#333333;
+}
+.safeTab .modTd p{
+	padding:5px 0px;
+}
+.safeTab td b{
+	color:#66c132;
+	padding:0 5px;
+}
+/*提示*/
+.tipDiv{
+	width:730px;
+	border:#e6e6e6 solid 1px;
+	padding:20px 15px 10px;
+	line-height:22px;
+	margin-top:25px;
+	position:relative;
+}
+.tipDiv h3{
+	width:100px;
+	height:26px;
+	background:#fff;
+	position:absolute;
+	top:-13px;
+	font-size:12px;
+	line-height:26px;
+	text-align:center;
+}
+.tipDiv p{
+	padding:3px 0;
+}
+.tipDiv a{
+	color:#2262b0;
+}
+/*2014-8-28*/
+/*账户信息*/
+.accontDiv{
+	width:784px;
+	padding:12px;
+}
+.ainfoTab{
+	border-top:#e6e6e6 solid 1px;
+}
+.ainfoTab th{
+	width:140px;
+	text-align:center;
+	background:#f9f9f9;
+	border-bottom:#e6e6e6 solid 1px;
+	border-right:#e6e6e6 solid 1px;
+	padding:10px 0px;
+	font-weight:400;
+}
+.ainfoTab th span{
+	padding:0px 5px;
+	color:#d81d20;
+}
+.ainfoTab td{
+	border-bottom:#e6e6e6 solid 1px;
+	padding:10px;
+}
+.ainfoTab td  b{
+	font-size:14px;
+	color:#ff6500;
+}
+.ainfoTab td span{
+	color:#9b9b9b;
+	background:url(../images/lights.gif) no-repeat left center;
+	display:inline-block;
+	line-height:18px;
+	padding-left:15px;
+}
+.ainfoTab td i{
+	color:#2262b0;
+	font-style:normal;
+}
+.ainfoTab td .aifText{
+	width:150px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+.ainfoTab td  .aisText{
+	width:300px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+.ainfoTab td select{
+	height:22px;
+	line-height:22px;
+	margin-right:10px;
+}
+.ainfoTab td .graySpan{
+	background:none;
+	padding:0;
+	color:#b3b3b3;
+}
+.ainfoTab td .orangeSpan{
+	background:none;
+	padding:0;
+	color:#ff6600;
+}
+.ainfoTab td .blueSpan{
+	background:none;
+	padding:0;
+	color:#2262b0;
+}
+.ainfoTab td .greenSpan{
+	background:none;
+	padding:0;
+	color:#008000;
+}
+/**/
+.ainfoTab .cjtd span{
+	background:none;
+	padding:0;
+}
+.ainfoTab th img{
+	width:110px;
+	height:110px;
+	padding:4px;
+	background:#fff;
+	border:#e5e5e5 solid 1px;
+}
+/**/
+.ainfoTab .headTd span{
+	background:none;
+	display:inline-block;
+	line-height:18px;
+	padding:0 10px 0 0;
+	float:left;
+}
+/**/
+.ainfoTab .foxtd{
+	line-height:30px;
+}
+.ainfoTab .foxtth{
+	background:#fff;
+	border-right:none;
+	font-size:14px;
+	line-height:22px;
+	text-align:left;
+	padding:15px;
+	font-weight:bold;
+	color:#333;
+}
+/*发信箱里的tab*/
+.foxboxTab{
+	border-top:#e6e6e6 solid 1px;
+}
+.foxboxTab th{
+	width:140px;
+	text-align:center;
+	background:#f9f9f9;
+	border-bottom:#e6e6e6 solid 1px;
+	border-right:#e6e6e6 solid 1px;
+	padding:15px 0px;
+	font-weight:400;
+}
+.foxboxTab th span{
+	padding:0px 5px;
+	color:#f70;
+}
+.foxboxTab td{
+	border-bottom:#e6e6e6 solid 1px;
+	padding:15px;
+}
+.foxboxTab td  .aisText{
+	width:300px;
+	height:24px;
+	line-height:24px;
+	border:#e6e6e6 solid 1px;
+	padding-left:5px;
+	margin-right:10px;
+}
+/*信息验证，修改*/
+.verifyDiv{
+	width:758px;
+	height:300px;
+	padding:25px;
+}
+.verifyDiv h3{
+	width:758px;
+	height:31px;
+	line-height:31px;
+	background:url(../images/verify.gif) no-repeat;
+	margin:5px 0 18px;
+}
+.verifyDiv .h3Step{
+	background-position:0 -40px;
+}
+.verifyDiv h3 span{
+	width:378px;
+	display:inline-block;
+	font-size:12px;
+	text-align:center;
+}
+.verifyCont th{
+	width:170px;
+	text-align:right;
+	font-weight:400;
+}
+.verifyCont th span{
+	padding:0px 5px;
+	color:#d81d20;
+}
+.verifyCont td{
+	padding:10px;
+}
+.verifyCont td span{
+	color:#e4000d;
+}
+.verifyCont td p{
+	padding-top:6px;
+}
+.verifyCont td b{
+	width:191px;
+	height:16px;
+	background:url(../images/verify.gif) no-repeat;
+	display:inline-block;
+}
+.verifyCont td i{
+	background:#ededed;
+	padding:7px;
+	display:inline-block;
+	font-style:normal;
+	margin-left:15px;
+}
+.verifyCont td .lowb{
+	background-position:-391px -202px;
+}
+.verifyCont td .midb{
+	background-position:-391px -225px;
+}
+.verifyCont td .heightb{
+	background-position:-391px -249px;
+}
+.verifyCont td .pswText{
+	width:210px;
+	height:20px;
+	border:#e6e6e6 solid 1px;
+	padding:5px;
+	line-height:20px;
+	font-family:Arial;
+}
+.verifyCont td .vText{
+	width:210px;
+	height:20px;
+	border:#e6e6e6 solid 1px;
+	padding:5px;
+	line-height:20px;
+}
+/**/
+.vSucced{
+	width:758px;
+	height:210px;
+	position:relative;
+}
+.vSucced h3{
+	width:387px;
+	height:57px;
+	background:url(../images/verify.gif) no-repeat;
+	background-position:0 -200px;
+	position:absolute;
+	top:40px;
+	left:200px;
+}
+.vSucced .vEmailh3{
+	background-position:0 -266px;
+}
+.vSucced .mEmailh3{
+	background-position:0 -330px;
+}
+.vSucced .vPhoneh3{
+	background-position:0 -394px;
+}
+.vSucced .mPhoneh3{
+	background-position:0 -458px;
+}
+/**/
+.vSucced p{
+	position:absolute;
+	top:102px;
+	left:270px;
+	line-height:28px;
+}
+.vSucced p a{
+	width:93px;
+	height:25px;
+	background:url(../images/verify.gif) no-repeat;
+	background-position:-392px -336px;
+	display:inline-block;
+}
+.vSucced p i{
+	background:#7abe56;
+	color:#fff;
+	font-style:normal;
+	padding:5px;
+	font-size:14px;
+}
+.vSucced p span{
+	color:#999999;
+}
+/*找回支付密码*/
+.payPsw{
+	width:758px;
+	height:300px;
+	padding:25px;
+}
+.payPsw h3{
+	width:758px;
+	height:31px;
+	line-height:31px;
+	background:url(../images/verify.gif) no-repeat;
+	background-position:0 -81px;
+	margin:5px 0 18px;
+}
+.payPsw .sh3Step{
+	background-position:0 -120px;
+}
+.payPsw .th3Step{
+	background-position:0 -160px;
+}
+.payPsw h3 span{
+	width:250px;
+	display:inline-block;
+	font-size:12px;
+	text-align:center;
+}
+.payPsw .findp{
+	padding:0 0 10px 90px;
+}
+.payPsw .findp b{
+	padding:0 5px;
+}
+.fSucced{
+	width:758px;
+	height:210px;
+	position:relative;
+}
+.fSucced h3{
+	width:457px;
+	height:57px;
+	background:url(../images/verify.gif) no-repeat;
+	background-position:0 -586px;
+	position:absolute;
+	top:40px;
+	left:150px;
+}
+.fSucced  .payh3{
+	background-position:0 -522px;
+}
+.fSucced p{
+	position:absolute;
+	top:102px;
+	left:225px;
+	line-height:28px;
+}
+
+/*密码验证提示*/
+#tipPosition{
+	width: 400px;
+	height: 16px;
+	line-height: 18px;
+	padding: 2px 30px;
+}
+.tip{
+	background: #E6F2FF url(images/register_tip.png) no-repeat 10px center;
+	color: #0E5863;
+}
+.error{
+	color: #6D3737;
+}
+.success{
+	color: #3D934A;
+}
+/*密码强度*/
+#pwdStrong_color{
+	width: 136px;
+	height: 3px;
+	border: 0px;
+	border-collapse: collapse;
+	border-spacing: 0;
+	background: #E6EAED;
+	margin-top: 5px;
+}
+#pwdStrong_color td
+{
+	padding: 0px;
+	width: 44px; /*如不加td宽度,Google的Chrome不会正常显示*/
+}
+/**/
+.goodseval{
+	background:none;
+	display:inline-block;
+	line-height:18px;
+	padding:0 10px 0 0;
+	float:left;
+}
+
+
+

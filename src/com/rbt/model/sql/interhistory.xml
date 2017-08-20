@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="interhistory">
+
+	<typeAlias alias="interhistory" type="com.rbt.model.Interhistory" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="interhistory">
+		<![CDATA[ 
+    SELECT trade_id,cust_id,inter_in,inter_out,thisinter,in_date,user_id,reason,remark FROM interhistory WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="interhistory">
+		UPDATE interhistory SET trade_id=#trade_id#,cust_id=#cust_id#,inter_in=#inter_in#,inter_out=#inter_out#,thisinter=#thisinter#,in_date=now(),user_id=#user_id#,reason=#reason#,remark=#remark# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="interhistory">
+		INSERT INTO interhistory (trade_id,cust_id,inter_in,inter_out,thisinter,in_date,user_id,reason,remark) VALUES (#trade_id#,#cust_id#,#inter_in#,#inter_out#,#thisinter#,now(),#user_id#,#reason#,#remark#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM interhistory WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM interhistory LEFT JOIN member on interhistory.cust_id=member.cust_id LEFT JOIN memberuser m on interhistory.user_id=m.user_id
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="cust_name"> 
+			     cust_name=#cust_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="user_name"> 
+			     user_name=#user_name#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="integer_num"> 
+			      <![CDATA[ 
+			     thisinter>$integer_num$
+			    ]]>
+			 </isNotNull>
+			 <isNotNull prepend="and" property="last_integer_num"> 
+			     <![CDATA[ 
+			     thisinter<$last_integer_num$
+			    ]]>
+			 </isNotNull>
+			  <isNotNull prepend="and" property="cust_id"> 
+			     interhistory.cust_id=#cust_id#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="in_date">
+				DATE(interhistory.in_date)>=#in_date#
+			</isNotNull>
+			<isNotNull prepend="and" property="enddate">
+				#enddate#>=DATE(interhistory.in_date)
+			</isNotNull>			
+			<isNotNull prepend="and" property="todays">
+				TO_DAYS(NOW()) = TO_DAYS(interhistory.in_date)
+			</isNotNull> 
+			<isNotNull prepend="and" property="daydiff">
+				TO_DAYS(NOW())-#daydiff# = TO_DAYS(interhistory.in_date)
+			</isNotNull> 
+			<isNotNull prepend="and" property="reason">
+				interhistory.reason=#reason#
+			</isNotNull>	
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT interhistory.trade_id,member.cust_id,cust_name,inter_in,inter_out,thisinter,interhistory.in_date,m.user_id,user_name,interhistory.reason,remark
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	<!-- 找出每天会员获取的总积分 -->
+	<select id="getSumScore" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT SUM(inter_in) ct FROM interhistory where cust_id=$cust_id$ and TO_DAYS(NOW()) = TO_DAYS(in_date)
+	</select>
+	
+	<!-- 找出需要表的CUST_ID的值 -->
+	<select id="getReleaseCustId" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT cust_id FROM 
+		<isNotNull property="table_name">
+			$table_name$
+		</isNotNull>
+		where 
+		<isNotNull property="table_id">
+			$table_id$=
+		</isNotNull>
+		<isNotNull property="table_value">
+			#table_value#
+		</isNotNull>
+	</select>
+
+</sqlMap>
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="floorinfo">
+
+	<typeAlias alias="floorinfo" type="com.rbt.model.Floorinfo" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="floorinfo">
+		<![CDATA[ 
+    SELECT f_id,f_tag,f_name,cat_attr,f_admark,f_sort,f_state,in_date,is_sys FROM floorinfo WHERE f_id=$f_id$
+    ]]>
+	</select>
+   
+   <!-- 批量更新是否显示f_state -->
+	<update id="updateState" parameterClass="java.util.HashMap">
+    	UPDATE floorinfo SET f_state=#f_state# WHERE f_id=$f_id$
+	</update>
+   
+	<update id="update" parameterClass="floorinfo">
+		UPDATE floorinfo SET f_id=#f_id#,f_tag=#f_tag#,f_name=#f_name#,cat_attr=#cat_attr#,f_admark=#f_admark#,f_sort=#f_sort#,f_state=#f_state#,in_date=#in_date#,is_sys=#is_sys# WHERE f_id=$f_id$
+	</update>
+
+	<update id="updateInfo" parameterClass="java.util.HashMap">
+    	 UPDATE floorinfo SET 
+    	 <isNotNull  property="f_id"> 
+		   f_id=$f_id$
+		 </isNotNull>
+    	 WHERE f_id=$f_id$
+    </update>
+    
+	<update id="updateSate" parameterClass="floorinfo">
+		UPDATE floorinfo SET f_id=$f_id$ WHERE f_id=$f_id$
+	</update>
+
+	<insert id="insert" parameterClass="floorinfo">
+		INSERT INTO floorinfo (f_id,f_tag,f_name,cat_attr,f_admark,f_sort,f_state,in_date,is_sys) VALUES (#f_id#,#f_tag#,#f_name#,#cat_attr#,#f_admark#,#f_sort#,#f_state#,now(),#is_sys#)
+	</insert>
+	
+	<insert id="insertGetPk" parameterClass="floorinfo">
+		INSERT INTO floorinfo (f_id,f_tag,f_name,cat_attr,f_admark,f_sort,f_state,in_date,is_sys) VALUES (#f_id#,#f_tag#,#f_name#,#cat_attr#,#f_admark#,#f_sort#,#f_state#,now(),#is_sys#)
+		<selectKey resultClass="java.lang.String" keyProperty="f_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey> 
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM floorinfo WHERE f_id in ($f_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM floorinfo 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="f_id">
+				f_id=#f_id#
+			</isNotNull>
+			 <isNotNull prepend="and" property="f_tag">
+			    f_tag=#f_tag#
+			 </isNotNull>
+			 <isNotNull prepend="and" property="f_name">
+			   f_name=#f_name#
+			  </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT f_id,f_tag,f_name,cat_attr,f_admark,f_sort,f_state,in_date,is_sys,
+		(select count(*)  FROM goodfloormark WHERE f_id=floorinfo.f_id) as fcount
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY f_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

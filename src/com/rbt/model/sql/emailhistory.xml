@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="emailhistory">
+
+	<typeAlias alias="emailhistory" type="com.rbt.model.Emailhistory" />
+
+	<select id="getByPk" parameterClass="java.lang.String"
+		resultClass="emailhistory">
+		<![CDATA[ 
+    SELECT trade_id,get_email,title,send_email,send_name,content,temp_code,send_date,user_id FROM emailhistory WHERE trade_id=$trade_id$
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="emailhistory">
+		UPDATE emailhistory SET trade_id=#trade_id#,get_email=#get_email#,title=#title#,send_email=#send_email#,send_name=#send_name#,content=#content#,temp_code=#temp_code#,send_date=now(),user_id=#user_id# WHERE trade_id=$trade_id$
+	</update>
+
+	<insert id="insert" parameterClass="emailhistory">
+		INSERT INTO emailhistory (trade_id,get_email,title,send_email,send_name,content,temp_code,send_date,user_id) VALUES (#trade_id#,#get_email#,#title#,#send_email#,#send_name#,#content#,#temp_code#,now(),#user_id#)
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM emailhistory WHERE trade_id in ($trade_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM emailhistory e
+		left join commutemplate c on e.temp_code = c.temp_code
+		<dynamic prepend="WHERE">
+			 <isNotNull prepend="and" property="get_email"> 
+     		    INSTR(e.get_email,#get_email#) > 0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="send_name"> 
+     		    INSTR(e.send_name,#send_name#) > 0
+			 </isNotNull> <isNotNull prepend="and" property="user_name"> 
+     		    INSTR(user_id,#user_name#) > 0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT e.trade_id,e.get_email,e.title,send_email,e.send_name,e.content,e.temp_code,e.send_date,e.user_id as user_name,c.temp_name 
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		ORDER BY trade_id DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+
+</sqlMap>
+

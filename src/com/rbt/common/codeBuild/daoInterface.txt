@@ -1,0 +1,20 @@
+/*
+ * Package:com.rbt.dao
+ * FileName: I{CLASSNAME}Dao.java 
+ */
+package com.rbt.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.rbt.model.{CLASSNAME};
+
+/**
+ * @function 功能 {FUNNAME}dao层业务接口
+ * @author  创建人{AUTHOR}
+ * @date  创建日期 {DATE}
+ */
+
+public interface I{CLASSNAME}Dao extends IGenericDao<{CLASSNAME},String>{
+	
+}

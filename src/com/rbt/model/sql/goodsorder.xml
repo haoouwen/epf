@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="goodsorder">
+
+	<typeAlias alias="goodsorder" type="com.rbt.model.Goodsorder" />
+    
+    <!-- 
+       id:cacheModel的唯一标识
+       type:缓存cache的类型，有LRU,MEMORY,FIFO,OSCACHE，一般使用LRU,或者OSCACHE
+       readOnly:是否只读. 默认为true, 只读
+    <cacheModel id="goodsorder-cache" type="OSCACHE" readOnly="true">
+		<flushInterval hours="24" />
+		<flushOnExecute statement="goodsorder.update" />
+		<flushOnExecute statement="goodsorder.insert" />
+		<flushOnExecute statement="goodsorder.delete" />
+		<property value="500" name="size" />
+	</cacheModel>
+    -->
+      <select id="getCustlist" parameterClass="java.lang.String" resultClass="goodsorder" >
+		<![CDATA[ 
+	    SELECT order_id,buy_cust_id,sell_cust_id,consignee,area_attr,buy_address,zip_code,telephone,mobile,
+	    goods_amount,order_weight,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,
+	    order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,
+	    is_virtual,info_status,sell_remark,is_del,print_gouwu,print_fahuo,business_type,upload_flag,
+	    is_vip,is_sfexpress,pay_trxid,refund_batch_no,is_webapp_order,deliver_state ,print_kuaidi ,
+	    print_kuaidi_number,print_fahuo_number ,express_transport_state,integral_use,balance_use,invoice_id,is_sea,taxes
+	    ,send_city_msg,identitycard,present_integral,discount,is_clearance,red_id,final_pay_method,
+	    red_money,send_coupon_id,send_red_id,is_kjtsuccess,falsereason,kjtorder_state,recallstatus,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type
+	      FROM goodsorder WHERE buy_cust_id=#buy_cust_id#
+    ]]>
+	</select>
+	<select id="getByPk" parameterClass="java.lang.String" resultClass="goodsorder" >
+		<![CDATA[ 
+    SELECT order_id,buy_cust_id,sell_cust_id,consignee,area_attr,buy_address,zip_code,telephone,mobile,
+    goods_amount,order_weight,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,order_state,
+    order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,is_virtual,info_status,
+    sell_remark,is_del,print_gouwu,print_fahuo,business_type,upload_flag,is_vip,is_sfexpress,pay_trxid,
+    refund_batch_no,is_webapp_order,deliver_state,print_kuaidi,print_kuaidi_number,print_fahuo_number,express_transport_state,identitycard
+    ,send_city_msg,integral_use,balance_use,invoice_id,is_sea,taxes,present_integral,discount,
+    (CAST(tatal_amount AS DECIMAL(18, 2))-CAST(integral_use AS DECIMAL(18, 2))-CAST(balance_use AS DECIMAL(18, 2))) AS  last_pay,
+    is_clearance,red_id,red_money,send_coupon_id,send_red_id,is_kjtsuccess,falsereason,kjtorder_state,recallstatus,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type,final_pay_method
+      FROM goodsorder WHERE order_id=#order_id#
+    ]]>
+	</select>
+	
+	<select id="getByTrxID" parameterClass="java.lang.String"  resultClass="goodsorder">
+		<![CDATA[ 
+    SELECT order_id,buy_cust_id,sell_cust_id,consignee,area_attr,buy_address,zip_code,telephone,mobile,
+    goods_amount,order_weight,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,
+    order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,
+    is_virtual,info_status,sell_remark,is_del,print_gouwu,print_fahuo,business_type,upload_flag,
+    is_vip,is_sfexpress,pay_trxid,refund_batch_no,is_webapp_order,deliver_state ,print_kuaidi ,
+    print_kuaidi_number,print_fahuo_number ,express_transport_state,integral_use,balance_use,invoice_id,is_sea,taxes
+    ,send_city_msg,identitycard,present_integral,discount,is_clearance,red_id,final_pay_method,
+    red_money,send_coupon_id,send_red_id,is_kjtsuccess,falsereason,kjtorder_state,recallstatus,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type  FROM goodsorder WHERE pay_trxid=#pay_trxid#
+    ]]>
+	</select>
+
+	<update id="update" parameterClass="goodsorder">
+		UPDATE goodsorder SET order_id=#order_id#,buy_cust_id=#buy_cust_id#,sell_cust_id=#sell_cust_id#,consignee=#consignee#,
+		area_attr=#area_attr#,buy_address=#buy_address#,zip_code=#zip_code#,telephone=#telephone#,mobile=#mobile#,
+		goods_amount=#goods_amount#,comm_free=#comm_free#,ship_free=#ship_free#,insured=#insured#,why_price=#why_price#,
+		tatal_amount=#tatal_amount#,pay_id=#pay_id#,send_mode=#send_mode#,order_state=#order_state#,
+		pay_time=#pay_time#,send_time=#send_time#,sure_time=#sure_time#,mem_remark=#mem_remark#,send_num=#send_num#,
+		order_type=#order_type#,mark_id=#mark_id#,is_virtual=#is_virtual#,info_status=#info_status#,is_del=#is_del#,
+		print_fahuo=#print_fahuo#,print_gouwu=#print_gouwu#,print_kuaidi=#print_kuaidi#,business_type=#business_type#,
+		upload_flag=#upload_flag#,is_vip=#is_vip#,order_weight=#order_weight#,is_sfexpress=#is_sfexpress#,pay_trxid=#pay_trxid#,
+		refund_batch_no=#refund_batch_no#,is_webapp_order=#is_webapp_order#,deliver_state=#deliver_state#,
+		print_kuaidi_number=#print_kuaidi_number#,print_fahuo_number=#print_fahuo_number#,express_transport_state=#express_transport_state#
+		,send_city_msg=#send_city_msg#,integral_use=#integral_use#,balance_use=#balance_use#,invoice_id=#invoice_id#,is_sea=#is_sea#,taxes=#taxes#,
+		identitycard=#identitycard#,present_integral=#present_integral#,discount=#discount#,is_clearance=#is_clearance#,red_id=#red_id#,red_money=#red_money#,
+		send_coupon_id=#send_coupon_id#,send_red_id=#send_red_id#,is_kjtsuccess=#is_kjtsuccess#,falsereason=#falsereason#,
+		kjtorder_state=#kjtorder_state#,recallstatus=#recallstatus#,fg_ids=#fg_ids#,print_smode_no=#print_smode_no#,memberdiscount=#memberdiscount#,
+		coupon_money=#coupon_money#,customs_type=#customs_type#,final_pay_method=#final_pay_method#,sosysno=#sosysno#
+		 WHERE order_id=#order_id#
+	</update>
+	
+	<!--批量更新sort_no字段 -->
+	<update id="updateOrderWeight" parameterClass="java.util.HashMap">
+    	UPDATE goodsorder SET order_weight=#order_weight#,send_num=#send_num# WHERE order_id=$order_id$
+	</update>
+	
+	
+	<update id="updateState" parameterClass="java.util.HashMap">
+		UPDATE goodsorder SET 
+		<isNotNull  property="order_state">
+	    	order_state=#order_state#
+		</isNotNull>
+		<isNotNull prepend="," property="pay_time">
+	    	pay_time=now()
+		</isNotNull>
+		<isNotNull prepend="," property="send_time">
+	    	send_time=now()
+		</isNotNull>
+		<isNotNull prepend="," property="sure_time">
+	    	sure_time=now()
+		</isNotNull>
+		<isNotNull prepend="," property="pay_id">
+	    	pay_id=#pay_id#
+		</isNotNull>
+		<isNotNull prepend="," property="pay_trxid">
+	    	pay_trxid=#pay_trxid#
+		</isNotNull>
+		<isNotNull prepend="," property="order_type">
+	    	order_type=#order_type#
+		</isNotNull>
+	  <isNotNull prepend="," property="is_eval">
+	    	is_eval=#is_eval#
+	  </isNotNull>
+	  <isNotNull prepend="," property="is_del">
+	    	is_del=#is_del#
+	  </isNotNull>	  
+		<isNotNull prepend="," property="deliver_state">
+	    	deliver_state=#deliver_state#
+		</isNotNull>
+		 <isNotNull prepend=","  property="print_gouwu">
+	    	print_gouwu=#print_gouwu#
+		</isNotNull>
+		<isNotNull prepend="," property="is_clearance">
+		 is_clearance=#is_clearance#
+		</isNotNull>
+		<isNotNull prepend="," property="print_fahuo">
+	    	print_fahuo=#print_fahuo#
+		</isNotNull>
+		<isNotNull prepend="," property="print_kuaidi">
+	    	print_kuaidi=#print_kuaidi#
+		</isNotNull>
+		<isNotNull prepend="," property="print_fahuo_number">
+	    	print_fahuo_number=#print_fahuo_number#
+		</isNotNull>
+		<isNotNull prepend="," property="print_kuaidi_number">
+	    	print_kuaidi_number=#print_kuaidi_number#
+		</isNotNull>
+		<isNotNull prepend="," property="send_city_msg">
+	    	send_city_msg=#send_city_msg#
+		</isNotNull>
+		<isNotNull prepend="," property="express_transport_state">
+	    	express_transport_state=#express_transport_state#
+		</isNotNull>
+		<isNotNull prepend="," property="is_kjtsuccess">
+	    	is_kjtsuccess=#is_kjtsuccess#
+		</isNotNull>
+		WHERE order_id in($order_id$)
+	</update>
+	
+
+	<insert id="insert" parameterClass="goodsorder">
+		INSERT INTO goodsorder (order_id,buy_cust_id,sell_cust_id,consignee,area_attr,buy_address,zip_code,telephone,
+		mobile,goods_amount,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,
+		order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,
+		is_virtual,info_status,business_type,upload_flag,is_eval,is_vip,pay_trxid,refund_batch_no,
+		is_webapp_order,deliver_state,print_kuaidi_number,print_fahuo_number,send_city_msg,express_transport_state,integral_use,balance_use,
+		invoice_id,is_sea,taxes,identitycard,present_integral,discount,is_clearance,red_id,red_money,
+		send_coupon_id,send_red_id,is_kjtsuccess,falsereason,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type,final_pay_method,order_sign) 
+		VALUES (#order_id#,#buy_cust_id#,#sell_cust_id#,#consignee#,#area_attr#,#buy_address#,
+		#zip_code#,#telephone#,#mobile#,#goods_amount#,#comm_free#,#ship_free#,#insured#,#why_price#,
+		#tatal_amount#,#pay_id#,#send_mode#,#order_state#,now(),#pay_time#,#send_time#,#sure_time#,
+		#mem_remark#,#send_num#,#order_type#,#mark_id#,#is_virtual#,#info_status#,#business_type#,
+		#upload_flag#,#is_eval#,#is_vip#,#pay_trxid#,#refund_batch_no#,#is_webapp_order#,
+		#deliver_state#,#print_kuaidi_number#,#print_fahuo_number#,#send_city_msg#,#express_transport_state#,#integral_use#,#balance_use#,
+		#invoice_id#,#is_sea#,#taxes#,#identitycard#,#present_integral#,#discount#,#is_clearance#,#red_id#,#red_money#,#send_coupon_id#,
+		#send_red_id#,#is_kjtsuccess#,#falsereason#,#fg_ids#,#print_smode_no#,#memberdiscount#,#coupon_money#,#customs_type#,#final_pay_method#,#order_sign#)
+	</insert>
+	
+	<insert id="insertGetPk" parameterClass="goodsorder">
+		INSERT INTO goodsorder (order_id,buy_cust_id,sell_cust_id,consignee,area_attr,buy_address,
+		zip_code,telephone,mobile,goods_amount,comm_free,ship_free,insured,why_price,tatal_amount,
+		pay_id,send_mode,order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,
+		order_type,mark_id,is_virtual,info_status,business_type,upload_flag,is_eval,is_vip,pay_trxid,
+		refund_batch_no,is_webapp_order,deliver_state,print_kuaidi_number,print_fahuo_number,send_city_msg,express_transport_state,
+		integral_use,balance_use,invoice_id,is_sea,taxes,identitycard,present_integral,discount,is_clearance,
+		red_id,red_money,send_coupon_id,send_red_id,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type,final_pay_method,order_sign) 
+		VALUES (#order_id#,#buy_cust_id#,#sell_cust_id#,#consignee#,#area_attr#,#buy_address#,
+		#zip_code#,#telephone#,#mobile#,#goods_amount#,#comm_free#,#ship_free#,#insured#,#why_price#,
+		#tatal_amount#,#pay_id#,#send_mode#,#order_state#,now(),#pay_time#,#send_time#,#sure_time#,
+		#mem_remark#,#send_num#,#order_type#,#mark_id#,#is_virtual#,#info_status#,#business_type#,
+		#upload_flag#,#is_eval#,#is_vip#,#pay_trxid#,#refund_batch_no#,#is_webapp_order#,#deliver_state#,
+		#print_kuaidi_number#,#print_fahuo_number#,#send_city_msg#,#express_transport_state#,#integral_use#,#balance_use#,
+		#invoice_id#,#is_sea#,#taxes#,#identitycard#,#present_integral#,#discount#,#is_clearance#,#red_id#,
+		#red_money#,#send_coupon_id#,#send_red_id#,#fg_ids#,#print_smode_no#,#memberdiscount#,#coupon_money#,#customs_type#,#final_pay_method#,#order_sign#)
+		<selectKey resultClass="java.lang.String" keyProperty="order_id">
+            <!-- 此处不区分大小写 -->
+            SELECT @@IDENTITY AS ID
+        </selectKey>  
+	</insert>
+
+	<delete id="delete" parameterClass="java.lang.String">
+		DELETE FROM goodsorder WHERE order_id in ($order_id$)
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterClass="java.lang.String">
+		DELETE FROM goodsorder WHERE order_id in ($order_id$)
+	</delete>
+
+	<sql id="getCommon">
+		FROM goodsorder AS t1 
+			LEFT JOIN commpara c1 ON order_state=c1.para_value AND  c1.para_code='order_state' 
+			LEFT JOIN commpara vc2 ON order_state=vc2.para_value AND  vc2.para_code='virtual_order_state' 
+			LEFT JOIN payment p1 ON t1.pay_id=p1.pay_id
+			LEFT JOIN sendmode s1 ON t1.send_mode=s1.smode_id
+			LEFT JOIN shopconfig AS ss1 ON sell_cust_id=ss1.cust_id
+			LEFT JOIN memberuser AS mu1 ON buy_cust_id=mu1.cust_id AND user_type='1'
+		    LEFT JOIN cancelorder AS ca ON ca.order_id=t1.order_id  
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="order_state">
+		    	t1.order_state in ($order_state$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="today">
+		          DAY(t1.order_time)=DAY(NOW()) AND MONTH(t1.order_time)=MONTH(NOW()) AND YEAR(t1.order_time)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="ortime"> 
+					t1.order_time>SUBDATE(NOW(),INTERVAL 30 DAY) 
+			</isNotNull>
+			<isNotNull prepend="and" property="time_order_t"> 
+					SUBDATE(NOW(),INTERVAL 30 DAY)>t1.order_time
+			</isNotNull>
+			<isNotNull prepend="and" property="paytoday">
+		          DAY(t1.pay_time)=DAY(NOW()) AND MONTH(t1.pay_time)=MONTH(NOW()) AND YEAR(t1.pay_time)=YEAR(NOW())
+		    </isNotNull>
+		    <isNotNull prepend="and" property="pay_time"> 
+					t1.pay_time>SUBDATE(NOW(),INTERVAL 30 DAY) 
+			</isNotNull>
+			<isNotNull prepend="and" property="time_pay_t"> 
+					SUBDATE(NOW(),INTERVAL 30 DAY)>t1.pay_time
+			</isNotNull>
+			<isNotNull prepend="and" property="sell_cust_id">
+				t1.sell_cust_id=#sell_cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="sell_cust_id_no">
+			    t1.sell_cust_id!=#sell_cust_id_no#
+			</isNotNull>
+			<isNotNull prepend="and" property="buy_cust_id">
+				t1.buy_cust_id=#buy_cust_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="buy_cust_id_no">
+				t1.buy_cust_id!=#buy_cust_id_no#
+			</isNotNull>
+			<isNotNull prepend="and" property="state_more">
+				t1.order_state in ($state_more$)
+			</isNotNull>
+		    <isNotNull prepend="and" property="ypaydate">
+		       TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 1
+		    </isNotNull>
+		    <isNotNull prepend="and" property="ydate">
+		     TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 1
+		    </isNotNull>
+		     <isNotNull prepend="and" property="epaydate">
+		       TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 2
+		    </isNotNull>
+		    <isNotNull prepend="and" property="edate">
+		     TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 2
+		    </isNotNull>
+		     <isNotNull prepend="and" property="lpaydate">
+		       TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 7
+		    </isNotNull>
+		    <isNotNull prepend="and" property="ldate">
+		     TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 7
+		    </isNotNull>
+		    <isNotNull prepend="and" property="ordayout">
+		     TO_DAYS(NOW()) - TO_DAYS(t1.order_time) >= $ordayout$
+		    </isNotNull>		    
+		     <isNotNull prepend="and" property="order_id">
+		     INSTR(t1.order_id,#order_id#)>0
+			</isNotNull>
+			 <isNotNull prepend="and" property="goodsorder_id">
+		    	t1.order_id in ($goodsorder_id$)
+			</isNotNull>
+			<isNotNull prepend="and" property="starttime">
+			     TO_DAYS(t1.order_time)>=TO_DAYS(#starttime#)
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+		    	TO_DAYS(#endtime#)>=TO_DAYS(t1.order_time)
+			</isNotNull>
+			<isNotNull prepend="and" property="order_type">
+		    	order_type in ($order_type$)
+			</isNotNull>
+			<isNotNull prepend="and" property="order_type_no">
+		    	order_type not in ($order_type_no$)
+			</isNotNull>
+			<isNotNull prepend="and" property="is_virtual">
+		    	t1.is_virtual=#is_virtual#
+			</isNotNull>
+			<isNotNull prepend="and" property="mark_id">
+		    	t1.mark_id=#mark_id#
+			</isNotNull>
+			<isNotNull prepend="and" property="shop_name">
+		    	ss1.shop_name=#shop_name#
+			</isNotNull>
+			<isNotNull prepend="and" property="is_del">
+		    	t1.is_del=#is_del#
+			</isNotNull>
+			<isNotNull prepend="and" property="ortimeout"> 
+			  SUBDATE(NOW(),INTERVAL #ortimeout# MINUTE) > t1.order_time
+		   </isNotNull>
+		   <isNotNull prepend="and" property="ogoods_name"> 
+			     INSTR(g.goods_name,#ogoods_name#) >0
+			</isNotNull>
+			 <isNotNull prepend="and" property="yushoupaytime"> 
+					t1.order_time>SUBDATE(NOW(),INTERVAL 30 DAY) 
+			</isNotNull>
+			<isNotNull prepend="and" property="cancel_state">
+		    	ca.order_state in ($cancel_state$)
+			</isNotNull>
+			<isNotNull prepend="and" property="cancel_buy_cust_id">
+		    	ca.buy_cust_id=#cancel_buy_cust_id#
+			</isNotNull>
+		     <isNotNull prepend="and" property="is_vip">
+		    	t1.is_vip=#is_vip#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_sea">
+		    	t1.is_sea=#is_sea#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_sfexpress">
+		    	t1.is_sfexpress=#is_sfexpress#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="is_webapp_order">
+		    	t1.is_webapp_order=#is_webapp_order#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="deliver_state">
+		    	t1.deliver_state=#deliver_state#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="lessdate">
+		       TO_DAYS(NOW()) - TO_DAYS(t1.order_time) &lt;= 90
+		    </isNotNull>
+		    <isNotNull prepend="and" property="greatdate">
+		       TO_DAYS(NOW()) - TO_DAYS(t1.order_time) &gt; 90
+		    </isNotNull>
+		     <isNotNull prepend="and" property="print_fahuo_number">
+		      t1.print_fahuo_number=#print_fahuo_number#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="print_kuaidi_number">
+		      t1.print_kuaidi_number=#print_kuaidi_number#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="print_fahuo">
+		      t1.print_fahuo=#print_fahuo#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="print_kuaidi">
+		      t1.print_kuaidi=#print_kuaidi#
+		    </isNotNull>
+		      <isNotNull prepend="and" property="consignee"> 
+			     INSTR(consignee,#consignee#) >0
+			</isNotNull>
+			 <isNotNull prepend="and" property="buy_address"> 
+			     INSTR(buy_address,#buy_address#) >0
+			</isNotNull>
+			  <isNotNull prepend="and" property="area_attr"> 
+			     INSTR(t1.area_attr,#area_attr#) >0
+			 </isNotNull>
+			 <isNotNull prepend="and" property="express_transport_state">
+				express_transport_state=#express_transport_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_transport_state_no">
+				(express_transport_state IS NULL || express_transport_state NOT IN($express_transport_state_no$))
+			</isNotNull>
+            <isNotNull prepend="and" property="is_clearance">
+		      t1.is_clearance=#is_clearance#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_kjtsuccess">
+	    	   is_kjtsuccess=#is_kjtsuccess#
+		     </isNotNull>
+		      <isNotNull prepend="and" property="kjtorder_state">
+	    	   kjtorder_state in($kjtorder_state$)
+		     </isNotNull>
+		     <isNotNull prepend="and" property="mobile">
+		      t1.mobile=#mobile#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="identitycard">
+		      t1.identitycard=#identitycard#
+		    </isNotNull>
+		     <isNotNull prepend="and" property="ordermonths">
+		     TO_DAYS(NOW())>=TO_DAYS(DATE_ADD(order_time, INTERVAL $ordermonths$ MONTH)) 
+		    </isNotNull>
+		    <isNotNull prepend="and" property="customs_type">
+		      t1.customs_type=#customs_type#
+		    </isNotNull>	
+		</dynamic>
+	</sql>
+
+	<select id="getList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap" >
+		SELECT DISTINCT t1.order_id,t1.buy_cust_id,t1.sell_cust_id,consignee,t1.area_attr,buy_address,t1.zip_code,t1.telephone,t1.is_del,
+		t1.mobile,goods_amount,comm_free,ship_free,insured,why_price,tatal_amount,t1.pay_id,send_mode,s1.en_name,t1.order_state,
+		order_time,pay_time,send_time,sure_time,mem_remark,send_num,c1.para_key AS order_para,
+		(SELECT cust_name FROM member WHERE member.cust_id=t1.buy_cust_id) AS buy_cust_name,
+		t1.mark_id,t1.is_virtual
+		,p1.pay_name,s1.smode_name,ss1.shop_name AS seller_shop_name,ss1.radom_no AS seller_radom_no, ss1.qq AS seller_shop_qq , ss1.mobile AS sell_mobile, ss1.address AS sell_address,
+		mu1.qq AS buy_qq,mu1.real_name AS buy_real_name,mu1.user_name AS buy_user_name,order_type,vc2.para_key AS virtual_order_para,mu1.email,mu1.cellphone,
+		(SELECT COUNT(*) FROM orderdetail WHERE orderdetail.order_id=t1.order_id) AS goods_num,
+		(SELECT SUM(order_num) FROM orderdetail WHERE orderdetail.order_id=t1.order_id) AS goods_sets,
+		print_gouwu,print_fahuo,print_kuaidi,print_kuaidi_number,print_fahuo_number,business_type,upload_flag,order_weight,
+		ca.buy_date,ca.order_state as cancel_state,is_vip,is_sfexpress,pay_trxid,refund_batch_no,is_webapp_order,deliver_state,p1.pay_code
+		,send_city_msg,express_transport_state,integral_use,balance_use,invoice_id,(tatal_amount-integral_use-balance_use) as  last_pay,
+		is_sea,taxes,identitycard,present_integral,discount,is_clearance,red_id,red_money,send_coupon_id,send_red_id,is_kjtsuccess,
+		falsereason,kjtorder_state,fg_ids,print_smode_no,memberdiscount,coupon_money,customs_type,final_pay_method,(select para_key from commpara where para_value=customs_type and para_code='customs_group') AS customs_name,sosysno
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+		    <isNotNull  property="de_order"> 
+			   ORDER BY t1.order_time DESC
+			</isNotNull>
+			<isNotNull  property="num_desc"> 
+			   ORDER BY goods_sets DESC
+			</isNotNull>
+			<isNotNull  property="num_asc"> 
+			   ORDER BY goods_sets ASC
+			</isNotNull>
+			<isNotNull  property="buy_custname_asc"> 
+			   ORDER BY buy_cust_name ASC
+			</isNotNull>
+			<isNotNull  property="buy_custname_desc"> 
+			   ORDER BY buy_cust_name DESC
+			</isNotNull>
+			<isNotNull  property="tatal_amount_asc"> 
+			   ORDER BY tatal_amount ASC
+			</isNotNull>
+			<isNotNull  property="tatal_amount_desc"> 
+			   ORDER BY tatal_amount DESC
+			</isNotNull>
+			<isNotNull  property="cancle_buy_date"> 
+			   ORDER BY ca.buy_date DESC
+			</isNotNull>
+		    <isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		    </isNotNull>
+
+	</select>
+
+	<select id="getCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getWebCommon">
+		FROM goodsorder go LEFT JOIN  orderdetail ot ON go.order_id=ot.order_id
+			LEFT JOIN goods g ON g.goods_id=ot.goods_id
+				LEFT JOIN member m ON m.cust_id=go.buy_cust_id 
+					LEFT JOIN member m2 ON m2.cust_id=go.sell_cust_id 
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="and" property="order_id_in">
+		    	go.order_id in($order_id_in$)
+		    </isNotNull>
+			<isNotNull prepend="and" property="order_state_in">
+		    	order_state in($order_state_in$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="order_state_not_in">
+		    	order_state not in($order_state_not_in$)
+		    </isNotNull>
+		    <isNotNull prepend="and" property="goods_id">
+		    	ot.goods_id=#goods_id#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="month">
+		    	MONTH(order_time)=MONTH(NOW()) 
+		    </isNotNull>
+		    <isNotNull prepend="and" property="order_type">
+		    	order_type=#order_type#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="is_vip">
+		    	is_vip=#is_vip#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="print_kuaidi_number">
+		    	print_kuaidi_number=#print_kuaidi_number#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="print_fahuo_number">
+		    	print_fahuo_number=#print_fahuo_number#
+		    </isNotNull>
+		      <isNotNull prepend="and" property="send_city_msg"> 
+			     INSTR(send_city_msg,#send_city_msg#) >0
+			</isNotNull>
+			 <isNotNull prepend="and" property="express_transport_state"> 
+			     INSTR(express_transport_state,#express_transport_state#) >0
+			 </isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="getWebList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT (SELECT COUNT(*) FROM orderdetail WHERE order_id=go.order_id)AS goods_num,go.order_id,g.goods_name,ot.goods_attr,
+		buy_cust_id,sell_cust_id,consignee,go.area_attr,buy_address,zip_code,telephone,mobile,goods_amount,
+		comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,order_state,order_type,mark_id,go.is_virtual,
+			IF(order_time IS NULL,'',DATE_FORMAT(order_time,'%Y-%c-%d %H:%i:%s')) AS order_time,pay_time,send_time,sure_time,mem_remark,send_num,
+			CONCAT(SUBSTRING(m.cust_name,1,1),'****',SUBSTRING(m.cust_name,-1)) AS buy_cust_name,
+			m2.cust_name AS sell_cust_name,ot.order_num,ot.goods_price,ot.trade_id,is_vip,print_kuaidi_number,print_fahuo_number
+			,send_city_msg,express_transport_state,integral_use,balance_use,invoice_id,is_sea,taxes,
+			identitycard,present_integral,discount,is_clearance,red_id,red_money,send_coupon_id,send_red_id,fg_ids,print_smode_no,memberdiscount,go.coupon_money
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+		ORDER BY order_time DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+
+	<select id="getWebCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(DISTINCT(go.order_id)) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+	<select id="getWebGoodsCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT SUM(ot.order_num) ct
+		<isParameterPresent>
+			<include refid="getWebCommon" />
+		</isParameterPresent>
+	</select>
+  <sql id="getoverCommon">
+		FROM goodsorder AS t1 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="yover">
+		       (  
+				t1.sell_cust_id=#yover#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 1     
+                  AND       
+                TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 1 
+                 )
+                  OR
+              ( 
+			   t1.sell_cust_id=#yover#
+                  AND      
+              TO_DAYS(NOW()) - TO_DAYS(t1.order_time) =1  
+               )
+		    </isNotNull>
+		     <isNotNull prepend="and" property="eover">
+		       (  
+				t1.sell_cust_id=#eover#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 2     
+                  AND       
+                TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 2 
+                 )
+                  OR
+              ( 
+			   t1.sell_cust_id=#eover#
+                  AND      
+              TO_DAYS(NOW()) - TO_DAYS(t1.order_time) =2  
+               )
+		    </isNotNull>
+		    
+		     <isNotNull prepend="and" property="lover">
+		     	
+		        (  
+				t1.sell_cust_id=#lover#
+                  AND      
+                TO_DAYS(NOW()) - TO_DAYS(t1.pay_time) = 7     
+                  AND       
+                TO_DAYS(NOW()) - TO_DAYS(t1.order_time) = 7 
+                 )
+                  OR
+              ( 
+			   t1.sell_cust_id=#lover#
+                  AND      
+              TO_DAYS(NOW()) - TO_DAYS(t1.order_time) =7  
+               )
+		    </isNotNull>
+		   
+		</dynamic>
+	</sql>
+  
+	<select id="getoverList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		 SELECT SUM(t1.tatal_amount) as turnovermoney,COUNT(t1.buy_cust_id) as turnoverusercount,COUNT(t1.order_time) as allordercount,COUNT(t1.pay_time) as turnovercount
+		<isParameterPresent>
+			<include refid="getoverCommon" />
+		</isParameterPresent>
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+	</select>
+	<sql id="getOrderTake">
+		from goodsorder left join orderdetail od on od.order_id=goodsorder.order_id
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="send_time">
+			<![CDATA[ 
+				goodsorder.send_time<=DATE_SUB(NOW(), INTERVAL #send_time# DAY)
+				]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="sureTime">
+			<![CDATA[ 
+				goodsorder.sure_time<=DATE_SUB(NOW(), INTERVAL #sureTime# DAY)
+				]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="order_state">
+				goodsorder.order_state=#order_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_transport_state">
+				goodsorder.express_transport_state=#express_transport_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_transport_state_no">
+				(express_transport_state IS NULL || express_transport_state NOT IN($express_transport_state_no$))
+			</isNotNull>
+			<isNotNull prepend="and" property="is_vip">
+				goodsorder.is_vip=#is_vip#
+			</isNotNull>
+		    <isNotNull prepend="and" property="is_sea">
+		    	goodsorder.is_sea=#is_sea#
+		    </isNotNull>			
+		</dynamic>
+	</sql>
+	<select id="getTakeList" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		SELECT od.goods_id,goodsorder.order_id,buy_cust_id,sell_cust_id,print_kuaidi_number,
+		print_fahuo_number,consignee,area_attr,buy_address,zip_code,telephone,mobile,
+		goods_amount,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,
+		order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,is_virtual,is_vip
+		,send_city_msg,express_transport_state,integral_use,balance_use,invoice_id,is_sea,taxes,
+		identitycard,discount,is_clearance,red_id,red_money,send_coupon_id,send_red_id,fg_ids,print_smode_no,memberdiscount,goodsorder.coupon_money
+		<isParameterPresent>
+			<include refid="getOrderTake"/>
+		</isParameterPresent>
+	</select>
+	
+	<sql id="getAreaCommon">
+		FROM goodsorder go LEFT JOIN member m ON go.buy_cust_id=m.cust_id LEFT JOIN memberuser mu ON m.cust_id=mu.cust_id
+		<dynamic prepend="WHERE">
+		    
+		    <isNotNull prepend="and" property="cust_id">
+		    	m.cust_id !='0'
+			</isNotNull>
+		
+			<isNotNull prepend="and" property="area_attr">
+		    	INSTR(m.area_attr,#area_attr#)
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="membernum">
+		    	LEFT(mu.membernum,6)=#membernum#
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="area_number">
+		    	LEFT(mu.membernum,3)=#area_number#
+			</isNotNull>
+			
+			 <isNotNull prepend="and" property="order_id">
+		       INSTR(go.order_id,#order_id#)>0
+			</isNotNull>
+			
+			<isNotNull prepend="and" property="starttime">
+			    TO_DAYS(go.order_time)>=TO_DAYS(#starttime#)
+			</isNotNull>
+			<isNotNull prepend="and" property="endtime">
+		        TO_DAYS(#endtime#)>=TO_DAYS(go.order_time)
+			</isNotNull>
+			 <isNotNull prepend="and" property="is_sea">
+		    	go.is_sea=#is_sea#
+		    </isNotNull>
+		    <isNotNull prepend="and" property="order_state_s">
+				go.order_state=#order_state_s#
+			</isNotNull>
+			<isNotNull prepend="and" property="buy_cust_id">
+				go.buy_cust_id=#buy_cust_id#
+			</isNotNull>
+		</dynamic>
+	</sql>
+	
+	<select id="getAreaCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getAreaCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getAreaOrderList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT order_id,tatal_amount,order_time,pay_id,mu.user_name,consignee,go.area_attr,buy_address,mobile,order_state,deliver_state,go.is_sea
+		<isParameterPresent>
+			<include refid="getAreaCommon" />
+		</isParameterPresent>
+
+	    ORDER BY order_time DESC
+
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	<sql id="getConfirmReceiptCommon">
+		FROM goodsorder 
+		<dynamic prepend="WHERE">
+		    <isNotNull prepend="and" property="send_time">
+			<![CDATA[ 
+				send_time<=DATE_SUB(NOW(), INTERVAL #send_time# DAY)
+				]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="sureTime">
+			<![CDATA[ 
+				sure_time<=DATE_SUB(NOW(), INTERVAL #sureTime# DAY)
+				]]>
+			</isNotNull>
+			<isNotNull prepend="and" property="order_state">
+				order_state=#order_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_transport_state">
+				express_transport_state=#express_transport_state#
+			</isNotNull>
+			<isNotNull prepend="and" property="express_transport_state_no">
+				(express_transport_state IS NULL || express_transport_state NOT IN($express_transport_state_no$))
+			</isNotNull>
+			<isNotNull prepend="and" property="is_vip">
+				is_vip=#is_vip#
+			</isNotNull>
+		    <isNotNull prepend="and" property="is_sea">
+		    	is_sea=#is_sea#
+		    </isNotNull>	
+		     <isNotNull prepend="and" property="order_sign">
+		    	order_sign=#order_sign#
+		    </isNotNull>	
+		</dynamic>
+	</sql>
+	
+	<select id="getConfirmReceiptCount" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT COUNT(*) ct
+		<isParameterPresent>
+			<include refid="getConfirmReceiptCommon" />
+		</isParameterPresent>
+	</select>
+	
+	<select id="getConfirmReceiptOrderList" parameterClass="java.util.HashMap"
+		resultClass="java.util.HashMap">
+		SELECT order_id,buy_cust_id,sell_cust_id,print_kuaidi_number,
+		print_fahuo_number,consignee,area_attr,buy_address,zip_code,telephone,mobile,
+		goods_amount,comm_free,ship_free,insured,why_price,tatal_amount,pay_id,send_mode,
+		order_state,order_time,pay_time,send_time,sure_time,mem_remark,send_num,order_type,mark_id,is_virtual,is_vip
+		,send_city_msg,express_transport_state,integral_use,balance_use,invoice_id,is_sea,taxes,
+		identitycard,discount,is_clearance,red_id,red_money,send_coupon_id,send_red_id,fg_ids,print_smode_no,memberdiscount,order_sign
+		<isParameterPresent>
+			<include refid="getConfirmReceiptCommon" />
+		</isParameterPresent>
+	    ORDER BY order_time DESC
+		<isNotNull prepend="LIMIT" property="start">
+			#start#,#limit#
+		</isNotNull>
+
+	</select>
+	
+	</sqlMap>
